@@ -29,10 +29,6 @@ The box is designed to get the attention of the visitors who have engaged with y
 1. Upload the zip-file from within WordPress plugins section or use the automatic installation option.
 2. Enter the HTML-code for your box's content and save.
 
-== Frequently asked questions ==
-
-
-
 == Screenshots ==
 
 1. http://www.dreamgrow.com/wp-content/uploads/2012/06/scroll-triggered-box-wordpress-plugin-2.png
