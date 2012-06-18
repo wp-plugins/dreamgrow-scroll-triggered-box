@@ -31,9 +31,9 @@ The box is designed to get the attention of the visitors who have engaged with y
 
 == Screenshots ==
 
-1. http://www.dreamgrow.com/wp-content/uploads/2012/06/scroll-triggered-box-wordpress-plugin-2.png
-2. http://www.dreamgrow.com/wp-content/uploads/2012/06/scroll-triggered-box-wordpress-plugin-templates.jpg
-3. http://www.dreamgrow.com/wp-content/uploads/2012/06/scroll-triggered-box-wordpress-plugin-settings.png
+1. Plugin
+2. Plugin Templates
+3. Plugin Settings page
 
 == Changelog ==
 
