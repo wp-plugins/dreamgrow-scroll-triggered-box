@@ -4,7 +4,7 @@ require (ABSPATH . WPINC . '/pluggable.php');
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box...
-Version: 0.9.6
+Version: 0.9.4
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
