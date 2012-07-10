@@ -4,7 +4,7 @@ require (ABSPATH . WPINC . '/pluggable.php');
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
-Version: 1.0
+Version: 1.0.1
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
@@ -112,7 +112,7 @@ class ScrollBox
 
     function get_templates($current)
     {
-        $dir = WP_PLUGIN_DIR . '/scrollBox/templates/';
+        $dir = WP_PLUGIN_DIR . '/dreamgrow-scroll-triggered-box/templates/';
         if ($handle = opendir($dir)) {
             $templates = '';
             while (false !== ($entry = readdir($handle))) {
