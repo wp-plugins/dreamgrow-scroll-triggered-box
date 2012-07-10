@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.3
 Tested up to: 3.4
-Stable tag: trunk
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed themes.
 
 = 1.0 =
 Release
