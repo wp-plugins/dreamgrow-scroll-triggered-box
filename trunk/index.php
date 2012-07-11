@@ -112,7 +112,7 @@ class ScrollBox
 
     function get_templates($current)
     {
-        $dir = WP_PLUGIN_DIR . '/dreamgrow-scroll-triggered-box/templates/';
+        $dir = plugin_dir_path(__FILE__). 'templates/';
         if ($handle = opendir($dir)) {
             $templates = '';
             while (false !== ($entry = readdir($handle))) {
