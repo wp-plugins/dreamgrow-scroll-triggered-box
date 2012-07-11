@@ -68,7 +68,7 @@ class ScrollBox
 
         // Add css
         if ($this->sdb_visible()) {
-            if ($options['include_css'] == 1) echo '<link rel="stylesheet" type="text/css" media="screen" href="' . WP_PLUGIN_URL . '/scrollBox/templates/' . $template . '/style.css" />';
+            if ($options['include_css'] == 1) echo '<link rel="stylesheet" type="text/css" media="screen" href="' . plugin_dir_url(__FILE__) . 'templates/' . $template . '/style.css" />';
 
             // Box html
             echo '<div id="scrolldriggered" style="width: ' . $options['width'] . 'px;' . $options['position'] . ': 10px"><div id="inscroll">
@@ -92,12 +92,12 @@ class ScrollBox
             wp_enqueue_script('jquery');
             wp_enqueue_script(
                 'sdb_script',
-                WP_PLUGIN_URL . '/scrollBox/stb_init.js',
+                plugin_dir_url(__FILE__) . 'stb_init.js',
                 array('jquery')
             );
             wp_enqueue_script(
                 'jquery_cookie',
-                WP_PLUGIN_URL . '/scrollBox/jquery.cookie.js',
+                plugin_dir_url(__FILE__) . 'jquery.cookie.js',
                 array('jquery')
             );
         }
@@ -235,7 +235,7 @@ class ScrollBox
                                                value="1" <?php checked('1', $options['include_css']); ?> />
                                         Uncheck only if you want to style the box by yourself via themes css. CSS file
                                         is located <a
-                                            href="<?php echo WP_PLUGIN_URL . '/scrollBox/templates/' . $options['theme'] . '/style.css' ?>">here</a>
+                                            href="<?php echo plugin_dir_url(__FILE__) . 'templates/' . $options['theme'] . '/style.css' ?>">here</a>
                                     </td>
                                 </tr>
                                 <tr valign="top">
