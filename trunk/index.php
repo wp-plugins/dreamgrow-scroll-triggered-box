@@ -116,7 +116,7 @@ class ScrollBox
         $template = $options['theme'];
 
         $content = get_option('sdb_html');
-        $content = function_exists('icl_get_languages') ? $content[ICL_LANGUAGE_CODE] : $content[0];
+//        $content = function_exists('icl_get_languages') ? $content[ICL_LANGUAGE_CODE] : $content[0];
 
         $closed = (isset($_COOKIE['nopopup'])) ? 'true' : 'false';
 
@@ -215,7 +215,7 @@ class ScrollBox
                             ),
                             'theme' => 'default'
                         );
-                        $sampleHtml = array(
+                        $sampleHtml =
                             '<h5>Sign up for Social Media News</h5>
                             <ul>
                                 <li>Social media news</li>
@@ -229,7 +229,7 @@ class ScrollBox
                                 <input type="submit" id="stb-submit" value="Subscribe" />
                             </form>
                             <p id="stbMsgArea"></p>
-                            ');
+                            ';
 
                         $options = get_option('sdb_settings', $defaults);
                         $formHTML = get_option('sdb_html', $sampleHtml);
@@ -324,34 +324,10 @@ class ScrollBox
                                 <th scope="row"><label for="moderation_keys">Box html</label></th>
                                 <td>Content of the box. You are allowed to use HTML.
                                     <div id="tabs">
-                                        <?php
-                                        if (function_exists('icl_get_languages')) :
-                                            $langs = icl_get_languages('skip_missing=N&orderby=KEY&order=DIR&link_empty_to=str'); ?>
-                                            <ul>
-                                                <?php foreach ($langs as $lang)  : ?>
-                                                <li><a
-                                                    href="#tab<?php echo $lang['id'] ?>"><?php echo $lang['translated_name'] ?></a>
-                                                </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                            <?php foreach ($langs as $lang) :
 
-                                            $HTMLcontent = array_key_exists($lang['language_code'], $formHTML) ? $formHTML[$lang['language_code']] : $formHTML[0];
+                                            <textarea name="sdb_html" rows="10" cols="50" id="moderation_keys"
+                                                      class="large-text code"><?php echo htmlspecialchars($formHTML); ?></textarea>
 
-                                            ?>
-                                            <div id="tab<?php echo $lang['id'] ?>">
-                                                <textarea name="sdb_html[<?php echo $lang['language_code'] ?>]"
-                                                          rows="10" cols="50"
-                                                          id="moderation_keys_<?php echo $lang['id']  ?>"
-                                                          class="large-text code"><?php echo htmlspecialchars($HTMLcontent); ?></textarea>
-                                            </div>
-                                            <?php endforeach; ?>
-
-                                            <?php else : ?>
-                                            <textarea name="sdb_html[]" rows="10" cols="50" id="moderation_keys"
-                                                      class="large-text code"><?php echo htmlspecialchars($formHTML[0]); ?></textarea>
-
-                                            <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
