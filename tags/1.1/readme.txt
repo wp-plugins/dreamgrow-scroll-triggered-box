@@ -1,10 +1,10 @@
-=== Dreamgrow Scroll Triggered Box ===
+﻿=== Dreamgrow Scroll Triggered Box ===
 Contributors: pk2000,madisn
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.3
 Tested up to: 3.4
-Stable tag: 1.1
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
