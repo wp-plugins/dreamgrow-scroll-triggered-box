@@ -4,7 +4,7 @@ require (ABSPATH . WPINC . '/pluggable.php');
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
-Version: 1.1
+Version: 1.0.1
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
@@ -215,7 +215,7 @@ class ScrollBox
                             ),
                             'theme' => 'default'
                         );
-                        $sampleHtml =
+                        $sampleHtml = array(
                             '<h5>Sign up for Social Media News</h5>
                             <ul>
                                 <li>Social media news</li>
@@ -229,7 +229,7 @@ class ScrollBox
                                 <input type="submit" id="stb-submit" value="Subscribe" />
                             </form>
                             <p id="stbMsgArea"></p>
-                            ';
+                            ');
 
                         $options = get_option('sdb_settings', $defaults);
                         $formHTML = get_option('sdb_html', $sampleHtml);
@@ -334,12 +334,16 @@ class ScrollBox
                                                 </li>
                                                 <?php endforeach; ?>
                                             </ul>
-                                            <?php foreach ($langs as $lang) : ?>
+                                            <?php foreach ($langs as $lang) :
+
+                                            $HTMLcontent = array_key_exists($lang['language_code'], $formHTML) ? $formHTML[$lang['language_code']] : $formHTML[0];
+
+                                            ?>
                                             <div id="tab<?php echo $lang['id'] ?>">
                                                 <textarea name="sdb_html[<?php echo $lang['language_code'] ?>]"
                                                           rows="10" cols="50"
                                                           id="moderation_keys_<?php echo $lang['id']  ?>"
-                                                          class="large-text code"><?php echo htmlspecialchars($formHTML[$lang['language_code']]); ?></textarea>
+                                                          class="large-text code"><?php echo htmlspecialchars($HTMLcontent); ?></textarea>
                                             </div>
                                             <?php endforeach; ?>
 
