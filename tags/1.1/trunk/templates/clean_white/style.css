@@ -1,0 +1,100 @@
+@import "font/font.css";
+#scrolldriggered{
+    display:none;
+    position:fixed;
+    z-index:10;
+    bottom:-210px;
+    background-color:#FFF;
+    -webkit-box-shadow: 0px 0px 0px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+#inscroll{
+    background-color: #FFF;
+    font-size:12px;
+    padding: 0 20px 10px 20px;
+    color: #696969;
+    font-family: Tahoma, Geneva, sans-serif;
+    text-shadow: 0 1px 0px #dadada;
+}
+
+#inscroll h5{
+    font-family: 'AllerRegular', Arial, Helvetica, sans-serif;
+    color: #2e2e2e;
+    font-size: 18px;
+    text-shadow: 0 1px 0px #c7c7c7;
+    background-color: #f0f0f0;
+    border-bottom: 1px dashed #376378;
+    display: block;
+    margin: 0 -20px 10px -20px;
+    padding: 10px 20px 5px 20px;
+}
+#inscroll p{
+    font-size: 16px;
+}
+#inscroll ul{
+    font-size: 14px;
+    margin: 10px 0;
+    padding: 0;
+}
+#inscroll ul li{
+    list-style: none;
+    font-size: 14px;
+    background: url("bullet.png") 0 6px no-repeat;
+    padding: 0 0 0 25px;
+    line-height: 1.5;
+}
+#inscroll form{
+    overflow: hidden;
+    margin: 10px 0 0 0;
+}
+#inscroll input{
+    line-height: 30px;
+    background-color: #e5e5e5;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    color: #7a7a7a;
+    display: block;
+    float: left;
+    padding: 0 10px;
+    border: solid 1px #c3c5c6;
+    width: 60%;
+    outline: none;
+    height: 30px;
+}
+#inscroll input.submit,#inscroll input[type=submit]{
+    background-color: #be1616 !important;
+    width: 33% !important;
+    height: 32px !important;
+    cursor: pointer;
+    float: right !important;
+    color: #FFF !important;
+}
+#inscroll input.submit:hover,#inscroll input[type=submit]:hover{
+    background-color: #db1010 !important;
+}
+
+#scrolldriggered #closebox{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #f2efef;
+    width: 20px;
+    height: 20px;
+    color: #424242;
+    font-size: 13px;
+    font-family: Tahoma, Geneva, sans-serif;
+    text-align: center;
+    text-decoration: none;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow:  0px 0px 0px 4px #d3d2d2;
+    box-shadow:  0px 0px 0px 4px #d3d2d2;
+}
+
+#stbMsgArea {
+    display: none;
+    padding: 10px 0 0;
+    margin: 0;
+}
