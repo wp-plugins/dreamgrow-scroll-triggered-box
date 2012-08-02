@@ -36,6 +36,9 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+= 1.1 =
+* Added support for WPML - Separate HTML for every language.
+* Sample form now sends emails to the site admin.
 
 = 1.0.1 =
 * Fixed themes.

@@ -93,3 +93,10 @@
     -webkit-box-shadow:  0px 0px 0px 4px #94b373;
     box-shadow:  0px 0px 0px 4px #94b373;
 }
+
+
+#stbMsgArea {
+    display: none;
+    padding: 10px 0 0;
+    margin: 0;
+}
