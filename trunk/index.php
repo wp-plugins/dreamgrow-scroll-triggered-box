@@ -4,7 +4,7 @@ require (ABSPATH . WPINC . '/pluggable.php');
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
-Version: 1.0.1
+Version: 1.1
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
@@ -21,8 +21,8 @@ class ScrollBox
         }
         add_action('wp_footer', array($this, 'sdb_footer_include'));
         add_action('wp_enqueue_scripts', array($this, 'sdb_enqueue_scripts'));
-        add_action('wp_ajax_' . $_REQUEST['action'], array($this, 'stb_form_process'));
-        add_action('wp_ajax_nopriv_' . $_REQUEST['action'], array($this, 'stb_form_process'));
+        add_action('wp_ajax_stb_form_process', array($this, 'stb_form_process'));
+        add_action('wp_ajax_nopriv_stb_form_process', array($this, 'stb_form_process'));
     }
 
     function load_admin_scripts()
@@ -31,7 +31,6 @@ class ScrollBox
         wp_enqueue_script('jquery-ui-tabs');
         wp_enqueue_script('stb_admin_script', plugin_dir_url(__FILE__) . 'stb_admin.js', array('jquery-ui-tabs'));
         wp_enqueue_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css');
-
     }
 
 
@@ -116,7 +115,7 @@ class ScrollBox
         $template = $options['theme'];
 
         $content = get_option('sdb_html');
-//        $content = function_exists('icl_get_languages') ? $content[ICL_LANGUAGE_CODE] : $content[0];
+        $content = function_exists('icl_get_languages') ? $content[ICL_LANGUAGE_CODE] : $content[0];
 
         $closed = (isset($_COOKIE['nopopup'])) ? 'true' : 'false';
 
@@ -215,12 +214,12 @@ class ScrollBox
                             ),
                             'theme' => 'default'
                         );
-                        $sampleHtml =
-                            '<h5>Sign up for Social Media News</h5>
+                        $sampleHtml = array(
+                            '<h5>Sign up for our Newsletter</h5>
                             <ul>
-                                <li>Social media news</li>
-                                <li>Social media news</li>
-                                <li>Social media news</li>
+                                <li>Fresh trends</li>
+                                <li>Cases and examples</li>
+                                <li>Research and statistics</li>
                             <ul>
                             Enter your email and stay on top of things,
                             <form action="#" id="stbContactForm" method="post">
@@ -229,7 +228,7 @@ class ScrollBox
                                 <input type="submit" id="stb-submit" value="Subscribe" />
                             </form>
                             <p id="stbMsgArea"></p>
-                            ';
+                            ');
 
                         $options = get_option('sdb_settings', $defaults);
                         $formHTML = get_option('sdb_html', $sampleHtml);
@@ -249,8 +248,9 @@ class ScrollBox
                                 <th scope="row"><label for="show_admin">Testing</label></th>
                                 <td>
                                     <input name="sdb_settings[show_admin]" type="checkbox" id="show_admin"
-                                           value="1" <?php checked('1', $options['show_admin']); ?> />
-                                    Show box to admins only.
+                                           value="1" <?php checked('1', $options['show_admin']); ?> /><label
+                                    for="show_admin">Show box to admins only.</label>
+
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -324,10 +324,45 @@ class ScrollBox
                                 <th scope="row"><label for="moderation_keys">Box html</label></th>
                                 <td>Content of the box. You are allowed to use HTML.
                                     <div id="tabs">
+                                        <?php
+                                        if (function_exists('icl_get_languages')) :
+                                            $wpml_options = get_option('icl_sitepress_settings');
+                                            $default_lang = $wpml_options['default_language'];
+                                            $langs = icl_get_languages('skip_missing=1');
+                                            // Move the default language to the beginning of an array.
+                                            $default_html = $langs[$default_lang];
+                                            unset($langs[$default_lang]);
+                                            $this->array_unshift_assoc($langs,$default_lang,$default_html);
+                                            ?>
+                                            <ul>
+                                                <?php foreach ($langs as $lang)  : ?>
+                                                <li><a
+                                                    href="#tab<?php echo $lang['id'] ?>"><?php echo $lang['translated_name'] ?></a>
+                                                </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                            <?php foreach ($langs as $lang) :
+                                            if(is_array($formHTML))
+                                                $HTMLcontent = array_key_exists($lang['language_code'], $formHTML) ? $formHTML[$lang['language_code']] : reset($formHTML);
+                                            else
+                                                $HTMLcontent = $formHTML;
 
-                                            <textarea name="sdb_html" rows="10" cols="50" id="moderation_keys"
+                                            ?>
+                                            <div id="tab<?php echo $lang['id'] ?>">
+                                                <textarea name="sdb_html[<?php echo $lang['language_code'] ?>]"
+                                                          rows="10" cols="50"
+                                                          id="moderation_keys_<?php echo $lang['id']  ?>"
+                                                          class="large-text code"><?php echo htmlspecialchars($HTMLcontent); ?></textarea>
+                                            </div>
+                                            <?php endforeach; ?>
+
+                                            <?php else :
+                                            if(is_array($formHTML)) $formHTML = reset($formHTML);
+                                            ?>
+                                            <textarea name="sdb_html[]" rows="10" cols="50" id="moderation_keys"
                                                       class="large-text code"><?php echo htmlspecialchars($formHTML); ?></textarea>
 
+                                            <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
@@ -390,7 +425,12 @@ class ScrollBox
     {
         add_submenu_page('options-general.php', 'Scroll Triggered Box', 'Scroll Triggered Box', 'manage_options', 'stbox', array($this, 'sdb_admin_settings_page'));
     }
-
+    function array_unshift_assoc(&$arr, $key, $val)
+    {
+        $arr = array_reverse($arr, true);
+        $arr[$key] = $val;
+        return array_reverse($arr, true);
+    }
 
 }
 
