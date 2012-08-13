@@ -37,8 +37,8 @@ jQuery(document).ready(function () {
         }
     });
 
-    jQuery('#stb-submit').click(function () {
-
+    jQuery('#stbContactForm').submit(function (e) {
+        e.preventDefault();
         var data = jQuery('#stbContactForm').serialize();
 
         jQuery.ajax({
