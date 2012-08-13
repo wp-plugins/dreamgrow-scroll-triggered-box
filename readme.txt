@@ -37,8 +37,8 @@ The box is designed to get the attention of the visitors who have engaged with y
 
 == Changelog ==
 = 1.1 =
-* Added support for WPML - Separate HTML for every language.
-* Sample form now sends emails to the site admin.
+* Added WPML support. Different HTML for every language.
+* Default form now sends email to the site administrator.
 
 = 1.0.1 =
 * Fixed themes.

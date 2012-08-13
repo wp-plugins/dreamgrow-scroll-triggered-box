@@ -21,8 +21,8 @@ class ScrollBox
         }
         add_action('wp_footer', array($this, 'sdb_footer_include'));
         add_action('wp_enqueue_scripts', array($this, 'sdb_enqueue_scripts'));
-        add_action('wp_ajax_' . $_REQUEST['action'], array($this, 'stb_form_process'));
-        add_action('wp_ajax_nopriv_' . $_REQUEST['action'], array($this, 'stb_form_process'));
+        add_action('wp_ajax_stb_form_process', array($this, 'stb_form_process'));
+        add_action('wp_ajax_nopriv_stb_form_process', array($this, 'stb_form_process'));
     }
 
     function load_admin_scripts()
@@ -31,7 +31,6 @@ class ScrollBox
         wp_enqueue_script('jquery-ui-tabs');
         wp_enqueue_script('stb_admin_script', plugin_dir_url(__FILE__) . 'stb_admin.js', array('jquery-ui-tabs'));
         wp_enqueue_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css');
-
     }
 
 
@@ -216,11 +215,11 @@ class ScrollBox
                             'theme' => 'default'
                         );
                         $sampleHtml = array(
-                            '<h5>Sign up for Social Media News</h5>
+                            '<h5>Sign up for our Newsletter</h5>
                             <ul>
-                                <li>Social media news</li>
-                                <li>Social media news</li>
-                                <li>Social media news</li>
+                                <li>Fresh trends</li>
+                                <li>Cases and examples</li>
+                                <li>Research and statistics</li>
                             <ul>
                             Enter your email and stay on top of things,
                             <form action="#" id="stbContactForm" method="post">
@@ -249,8 +248,9 @@ class ScrollBox
                                 <th scope="row"><label for="show_admin">Testing</label></th>
                                 <td>
                                     <input name="sdb_settings[show_admin]" type="checkbox" id="show_admin"
-                                           value="1" <?php checked('1', $options['show_admin']); ?> />
-                                    Show box to admins only.
+                                           value="1" <?php checked('1', $options['show_admin']); ?> /><label
+                                    for="show_admin">Show box to admins only.</label>
+
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -326,7 +326,14 @@ class ScrollBox
                                     <div id="tabs">
                                         <?php
                                         if (function_exists('icl_get_languages')) :
-                                            $langs = icl_get_languages('skip_missing=N&orderby=KEY&order=DIR&link_empty_to=str'); ?>
+                                            $wpml_options = get_option('icl_sitepress_settings');
+                                            $default_lang = $wpml_options['default_language'];
+                                            $langs = icl_get_languages('skip_missing=1');
+                                            // Move the default language to the beginning of an array.
+                                            $default_html = $langs[$default_lang];
+                                            unset($langs[$default_lang]);
+                                            $this->array_unshift_assoc($langs,$default_lang,$default_html);
+                                            ?>
                                             <ul>
                                                 <?php foreach ($langs as $lang)  : ?>
                                                 <li><a
@@ -335,8 +342,10 @@ class ScrollBox
                                                 <?php endforeach; ?>
                                             </ul>
                                             <?php foreach ($langs as $lang) :
-
-                                            $HTMLcontent = array_key_exists($lang['language_code'], $formHTML) ? $formHTML[$lang['language_code']] : $formHTML[0];
+                                            if(is_array($formHTML))
+                                                $HTMLcontent = array_key_exists($lang['language_code'], $formHTML) ? $formHTML[$lang['language_code']] : reset($formHTML);
+                                            else
+                                                $HTMLcontent = $formHTML;
 
                                             ?>
                                             <div id="tab<?php echo $lang['id'] ?>">
@@ -347,9 +356,11 @@ class ScrollBox
                                             </div>
                                             <?php endforeach; ?>
 
-                                            <?php else : ?>
+                                            <?php else :
+                                            if(is_array($formHTML)) $formHTML = reset($formHTML);
+                                            ?>
                                             <textarea name="sdb_html[]" rows="10" cols="50" id="moderation_keys"
-                                                      class="large-text code"><?php echo htmlspecialchars($formHTML[0]); ?></textarea>
+                                                      class="large-text code"><?php echo htmlspecialchars($formHTML); ?></textarea>
 
                                             <?php endif; ?>
                                     </div>
@@ -414,7 +425,12 @@ class ScrollBox
     {
         add_submenu_page('options-general.php', 'Scroll Triggered Box', 'Scroll Triggered Box', 'manage_options', 'stbox', array($this, 'sdb_admin_settings_page'));
     }
-
+    function array_unshift_assoc(&$arr, $key, $val)
+    {
+        $arr = array_reverse($arr, true);
+        $arr[$key] = $val;
+        return array_reverse($arr, true);
+    }
 
 }
 
