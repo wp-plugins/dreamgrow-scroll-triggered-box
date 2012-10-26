@@ -36,6 +36,13 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+= 1.2 =
+* Updated jquery.cookie.js to version 1.3.
+* Moved js files to footer.
+* Added namespace to js functions and variables.
+* Rebuilt entire css.
+* Added option to center the box.
+
 = 1.1 =
 * Added WPML support. Different HTML for every language.
 * Default form now sends email to the site administrator.

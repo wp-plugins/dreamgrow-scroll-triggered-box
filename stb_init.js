@@ -1,52 +1,54 @@
+if (typeof stb === "undefined")
+    var stb = {};
 jQuery(document).ready(function () {
     jQuery("#closebox").click(function () {
-        jQuery('#scrolldriggered').stop(true, true).animate({ 'bottom':'-210px' }, 500, function () {
-            jQuery('#scrolldriggered').hide();
-            hascolsed = true;
-            jQuery.cookie('nopopup', 'true', { expires:cookieLife, path: '/' });
+        jQuery('#scrolltriggered').stop(true, true).animate({ 'bottom':'-210px' }, 500, function () {
+            jQuery('#scrolltriggered').hide();
+            stb.hascolsed = true;
+            jQuery.cookie('nopopup', 'true', { expires: stb.cookieLife, path: '/' });
         });
         return false;
     });
 
-    var windowheight = jQuery(window).height();
-    var totalheight = jQuery(document).height();
-    var boxOffset = '';
-    if (sdbElement != '') {
-        boxOffset = jQuery(sdbElement).offset().top;
+    stb.windowheight = jQuery(window).height();
+    stb.totalheight = jQuery(document).height();
+    stb.boxOffset = '';
+    if (stb.stbElement != '') {
+        stb.boxOffset = jQuery(stb.stbElement).offset().top;
     }
     jQuery(window).resize(function () {
-        windowheight = jQuery(window).height();
-        totalheight = jQuery(document).height();
+        stb.windowheight = jQuery(window).height();
+        stb.totalheight = jQuery(document).height();
     });
 
     jQuery(window).scroll(function () {
-        var y = jQuery(window).scrollTop();
-        var boxHeight = jQuery('#scrolldriggered').outerHeight();
-        var scrolled = parseInt((y + windowheight) / totalheight * 100);
+        stb.y = jQuery(window).scrollTop();
+        stb.boxHeight = jQuery('#scrolltriggered').outerHeight();
+        stb.scrolled = parseInt((stb.y + stb.windowheight) / stb.totalheight * 100);
 
 
-        if (showBox(scrolled, triggerHeight, y) && jQuery('#scrolldriggered').is(":hidden") && hascolsed != true) {
-            jQuery('#scrolldriggered').show();
-            jQuery('#scrolldriggered').stop(true, true).animate({ 'bottom':'10px' }, 500, function () {
+        if (stb.showBox(stb.scrolled, stb.triggerHeight, stb.y) && jQuery('#scrolltriggered').is(":hidden") && stb.hascolsed != true) {
+            jQuery('#scrolltriggered').show();
+            jQuery('#scrolltriggered').stop(true, true).animate({ 'bottom':'10px' }, 500, function () {
             });
         }
-        else if (!showBox(scrolled, triggerHeight, y) && jQuery('#scrolldriggered').is(":visible") && jQuery('#scrolldriggered:animated').length < 1) {
-            jQuery('#scrolldriggered').stop(true, true).animate({ 'bottom':-boxHeight }, 500, function () {
-                jQuery('#scrolldriggered').hide();
+        else if (!stb.showBox(stb.scrolled, stb.triggerHeight, stb.y) && jQuery('#scrolltriggered').is(":visible") && jQuery('#scrolltriggered:animated').length < 1) {
+            jQuery('#scrolltriggered').stop(true, true).animate({ 'bottom':-stb.boxHeight }, 500, function () {
+                jQuery('#scrolltriggered').hide();
             });
         }
     });
 
     jQuery('#stbContactForm').submit(function (e) {
         e.preventDefault();
-        var data = jQuery('#stbContactForm').serialize();
+        stb.data = jQuery('#stbContactForm').serialize();
 
         jQuery.ajax({
             url:stbAjax.ajaxurl,
             data:{
                 action:'stb_form_process',
                 stbNonce:stbAjax.stbNonce,
-                data:data
+                data:stb.data
             },
             dataType:'html',
             type:'post'
@@ -60,28 +62,30 @@ jQuery(document).ready(function () {
     });
 
 });
-function showBox(scrolled, triggerHeight, y) {
-    if (isMobile()) return false;
-    if (sdbElement == '') {
-        if (scrolled >= triggerHeight) {
+(function(stb_helpers) {
+    stb_helpers.showBox = function(scrolled, triggerHeight, y) {
+        if (stb.isMobile()) return false;
+        if (stb.stbElement == '') {
+            if (scrolled >= triggerHeight) {
+                return true;
+            }
+        }
+        else {
+            if (stb.boxOffset < (stb.windowheight + y)) {
+                return true;
+            }
+        }
+        return false;
+    };
+    stb_helpers.isMobile = function(){
+        if (navigator.userAgent.match(/Android/i)
+            || navigator.userAgent.match(/webOS/i)
+            || navigator.userAgent.match(/iPhone/i)
+            || navigator.userAgent.match(/iPod/i)
+            || navigator.userAgent.match(/BlackBerry/i)
+            ) {
             return true;
         }
+        else return false;
     }
-    else {
-        if (boxOffset < (windowheight + y)) {
-            return true;
-        }
-    }
-    return false;
-}
-function isMobile() {
-    if (navigator.userAgent.match(/Android/i)
-        || navigator.userAgent.match(/webOS/i)
-        || navigator.userAgent.match(/iPhone/i)
-        || navigator.userAgent.match(/iPod/i)
-        || navigator.userAgent.match(/BlackBerry/i)
-        ) {
-        return true;
-    }
-    else return false;
-}
+})(stb);
