@@ -36,6 +36,9 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+= 1.2.1 =
+* Fixed an issue where user settings were lost after updating. Settings are now restored from the previous update (1.1).
+
 = 1.2 =
 * Updated jquery.cookie.js to version 1.3.
 * Moved js files to footer.
