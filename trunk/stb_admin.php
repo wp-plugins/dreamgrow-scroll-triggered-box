@@ -96,6 +96,13 @@ class ScrollBox_admin
                                 <input type="submit" id="stb-submit" value="Subscribe" />
                             </form>
                             <p id="stbMsgArea"></p>');
+							// Namespace fix
+							if(get_option('sdb_settings')){
+								update_option( 'stb_settings', get_option('sdb_settings') );
+								update_option( 'stb_html', get_option('sdb_html') );
+								delete_option( 'sdb_settings' );
+        						delete_option( 'sdb_html' );
+							}
                         $options = get_option('stb_settings', $defaults);
                         $formHTML = get_option('stb_html', $sampleHtml);
                         ?>
