@@ -76,9 +76,11 @@ class ScrollBox_admin
                             'width' => '300',
                             'position' => 'right',
                             'include_css' => 1,
+							'show_admin' => 1,
                             'show' => array(
                                 'page' => 'on',
-                                'post' => 'on'
+                                'post' => 'on',
+								'frontpage' => 'on'
                             ),
                             'theme' => 'default'
                         );
