@@ -36,6 +36,9 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+= 1.3 =
+* Added option to include social buttons (Facebook, Twitter, Google+, Pinterest, Stumbleupon, LinkedIN).
+
 = 1.2.2 =
 * Fixed a minor bug in the default settings.
 
