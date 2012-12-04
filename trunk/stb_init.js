@@ -53,15 +53,14 @@ jQuery(document).ready(function () {
             dataType:'html',
             type:'post'
 
-        })
-            .done(function (data) {
+        }).done(function (data) {
                 jQuery('#stbMsgArea').html(data).show('fast');
             });
 
         return false;
     });
-
 });
+
 (function(stb_helpers) {
     stb_helpers.showBox = function(scrolled, triggerHeight, y) {
         if (stb.isMobile()) return false;

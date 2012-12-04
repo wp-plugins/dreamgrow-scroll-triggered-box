@@ -57,13 +57,13 @@ class ScrollBox_admin
         ?>
     <div class="wrap" style="padding-top: 10px;">
     <div id="icon-options-general" class="icon32"><br></div>
-    <h2>Scroll Triggered Box</h2>
+    <h2><?php _e('Scroll Triggered Box', 'stb'); ?></h2>
 
     <div class="widget-liquid-left">
         <div id="widgets-left">
             <div id="available-widgets" class="widgets-holder-wrap ui-droppable">
                 <div class="sidebar-name">
-                    <h3>Options</h3>
+                    <h3><?php _e('Options', 'stb'); ?></h3>
                 </div>
                 <div class="widget-holder">
                     <form method="post" action="options.php">
@@ -82,7 +82,15 @@ class ScrollBox_admin
                                 'post' => 'on',
 								'frontpage' => 'on'
                             ),
-                            'theme' => 'default'
+                            'theme' => 'default',
+                            'social' => array(
+                                'facebook' => 0,
+                                'twitter' => 0,
+                                'google' => 0,
+                                'pinterest' => 0,
+                                'stumbleupon' => 0,
+                                'linkedin' => 0
+                            )
                         );
                         $sampleHtml = array(
                             '<h5>Sign up for our Newsletter</h5>
@@ -111,96 +119,96 @@ class ScrollBox_admin
                         <table class="form-table">
                             <tbody>
                             <tr valign="top">
-                                <th scope="row"><label for="btheme">Theme</label></th>
+                                <th scope="row"><label for="btheme"><?php _e('Theme', 'stb'); ?></label></th>
                                 <td>
                                     <select name="stb_settings[theme]" id="btheme">
                                         <?php echo $this->get_templates($options['theme']); ?>
                                     </select>
-                                    Theme selection
+                                    <?php _e('Theme selection', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="show_admin">Testing</label></th>
+                                <th scope="row"><label for="show_admin"><?php _e('Testing', 'stb'); ?></label></th>
                                 <td>
                                     <input name="stb_settings[show_admin]" type="checkbox" id="show_admin"
                                            value="1" <?php checked('1', $options['show_admin']); ?> /><label
-                                    for="show_admin">Show box to admins only.</label>
+                                    for="show_admin"><?php _e('Show box to admins only.', 'stb'); ?></label>
 
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row">Visible at</th>
+                                <th scope="row"><?php _e('Visible at', 'stb'); ?></th>
                                 <td>
                                     <input name="stb_settings[show][page]" type="checkbox" id="bpages"
                                            class="tog" <?php checked('on', $options['show']['page']); ?>><label
-                                    for="bpages">Pages</label><br/>
+                                    for="bpages"><?php _e('Pages', 'stb'); ?></label><br/>
                                     <input name="stb_settings[show][post]" type="checkbox" id="bposts"
                                            class="tog" <?php checked('on', $options['show']['post']); ?>><label
-                                    for="bposts">Posts</label><br/>
+                                    for="bposts"><?php _e('Posts', 'stb'); ?></label><br/>
                                     <input name="stb_settings[show][frontpage]" type="checkbox" id="bfpage"
                                            class="tog" <?php checked('on', $options['show']['frontpage']); ?>><label
-                                    for="bfpage">Frontpage</label>
+                                    for="bfpage"><?php _e('Frontpage', 'stb'); ?></label>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="lifetime">Cookie lifetime</label></th>
+                                <th scope="row"><label for="lifetime"><?php _e('Cookie lifetime', 'stb'); ?></label></th>
                                 <td><input name="stb_settings[cookie_life]" type="text" id="lifetime"
                                            value="<?php echo $options['cookie_life']; ?>" class="small-text">
-                                    Ammount of days for the box to stay hidden, when the user has closed it.
+                                    <?php _e('Ammount of days for the box to stay hidden, when the user has closed it.', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="trigh">Show box at</label></th>
+                                <th scope="row"><label for="trigh"><?php _e('Show box at', 'stb'); ?></label></th>
                                 <td><input name="stb_settings[trigger_height]" type="text" id="trigh"
                                            value="<?php echo $options['trigger_height']; ?>" class="small-text">
-                                    Box will be shown when the user has scrolled selected percentage of total
-                                    document height.
+                                    <?php _e('Box will be shown when the user has scrolled selected percentage of total
+                                    document height.', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="trigelem">Show box at element</label></th>
+                                <th scope="row"><label for="trigelem"><?php _e('Show box at element', 'stb'); ?></label></th>
                                 <td>
                                     <input name="stb_settings[trigger_element]" type="text" id="trigelem"
                                            value="<?php echo $options['trigger_element']; ?>" class="regular-text">
-                                    class or id of the element to show the box at. Leave empty to use the percentage
+                                    <?php _e('class or id of the element to show the box at. Leave empty to use the percentage
                                     setting.<br/>
-                                    For example: <strong>#comments</strong> - at the beginning of comments section
+                                    For example: <strong>#comments</strong> - at the beginning of comments section', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="includecss">Include css</label></th>
+                                <th scope="row"><label for="includecss"><?php _e('Include css', 'stb'); ?></label></th>
                                 <td>
                                     <input name="stb_settings[include_css]" type="checkbox" id="includecss"
                                            value="1" <?php checked('1', $options['include_css']); ?> />
-                                    Uncheck only if you want to style the box by yourself via themes css. CSS file
-                                    is located <a
+                                    <?php _e('Uncheck only if you want to style the box by yourself via themes css. CSS file
+                                    is located', 'stb'); ?> <a
                                     href="<?php echo plugin_dir_url(__FILE__) . 'templates/' . $options['theme'] . '/style.css' ?>">here</a>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row">Box position</th>
+                                <th scope="row"><?php _e('Box position', 'stb'); ?></th>
                                 <td>
                                     <input name="stb_settings[position]" type="radio" value="right" id="bright"
                                            class="tog" <?php checked('right', $options['position']); ?>><label
-                                    for="bright">Right</label><br/>
+                                    for="bright"><?php _e('Right', 'stb'); ?></label><br/>
                                     <input name="stb_settings[position]" type="radio" value="left" id="bleft"
                                            class="tog" <?php checked('left', $options['position']); ?>><label
-                                    for="bleft">Left</label><br/>
+                                    for="bleft"><?php _e('Left', 'stb'); ?></label><br/>
                                     <input name="stb_settings[position]" type="radio" value="middle" id="bmid"
                                            class="tog" <?php checked('middle', $options['position']); ?>><label
-                                    for="bmid">Middle</label>
+                                    for="bmid"><?php _e('Middle', 'stb'); ?></label>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="bwidth">Box width</label></th>
+                                <th scope="row"><label for="bwidth"><?php _e('Box width', 'stb'); ?></label></th>
                                 <td><input name="stb_settings[width]" type="text" id="bwidth"
                                            value="<?php echo $options['width']; ?>" class="small-text">
-                                    Width of the box in px.
+                                    <?php _e('Width of the box in px.', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
-                                <th scope="row"><label for="moderation_keys">Box html</label></th>
-                                <td>Content of the box. You are allowed to use HTML.
+                                <th scope="row"><label for="moderation_keys"><?php _e('Box html', 'stb'); ?></label></th>
+                                <td><?php _e('Content of the box. You are allowed to use HTML.', 'stb'); ?>
                                     <div id="tabs">
                                         <?php
                                         if (function_exists('icl_get_languages')) :
@@ -242,6 +250,47 @@ class ScrollBox_admin
 
                                             <?php endif; ?>
                                     </div>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row"><?php _e('Social buttons', 'stb'); ?></th>
+                                <td>
+                                    <select name="stb_settings[social][facebook]">
+                                        <option value="0" <?php selected(0,$options['social']['facebook']) ?>>Inactive</option>
+                                        <option value="standard" <?php selected('standard',$options['social']['facebook']) ?>>Button</option>
+                                        <option value="button_count" <?php selected('button_count',$options['social']['facebook']) ?>>Button Count</option>
+                                        <option value="box_count" <?php selected('box_count',$options['social']['facebook']) ?>>Box</option>
+                                    </select> <label for="bpages">Facebook</label><br />
+                                    <select name="stb_settings[social][twitter]">
+                                        <option value="0" <?php selected(0,$options['social']['twitter']) ?>>Inactive</option>
+                                        <option value="no-count" <?php selected('no-count',$options['social']['twitter']) ?>>Button</option>
+                                        <option value="regular" <?php selected('regular',$options['social']['twitter']) ?>>Button Count</option>
+                                        <option value="vertical" <?php selected('vertical',$options['social']['twitter']) ?>>Box</option>
+                                    </select> <label for="bposts">Twitter</label><br />
+                                    <select name="stb_settings[social][google]">
+                                        <option value="0" <?php selected(0,$options['social']['google']) ?>>Inactive</option>
+                                        <option value="annotation" <?php selected('annotation',$options['social']['google']) ?>>Button</option>
+                                        <option value= "medium" <?php selected('medium',$options['social']['google']) ?>>Button Count</option>
+                                        <option value="tall" <?php selected('tall',$options['social']['google']) ?>>Box</option>
+                                    </select> <label for="bposts">Google+</label><br />
+                                    <select name="stb_settings[social][pinterest]">
+                                        <option value="0" <?php selected(0,$options['social']['pinterest']) ?>>Inactive</option>
+                                        <option value="none" <?php selected('none',$options['social']['pinterest']) ?>>Button</option>
+                                        <option value="horizontal" <?php selected('horizontal',$options['social']['pinterest']) ?>>Button Count</option>
+                                        <option value="vertical" <?php selected('vertical',$options['social']['pinterest']) ?>>Box</option>
+                                    </select> <label for="bposts">Pinterest</label> <small>* Pin it button will only be displayed on the pages that have a featured image.</small><br />
+                                    <select name="stb_settings[social][stumbleupon]">
+                                        <option value="0" <?php selected(0,$options['social']['stumbleupon']) ?>>Inactive</option>
+                                        <option value="1" <?php selected(1,$options['social']['stumbleupon']) ?>>Button</option>
+                                        <option value="4" <?php selected(4,$options['social']['stumbleupon']) ?>>Button Count</option>
+                                        <option value="5" <?php selected(5,$options['social']['stumbleupon']) ?>>Box</option>
+                                    </select> <label for="bposts">Stumbleupon</label><br />
+                                    <select name="stb_settings[social][linkedin]">
+                                        <option value="0" <?php selected(0,$options['social']['linkedin']) ?>>Inactive</option>
+                                        <option value="none" <?php selected('none',$options['social']['linkedin']) ?>>Button</option>
+                                        <option value="right" <?php selected('right',$options['social']['linkedin']) ?>>Button Count</option>
+                                        <option value="top" <?php selected('top',$options['social']['linkedin']) ?>>Box</option>
+                                    </select> <label for="bposts">LinkedIN</label>
                                 </td>
                             </tr>
                             </tbody>
