@@ -36,6 +36,11 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+= 1.3.1 =
+* Fixed a WPML bug on admin.
+* Fixed Pin It button.
+* Added information about box visibility and option to show the box again.
+
 = 1.3 =
 * Added option to include social buttons (Facebook, Twitter, Google+, Pinterest, Stumbleupon, LinkedIN).
 

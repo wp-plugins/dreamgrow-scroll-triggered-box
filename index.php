@@ -157,7 +157,7 @@ class ScrollBox
             $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
             $socialJS .= '//Pinterest
                       jQuery.getScript("//platform.stumbleupon.com/1/widgets.js");';
-            $socialHTML .= '<li class="pinterest ' . $options['social']['pinterest'] . '"><a href="http://pinterest.com/pin/create/button/?url=' . get_permalink() . '&media=' . $image . '" class="pin-it-button" count-layout="' . $options['social']['pinterest'] . '"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></li>';
+            $socialHTML .= '<li class="pinterest ' . $options['social']['pinterest'] . '"><a href="http://pinterest.com/pin/create/button/?url=' . get_permalink() . '&media=' . $image[0] . '" class="pin-it-button" count-layout="' . $options['social']['pinterest'] . '"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></li>';
         }
         $socialHTML .= '</ul>';
         $closed = (isset($_COOKIE['nopopup'])) ? 'true' : 'false';
