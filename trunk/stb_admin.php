@@ -15,6 +15,7 @@ class ScrollBox_admin
     {
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-tabs');
+		wp_enqueue_script('jquery_cookie', plugin_dir_url(__FILE__) . 'jquery . cookie . js', array('jquery'),'1.3',false);
         wp_enqueue_script('stb_admin_script', plugin_dir_url(__FILE__) . 'stb_admin.js', array('jquery-ui-tabs'));
         wp_enqueue_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css');
     }
@@ -133,7 +134,11 @@ class ScrollBox_admin
                                     <input name="stb_settings[show_admin]" type="checkbox" id="show_admin"
                                            value="1" <?php checked('1', $options['show_admin']); ?> /><label
                                     for="show_admin"><?php _e('Show box to admins only.', 'stb'); ?></label>
-
+									<?php if(isset($_COOKIE['nopopup'])): ?>
+										<strong><?php _e('Box is hidden', 'stb'); ?></strong> <a href="#" id="cleanCookie">Click here to make the box visible</a>
+									<?php else: ?>
+										<strong><?php _e('Box should be visible', 'stb'); ?></strong>
+									<?php endif; ?>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -214,7 +219,7 @@ class ScrollBox_admin
                                         if (function_exists('icl_get_languages')) :
                                             $wpml_options = get_option('icl_sitepress_settings');
                                             $default_lang = $wpml_options['default_language'];
-                                            $langs = icl_get_languages('skip_missing=1');
+                                            $langs = icl_get_languages('skip_missing=0');
                                             // Move the default language to the beginning of an array.
                                             $default_html = $langs[$default_lang];
                                             unset($langs[$default_lang]);
