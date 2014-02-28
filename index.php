@@ -5,15 +5,22 @@ require ('stb_admin.php');
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
-Version: 1.3
+Version: 1.3.2
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
 */
+
 class ScrollBox
 {
-    function __construct()
+    private $defaults;
+    private $defaultHTML;
+
+    function __construct($defaults = null,$html = '')
     {
+        $this->defaults = $defaults;
+        $this->defaultHTML = $html;
+
         add_action('wp_footer', array($this, 'stb_footer_include'));
         add_action('wp_enqueue_scripts', array($this, 'stb_enqueue_scripts'));
         add_action('wp_ajax_stb_form_process', array($this, 'stb_form_process'));
@@ -22,42 +29,38 @@ class ScrollBox
 
     function stb_form_process()
     {
+        $options = get_option('stb_settings',$this->defaults);
+
         $nonce = $_POST['stbNonce'];
 
         if (!wp_verify_nonce($nonce, 'stb-nonce'))
             die ('Busted!');
 
-        if (isset($_POST['data']['submitted'])) {
-            parse_str($_POST['data'], $data);
-            if (trim($data['email']) === '') {
-                $emailError = __('Please enter your email address.', 'stb');
-                $hasError = true;
-            } else if (!preg_match("/^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$/i", trim($data['email']))) {
-                $emailError = __('You entered an invalid email address.', 'stb');
-                $hasError = true;
-            } else {
-                $email = trim($data['email']);
-            }
+        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 
-            if (!isset($hasError)) {
-                $emailTo = get_option('admin_email');
-                $subject = __('Newsletter registration for ' . get_bloginfo('name'));
-                $body = __('Email') . ': ' . $email;
-                $headers = 'From: ' . $emailTo . "\r\n" . 'Reply-To: ' . $email;
+        if (!$email) {
+            $emailError = __('You entered an invalid email address.', 'stb');
+            $hasError = true;
+        }
 
-                wp_mail($emailTo, $subject, $body, $headers);
-                echo __('You are subscribed. Thank You!', 'stb');
-                die();
-            } else {
-                echo $emailError;
-                die();
-            }
+        if (!isset($hasError)) {
+            $emailTo = $options['receiver_email'];
+            $subject = __('Newsletter registration for ' . get_bloginfo('name'));
+            $body = __('Email') . ': ' . $email;
+            $headers = 'From: ' . $emailTo . "\r\n" . 'Reply-To: ' . $email;
+
+            wp_mail($emailTo, $subject, $body, $headers);
+            echo __('You are subscribed. Thank You!', 'stb');
+            die();
+        } else {
+            echo $emailError;
+            die();
         }
     }
 
     function stb_visible()
     {
-        $options = get_option('stb_settings');
+        $options = get_option('stb_settings',$this->defaults);
         $frontpage_id = get_option('page_on_front');
         global $post;
         $postID = $post->ID;
@@ -85,10 +88,10 @@ class ScrollBox
     {
         // Vars
         global $post;
-        $options = get_option('stb_settings');
+        $options = get_option('stb_settings',$this->defaults);
         $template = $options['theme'];
 
-        $content = get_option('stb_html');
+        $content = get_option('stb_html',$this->defaultHTML);
         $content = function_exists('icl_get_languages') ? $content[ICL_LANGUAGE_CODE] : $content[0];
 
         // Social buttons
@@ -227,6 +230,48 @@ class ScrollBox
     }
 }
 
-$stb = new ScrollBox();
-$stb_admin = new ScrollBox_admin();
+// Set the defaults for front and back
+$defaults = array(
+    'cookie_life' => 30,
+    'trigger_height' => 80,
+    'trigger_element' => '',
+    'width' => 300,
+    'position' => 'right',
+    'include_css' => 1,
+    'show_admin' => 1,
+    'show' => array(
+        'page' => 'on',
+        'post' => 'on',
+        'frontpage' => 'on'
+    ),
+    'theme' => 'default',
+    'social' => array(
+        'facebook' => 0,
+        'twitter' => 0,
+        'google' => 0,
+        'pinterest' => 0,
+        'stumbleupon' => 0,
+        'linkedin' => 0
+    ),
+    'receiver_email' => get_option('admin_email')
+);
+// Set sample HTML for back and front
+$sampleHtml = array(
+    '<h5>Sign up for our Newsletter</h5>
+    <ul>
+        <li>Fresh trends</li>
+        <li>Cases and examples</li>
+        <li>Research and statistics</li>
+    </ul>
+    <p>Enter your email and stay on top of things,</p>
+    <form action="#" id="stbContactForm" method="post">
+        <input type="text" name="email" id="email" value="" />
+        <input type="hidden" name="submitted" id="submitted" value="true" />
+        <input type="submit" id="stb-submit" value="Subscribe" />
+    </form>
+    <p id="stbMsgArea"></p>');
+
+// Init classes with defaults
+$stb = new ScrollBox($defaults,$sampleHtml);
+$stb_admin = new ScrollBox_admin($defaults,$sampleHtml);
 ?>

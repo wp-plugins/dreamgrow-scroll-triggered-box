@@ -3,7 +3,7 @@ Contributors: pk2000,madisn
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.3
-Tested up to: 3.4
+Tested up to: 3.8.1
 Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -36,6 +36,13 @@ The box is designed to get the attention of the visitors who have engaged with y
 3. Plugin Settings page
 
 == Changelog ==
+= 1.3.2 =
+* Fixed default settings bug.
+* Fixed default form not submitting email.
+* Added email field to settings page.
+* Updated settings page to work with WP 3.8
+
+
 = 1.3.1 =
 * Fixed a WPML bug on admin.
 * Fixed Pin It button.

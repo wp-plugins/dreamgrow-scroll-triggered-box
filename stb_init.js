@@ -1,5 +1,6 @@
 if (typeof stb === "undefined")
     var stb = {};
+
 jQuery(document).ready(function () {
     jQuery("#closebox").click(function () {
         jQuery('#scrolltriggered').stop(true, true).animate({ 'bottom':'-210px' }, 500, function () {
@@ -46,9 +47,10 @@ jQuery(document).ready(function () {
         jQuery.ajax({
             url:stbAjax.ajaxurl,
             data:{
-                action:'stb_form_process',
-                stbNonce:stbAjax.stbNonce,
-                data:stb.data
+                action    : 'stb_form_process',
+                stbNonce  : stbAjax.stbNonce,
+                email     : jQuery('#scrolltriggered #email').val(),
+                submitted : true
             },
             dataType:'html',
             type:'post'

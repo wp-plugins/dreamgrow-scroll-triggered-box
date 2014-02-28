@@ -1,8 +1,14 @@
 <?php
 class ScrollBox_admin
 {
-    function __construct()
+    private $defaults;
+    private $defaultHTML;
+
+    function __construct($defaults = null,$html = '')
     {
+        $this->defaults = $defaults;
+        $this->defaultHTML = $html;
+
         if (is_admin()) {
             add_action('admin_menu', array($this, 'stb_admin_menu'));
             add_action('admin_init', array($this, 'stb_register_settings'));
@@ -70,52 +76,15 @@ class ScrollBox_admin
                     <form method="post" action="options.php">
                         <?php
                         settings_fields('stb_options');
-                        $defaults = array(
-                            'cookie_life' => 30,
-                            'trigger_height' => 80,
-                            'trigger_element' => '',
-                            'width' => '300',
-                            'position' => 'right',
-                            'include_css' => 1,
-							'show_admin' => 1,
-                            'show' => array(
-                                'page' => 'on',
-                                'post' => 'on',
-								'frontpage' => 'on'
-                            ),
-                            'theme' => 'default',
-                            'social' => array(
-                                'facebook' => 0,
-                                'twitter' => 0,
-                                'google' => 0,
-                                'pinterest' => 0,
-                                'stumbleupon' => 0,
-                                'linkedin' => 0
-                            )
-                        );
-                        $sampleHtml = array(
-                            '<h5>Sign up for our Newsletter</h5>
-                            <ul>
-                                <li>Fresh trends</li>
-                                <li>Cases and examples</li>
-                                <li>Research and statistics</li>
-                            </ul>
-                            <p>Enter your email and stay on top of things,</p>
-                            <form action="#" id="stbContactForm" method="post">
-                                <input type="text" name="email" id="email" value="" />
-                                <input type="hidden" name="submitted" id="submitted" value="true" />
-                                <input type="submit" id="stb-submit" value="Subscribe" />
-                            </form>
-                            <p id="stbMsgArea"></p>');
-							// Namespace fix
-							if(get_option('sdb_settings')){
-								update_option( 'stb_settings', get_option('sdb_settings') );
-								update_option( 'stb_html', get_option('sdb_html') );
-								delete_option( 'sdb_settings' );
-        						delete_option( 'sdb_html' );
-							}
-                        $options = get_option('stb_settings', $defaults);
-                        $formHTML = get_option('stb_html', $sampleHtml);
+                        // Namespace fix
+                        if(get_option('sdb_settings')){
+                            update_option( 'stb_settings', get_option('sdb_settings') );
+                            update_option( 'stb_html', get_option('sdb_html') );
+                            delete_option( 'sdb_settings' );
+                            delete_option( 'sdb_html' );
+                        }
+                        $options = get_option('stb_settings', $this->defaults);
+                        $formHTML = get_option('stb_html', $this->defaultHTML);
                         ?>
                         <table class="form-table">
                             <tbody>
@@ -209,6 +178,13 @@ class ScrollBox_admin
                                 <td><input name="stb_settings[width]" type="text" id="bwidth"
                                            value="<?php echo $options['width']; ?>" class="small-text">
                                     <?php _e('Width of the box in px.', 'stb'); ?>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row"><label for="receiver_email"><?php _e('Receiver email', 'stb'); ?></label></th>
+                                <td><input name="stb_settings[receiver_email]" type="text" id="receiver_email"
+                                           value="<?php echo $options['receiver_email']; ?>" class="regular-text">
+                                    <?php _e('Default form sends a message to this email', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -315,7 +291,7 @@ class ScrollBox_admin
 
 
     </div>
-    <div class="widget-liquid-right">
+    <div class="widget-liquid-right" style="width: 250px;">
         <div id="widgets-right">
 
             <div class="widgets-holder-wrap">
