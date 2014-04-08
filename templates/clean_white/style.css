@@ -6,7 +6,7 @@
 #scrolltriggered #inscroll ul li { list-style: none; font-size: 14px; background: url("bullet.png") 0 6px no-repeat; padding: 0 0 0 25px; line-height: 17px; }
 #scrolltriggered #inscroll ul.stb_social { overflow: hidden; margin: 10px -7px 0 0; clear: both; }
 #scrolltriggered #inscroll ul.stb_social li { float: left; list-style: none; background: none; padding: 0; height: 30px; margin: 0 7px 0 0; }
-#scrolltriggered #inscroll ul.stb_social li.fb.standard { width: 45px; overflow: hidden; }
+#scrolltriggered #inscroll ul.stb_social li.fb.standard { width: 50px; overflow: hidden; }
 #scrolltriggered #inscroll ul.stb_social li.twitter.regular { width: 80px; }
 #scrolltriggered #inscroll ul.stb_social li.google.medium { width: 60px; }
 #scrolltriggered #inscroll ul.stb_social li.fb.box_count, #scrolltriggered #inscroll ul.stb_social li.google.tall, #scrolltriggered #inscroll ul.stb_social li.twitter.vertical, #scrolltriggered #inscroll ul.stb_social li.linkedin.top, #scrolltriggered #inscroll ul.stb_social li.stumbleupon.s5, #scrolltriggered #inscroll ul.stb_social li.pinterest.vertical { height: 66px !important; }

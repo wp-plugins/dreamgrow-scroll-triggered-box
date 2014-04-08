@@ -5,7 +5,7 @@ require ('stb_admin.php');
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
-Version: 1.3.2
+Version: 1.4
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
@@ -26,7 +26,6 @@ class ScrollBox
         add_action('wp_ajax_stb_form_process', array($this, 'stb_form_process'));
         add_action('wp_ajax_nopriv_stb_form_process', array($this, 'stb_form_process'));
     }
-
     function stb_form_process()
     {
         $options = get_option('stb_settings',$this->defaults);
@@ -67,7 +66,7 @@ class ScrollBox
         $current = get_post_type($postID);
 
         // Visible to admins only
-        if ($options['show_admin']) {
+        if (isset($options['show_admin'])) {
             $current_user = wp_get_current_user();
             if ($current_user->user_level < 8)
                 return false;
@@ -90,9 +89,12 @@ class ScrollBox
         global $post;
         $options = get_option('stb_settings',$this->defaults);
         $template = $options['theme'];
+        $hide_mobile = (isset($options['hide_mobile'])) ? 'true' : 'false';
 
         $content = get_option('stb_html',$this->defaultHTML);
         $content = function_exists('icl_get_languages') ? $content[ICL_LANGUAGE_CODE] : $content[0];
+
+        $content = do_shortcode($content);
 
         // Social buttons
         $socialJS = '';
@@ -107,7 +109,7 @@ class ScrollBox
                                 FB.init({ status: true, cookie: true, xfbml: true });
                             });
                         }';
-            $socialHTML .= '<li class="fb ' . $options['social']['facebook'] . '"><div class="fb-like" data-send="false" data-layout="' . $options['social']['facebook'] . '" data-width="200" data-show-faces="false"></div></li>';
+            $socialHTML .= '<li class="fb ' . $options['social']['facebook'] . '"><div class="fb-like" data-send="false" data-share="false" data-action="like" data-layout="' . $options['social']['facebook'] . '" data-width="200" data-show-faces="false"></div></li>';
         }
         if ($options['social']['twitter']) {
             $socialJS .= '//Twitter
@@ -167,7 +169,7 @@ class ScrollBox
 
         // Add css
         if ($this->stb_visible()) {
-            if ($options['include_css'] == 1) echo '<link rel="stylesheet" type="text/css" media="screen" href="' . plugin_dir_url(__FILE__) . 'templates/' . $template . '/style.css" />';
+            if (isset($options['include_css'])) echo '<link rel="stylesheet" type="text/css" media="screen" href="' . plugin_dir_url(__FILE__) . 'templates/' . $template . '/style.css" />';
 
             // Box html
             $width = $options['width'];
@@ -186,6 +188,7 @@ class ScrollBox
             echo '<script type="text/javascript">
                     var stb = {
                         hascolsed: ' . $closed . ',
+                        hide_mobile: ' . $hide_mobile . ',
                         cookieLife: ' . $options['cookie_life'] . ',
                         triggerHeight: ' . $options['trigger_height'] . ',
                         stbElement: "' . $options['trigger_element'] . '"
@@ -238,6 +241,7 @@ $defaults = array(
     'width' => 300,
     'position' => 'right',
     'include_css' => 1,
+    'hide_mobile' => 1,
     'show_admin' => 1,
     'show' => array(
         'page' => 'on',

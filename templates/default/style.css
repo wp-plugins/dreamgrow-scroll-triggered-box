@@ -15,7 +15,7 @@
 #scrolltriggered #inscroll form input[type=submit]:hover, #scrolltriggered #inscroll form input.submit:hover { background-color: #ed3a2b; -moz-box-shadow: inset 0 1 0 #f3796f; -webkit-box-shadow: inset 0 1 0 #f3796f; box-shadow: 0 1px 0 0 #f3796f inset; }
 #scrolltriggered #inscroll ul.stb_social { overflow: hidden; margin: 10px -7px 0 0; clear: both; }
 #scrolltriggered #inscroll ul.stb_social li { float: left; list-style: none; background: none; padding: 0; height: 30px; margin: 0 7px 0 0; }
-#scrolltriggered #inscroll ul.stb_social li.fb.standard { width: 45px; overflow: hidden; }
+#scrolltriggered #inscroll ul.stb_social li.fb.standard { width: 50px; overflow: hidden; }
 #scrolltriggered #inscroll ul.stb_social li.twitter.regular { width: 80px; }
 #scrolltriggered #inscroll ul.stb_social li.google.medium { width: 60px; }
 #scrolltriggered #inscroll ul.stb_social li.fb.box_count, #scrolltriggered #inscroll ul.stb_social li.google.tall, #scrolltriggered #inscroll ul.stb_social li.twitter.vertical, #scrolltriggered #inscroll ul.stb_social li.linkedin.top, #scrolltriggered #inscroll ul.stb_social li.stumbleupon.s5, #scrolltriggered #inscroll ul.stb_social li.pinterest.vertical { height: 66px !important; }

@@ -28,12 +28,12 @@ jQuery(document).ready(function () {
         stb.scrolled = parseInt((stb.y + stb.windowheight) / stb.totalheight * 100);
 
 
-        if (stb.showBox(stb.scrolled, stb.triggerHeight, stb.y) && jQuery('#scrolltriggered').is(":hidden") && stb.hascolsed != true) {
+        if (stb_helpers.showBox(stb.scrolled, stb.triggerHeight, stb.y) && jQuery('#scrolltriggered').is(":hidden") && stb.hascolsed != true) {
             jQuery('#scrolltriggered').show();
             jQuery('#scrolltriggered').stop(true, true).animate({ 'bottom':'10px' }, 500, function () {
             });
         }
-        else if (!stb.showBox(stb.scrolled, stb.triggerHeight, stb.y) && jQuery('#scrolltriggered').is(":visible") && jQuery('#scrolltriggered:animated').length < 1) {
+        else if (!stb_helpers.showBox(stb.scrolled, stb.triggerHeight, stb.y) && jQuery('#scrolltriggered').is(":visible") && jQuery('#scrolltriggered:animated').length < 1) {
             jQuery('#scrolltriggered').stop(true, true).animate({ 'bottom':-stb.boxHeight }, 500, function () {
                 jQuery('#scrolltriggered').hide();
             });
@@ -59,34 +59,32 @@ jQuery(document).ready(function () {
                 jQuery('#stbMsgArea').html(data).show('fast');
             });
 
-        return false;
     });
 });
-
-(function(stb_helpers) {
-    stb_helpers.showBox = function(scrolled, triggerHeight, y) {
-        if (stb.isMobile()) return false;
-        if (stb.stbElement == '') {
-            if (scrolled >= triggerHeight) {
-                return true;
-            }
+stb_helpers = {
+    showBox: function(scrolled, triggerHeight, y) {
+    if (stb_helpers.isMobile()) return false;
+    if (stb.stbElement == '') {
+        if (scrolled >= triggerHeight) {
+            return true;
         }
-        else {
-            if (stb.boxOffset < (stb.windowheight + y)) {
-                return true;
-            }
+    }
+    else {
+        if (stb.boxOffset < (stb.windowheight + y)) {
+            return true;
         }
-        return false;
-    };
-    stb_helpers.isMobile = function(){
-        if (navigator.userAgent.match(/Android/i)
+    }
+    return false;
+    },
+    isMobile: function(){
+        if ((navigator.userAgent.match(/Android/i)
             || navigator.userAgent.match(/webOS/i)
             || navigator.userAgent.match(/iPhone/i)
             || navigator.userAgent.match(/iPod/i)
             || navigator.userAgent.match(/BlackBerry/i)
-            ) {
+            ) && stb.hide_mobile) {
             return true;
         }
         else return false;
     }
-})(stb);
+};

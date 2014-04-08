@@ -101,7 +101,7 @@ class ScrollBox_admin
                                 <th scope="row"><label for="show_admin"><?php _e('Testing', 'stb'); ?></label></th>
                                 <td>
                                     <input name="stb_settings[show_admin]" type="checkbox" id="show_admin"
-                                           value="1" <?php checked('1', $options['show_admin']); ?> /><label
+                                           value="1" <?php checked(1, isset($options['show_admin'])); ?> /><label
                                     for="show_admin"><?php _e('Show box to admins only.', 'stb'); ?></label>
 									<?php if(isset($_COOKIE['nopopup'])): ?>
 										<strong><?php _e('Box is hidden', 'stb'); ?></strong> <a href="#" id="cleanCookie">Click here to make the box visible</a>
@@ -114,14 +114,15 @@ class ScrollBox_admin
                                 <th scope="row"><?php _e('Visible at', 'stb'); ?></th>
                                 <td>
                                     <input name="stb_settings[show][page]" type="checkbox" id="bpages"
-                                           class="tog" <?php checked('on', $options['show']['page']); ?>><label
+                                           class="tog" <?php checked(1, isset($options['show']['page'])); ?>><label
                                     for="bpages"><?php _e('Pages', 'stb'); ?></label><br/>
                                     <input name="stb_settings[show][post]" type="checkbox" id="bposts"
-                                           class="tog" <?php checked('on', $options['show']['post']); ?>><label
+                                           class="tog" <?php checked(1, isset($options['show']['post'])); ?>><label
                                     for="bposts"><?php _e('Posts', 'stb'); ?></label><br/>
                                     <input name="stb_settings[show][frontpage]" type="checkbox" id="bfpage"
-                                           class="tog" <?php checked('on', $options['show']['frontpage']); ?>><label
+                                           class="tog" <?php checked(1, isset($options['show']['frontpage'])); ?>><label
                                     for="bfpage"><?php _e('Frontpage', 'stb'); ?></label>
+                                    <?php $this->stb_get_post_types($options); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -153,10 +154,18 @@ class ScrollBox_admin
                                 <th scope="row"><label for="includecss"><?php _e('Include css', 'stb'); ?></label></th>
                                 <td>
                                     <input name="stb_settings[include_css]" type="checkbox" id="includecss"
-                                           value="1" <?php checked('1', $options['include_css']); ?> />
+                                           value="1" <?php checked(1, isset($options['include_css'])); ?> />
                                     <?php _e('Uncheck only if you want to style the box by yourself via themes css. CSS file
                                     is located', 'stb'); ?> <a
                                     href="<?php echo plugin_dir_url(__FILE__) . 'templates/' . $options['theme'] . '/style.css' ?>">here</a>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th scope="row"><label for="hidemobile"><?php _e('Hide in mobile', 'stb'); ?></label></th>
+                                <td>
+                                    <input name="stb_settings[hide_mobile]" type="checkbox" id="hidemobile"
+                                           value="1" <?php checked(1, isset($options['hide_mobile'])); ?> />
+                                    <?php _e('Hide the box in mobile clients', 'stb'); ?>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -196,7 +205,7 @@ class ScrollBox_admin
                                             $wpml_options = get_option('icl_sitepress_settings');
                                             $default_lang = $wpml_options['default_language'];
                                             $langs = icl_get_languages('skip_missing=0');
-                                            // Move the default language to the beginning of an array.
+                                            // Move the default language to the beginning of array.
                                             $default_html = $langs[$default_lang];
                                             unset($langs[$default_lang]);
                                             $this->array_unshift_assoc($langs, $default_lang, $default_html);
@@ -291,24 +300,21 @@ class ScrollBox_admin
 
 
     </div>
+    <?php
+        $url = 'https://www.facebook.com/sharer/sharer.php?n=4&s=100';
+        $url .= '&p[summary]=' . urlencode('Scroll Triggered Box will boost your conversion rates! The plugin displays a pop-up box with customizable content.');
+        $url .= '&p[url]=' . urlencode('http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/');
+        $url .= '&p[title]=' . urlencode('Check out this WordPress plugin: Scroll Triggered Box');
+    ?>
     <div class="widget-liquid-right" style="width: 250px;">
         <div id="widgets-right">
 
             <div class="widgets-holder-wrap">
                 <div class="sidebar-name">
-                    <h3>Like this plugin?</h3></div>
+                    <h3>Donate $10, $20 or $50</h3></div>
                 <div id="sidaber-widget" class="widgets-sortables">
                     <div class="sidebar-description">
-                        <p class="description">Why not do any of the following:</p>
-
-                        <p>Link to it so other folks can find out about it.</p>
-
-                        <p>Give it a good rating on WordPress.org.</p>
-
-                        <p>Donate a token of your appreciation!</p>
-
-                        <p><a href="http://dreamgrow.com" target="_blank">Visit plugin site</a></p>
-
+                        <p>If you like scroll triggered box. Please help to keep it alive by donating. Every cent counts!</p>
                         <form action="https://www.paypal.com/cgi-bin/webscr" method="post"
                               style="text-align: center;">
                             <input type="hidden" name="cmd" value="_s-xclick">
@@ -318,6 +324,14 @@ class ScrollBox_admin
                             <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
                                  width="1" height="1">
                         </form>
+                        <p>How can you support the developement?</p>
+
+                        <p><a href="http://wordpress.org/support/view/plugin-reviews/dreamgrow-scroll-triggered-box?rate=5#postform" target="_blank">Leava a raving review *****</a></p>
+
+                        <p style="word-break: break-all">Link to the plugin's home page from your blog:
+                            <a href="http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/" target="_blank">http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/</a></p>
+
+                        <p>Spread the word on <a target="_blank" href="http://twitter.com/intent/tweet/?text=Check%20out%20this%20WordPress%20plugin%3A%20Scroll%20Triggered%20Box&via=Dreamgrow&url=http%3A%2F%2Fwww.dreamgrow.com%2Fdreamgrow-scroll-triggered-box%2F">Twitter</a> or <a target="_blank" href="<?php echo $url ?>">Facebook</a></p>
                     </div>
                 </div>
             </div>
@@ -325,6 +339,23 @@ class ScrollBox_admin
     </div>
     </div>
     <?php
+
+    }
+
+    function stb_get_post_types($options){
+        $args = array(
+            'public'   => true,
+            '_builtin' => false
+        );
+        $post_types = get_post_types($args);
+        if($post_types) :
+            foreach ( $post_types as $post_type ) {
+                $label = $post_type;
+                echo '<br/>
+                      <input name="stb_settings[show]['.$label.']" type="checkbox" id="b'.$label.'" class="tog" '.
+                      checked(1, isset($options['show'][$label]), false) .'><label for="b'.$label.'">'. $label .'</label>';
+            }
+        endif;
 
     }
 
