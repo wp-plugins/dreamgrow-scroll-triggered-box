@@ -27,7 +27,6 @@ Scroll triggered box will make sure that more visitors to your site respond to y
 * Displaying best offers
 
 Highly customizable, you can display any content, any call-to-action with this plugin. Sharing, related content, signups, sales promotions, anything you want.
-If there’s anything that can be called the silver bullet in getting people to take action then this is it! Scroll triggered box has consistently increased conversions rate by several times. Newsletter sign-up, Facebook like button, social bookmarking or something else you want to draw attention to after people have engaged with your website. Scroll triggered box will increase the conversion rate many times over.
 
 = What do you get with this plugin? =
 
