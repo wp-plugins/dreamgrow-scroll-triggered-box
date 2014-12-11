@@ -1,6 +1,6 @@
 <?php
 /**
-Plugin Name: Scroll Triggered Box 2
+Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
 Version: 2.0.0
