@@ -1,0 +1,15 @@
+table.dgd_admin {width: 100% }
+table.dgd_admin tr:nth-child(even) { background-color: #f9f9f9; }
+table.dgd_admin td {vertical-align: middle; text-align: left; padding: 2px;}
+table.dgd_admin td:first-child {vertical-align: top; width: 20%; }
+
+table#dgd_pos_selector {width: 120px; border-spacing: 0px; border-collapse: collapse;}
+#dgd_pos_selector td { border: solid black 1px; padding: 0px; margin: 0px; }
+#dgd_pos_selector a {display: block; width: 40px; height: 30px}
+
+#dgd_pos_selector a:hover {background: pink
+}
+#dgd_pos_selector a.selected {background: red
+}
+.dgd_form_footer { background: #dddddd                                                                                                                                                                                                                                                                                                       url('http://www.dreamgrow.com/wp-content/themes/dreamgrow_com/images/footer_grid.gif'); 
+}

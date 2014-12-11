@@ -1,10 +1,10 @@
 ﻿=== Dreamgrow Scroll Triggered Box ===
-Contributors: pk2000,madisn
+Contributors: pk2000,madisn,Eero Hermlin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
-Requires at least: 3.3
-Tested up to: 3.8.1
-Stable tag: 1.4
+Requires at least: 3.0
+Tested up to: 4.0
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Scroll Triggered Box will boost your conversion rates! The plugin displays a pop
 
 If there’s anything that can be called the silver bullet in getting people to take action then this is it! Scroll triggered box has consistently increased conversions rate by several times. Newsletter sign-up, Facebook like button, social bookmarking or something else you want to draw attention to after people have engaged with your website. Scroll triggered box will increase the conversion rate many times over.
 
-The box is designed to get the attention of the visitors who have engaged with your site. The box triggers on certain event you specify, such as percentage of scroll, reaching an end of the post or comments. This verifies that visitors are engaged with the content and presenting them with a call-to-action.
+The box is designed to get the attention of the visitors who have engaged with your site. The box triggers on certain event you specify, such as percentage of scroll, reaching an end of the post or comments. This verifies that visitors are engaged with the content and presenting them with a call-to-action. For up to date information about future plans check our plugin page at [dreamgrow.com](http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/).
 
 = Make More Visitors Convert =
 
@@ -27,7 +27,6 @@ Scroll triggered box will make sure that more visitors to your site respond to y
 * Displaying best offers
 
 Highly customizable, you can display any content, any call-to-action with this plugin. Sharing, related content, signups, sales promotions, anything you want.
-If there’s anything that can be called the silver bullet in getting people to take action then this is it! Scroll triggered box has consistently increased conversions rate by several times. Newsletter sign-up, Facebook like button, social bookmarking or something else you want to draw attention to after people have engaged with your website. Scroll triggered box will increase the conversion rate many times over.
 
 = What do you get with this plugin? =
 
@@ -49,6 +48,14 @@ If there’s anything that can be called the silver bullet in getting people to 
 3. Plugin Settings page
 
 == Changelog ==
+= 2.0 =
+* Support for multiple boxes each having own design and content
+* Added visual editor option
+* Improved box showing options: possible to show box only to certain Category(ies) or Tag(s)
+* Improved box placement options: boxes can be centered, or placed to any edge or corner
+* Added Background image option
+* Added "Fade-in" effect option
+
 = 1.4 =
 * Added shortcode support for box content
 * Added option hide the box in mobile devices
