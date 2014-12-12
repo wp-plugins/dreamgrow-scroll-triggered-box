@@ -3,7 +3,7 @@
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://dreamgrow.com
 Description: Scroll Triggered Box
-Version: 2.0.0
+Version: 2.0.1
 Author: Dreamgrow Digital
 Author URI: http://dreamgrow.com
 License: GPL2
