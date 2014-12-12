@@ -43,9 +43,9 @@ Highly customizable, you can display any content, any call-to-action with this p
 
 == Screenshots ==
 
-1. Plugin
-2. Plugin Templates
-3. Plugin Settings page
+1. Standard WordPress editor with multi language support.
+2. Select posts, pages, categories and tags that show the box. Display the box top, bottom, left, right or middle. Or if you so wish several boxes per page.
+3. Tons of settings to make each box behave exactly as you want.
 
 == Changelog ==
 
