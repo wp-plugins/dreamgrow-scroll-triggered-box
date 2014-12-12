@@ -41,7 +41,7 @@ Class DgdScrollboxHelper {
         'include_css' => 1,
         'theme' => 'default',
         'jsCss' => array (
-            'padding' => '0px',
+            'padding' => '10',
             'margin' => '10',
             'backgroundImageUrl' => '',
             'backgroundColor' => '',

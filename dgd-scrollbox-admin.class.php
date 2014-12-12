@@ -113,10 +113,10 @@ Class DgdScrollboxAdmin {
         0 => true,      // all input is good
         );
 
-    protected $padding_options = array( '0px' => '0px', '1px' => '1px', '2px' => '2px', '3px' => '3px', 
-        '4px' => '4px', '5px' => '5px', '6px' => '6px', '7px' => '7px', '8px' => '8px', '9px' => '9px', '10px' => '10px', 
-        '12px' => '12px', '14px' => '14px', '16px' => '16px', '18px' => '18px', '20px' => '20px', 
-        '25px'=>'25px', '30px'=>'30px', '35px'=>'35px', '40px'=>'40px', '45px'=>'45px', '50px'=>'50px');
+    protected $padding_options = array( '0' => '0px', '1' => '1px', '2' => '2px', '3' => '3px', 
+        '4' => '4px', '5' => '5px', '6' => '6px', '7' => '7px', '8' => '8px', '9' => '9px', '10' => '10px', 
+        '12' => '12px', '14' => '14px', '16' => '16px', '18' => '18px', '20' => '20px', 
+        '25'=>'25px', '30'=>'30px', '35'=>'35px', '40'=>'40px', '45'=>'45px', '50'=>'50px');
 
     protected $margin_options = array( '0' => '0px', '1' => '1px', '2' => '2px', '3' => '3px', 
         '4' => '4px', '5' => '5px', '6' => '6px', '7' => '7px', '8' => '8px', '9' => '9px', '10' => '10px', 
@@ -228,7 +228,7 @@ Class DgdScrollboxAdmin {
     }
 
     function dgd_scrollbox_default($content, $post) {
-        if($post->post_type ==DGDSCROLLBOXTYPE) {
+        if($post->post_type == DGDSCROLLBOXTYPE) {
             $content= '<h5>Sign up for our Newsletter</h5>
     <ul>
         <li>Fresh trends</li>

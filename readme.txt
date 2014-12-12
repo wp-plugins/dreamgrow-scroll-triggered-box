@@ -48,7 +48,14 @@ Highly customizable, you can display any content, any call-to-action with this p
 3. Plugin Settings page
 
 == Changelog ==
-= 2.0 =
+
+= 2.0.2 =
+* Bugfix: Some pages broken if no boxes to show
+
+= 2.0.1 =
+* Bugfix: Scrollbox default content used also for other page types
+
+= 2.0.0 =
 * Support for multiple boxes each having own design and content
 * Added visual editor option
 * Improved box showing options: possible to show box only to certain Category(ies) or Tag(s)

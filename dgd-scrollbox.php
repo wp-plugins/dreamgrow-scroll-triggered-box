@@ -136,17 +136,14 @@ class DgdScrollbox {
 
                 $js[]=json_encode($meta);
             }
-
-            // wp_localize_script('dgd-popup-plugin', 'dgd_scrollboxes', array('l10n_print_after'=>"dgd_scrollboxes=[\n".$js."];\n"));
-            $html.= "<script type='text/javascript'>//<![CDATA[ \n";
-            $html.= "var dgd_scrollboxes=[\n".implode(','.PHP_EOL, $js)."];\n";
-            $html.= "var scripthost='".plugins_url('/',  __FILE__)."';\n"; 
-            $html.= "var head=document.getElementsByTagName('head')[0];\n";
-            $html.= "//]]>\n</script>\n";
-            $html.="\n<!--     ===== END OF Dreamgrow Scroll Triggered Box =====   -->\n\n";
-        } else {
-            $html.="<!-- No boxes to show -->\n";        
-        }
+        } 
+        // wp_localize_script('dgd-popup-plugin', 'dgd_scrollboxes', array('l10n_print_after'=>"dgd_scrollboxes=[\n".$js."];\n"));
+        $html.= "<script type='text/javascript'>//<![CDATA[ \n";
+        $html.= "var dgd_scrollboxes=[".implode(','.PHP_EOL, $js)."];\n";
+        $html.= "var scripthost='".plugins_url('/',  __FILE__)."';\n"; 
+        $html.= "var head=document.getElementsByTagName('head')[0];\n";
+        $html.= "//]]>\n</script>\n";
+        $html.="\n<!--     ===== END OF Dreamgrow Scroll Triggered Box =====   -->\n\n";
         echo $html;
     }
 
