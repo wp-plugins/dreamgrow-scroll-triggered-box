@@ -214,7 +214,7 @@ Class DgdScrollboxAdmin {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_style_n_script') );
         add_action('admin_init', array($this, 'dgd_scrollbox_editor') );
         add_action('save_post',  array($this, 'save_dgd_scrollbox_fields'), 10, 2 );
-        add_filter('default_content', array($this, 'dgd_scrollbox_default'));
+        add_filter('default_content', array($this, 'dgd_scrollbox_default'), 10, 2);
         add_action('admin_menu', array($this, 'register_general_settings_page'));
         add_action('parse_request', array($this, 'control_requests') );
         add_filter('tiny_mce_before_init', array($this, 'tiny_mce_fix'));
@@ -227,8 +227,9 @@ Class DgdScrollboxAdmin {
         return $init;
     }
 
-    function dgd_scrollbox_default() {
-        return '<h5>Sign up for our Newsletter</h5>
+    function dgd_scrollbox_default($content, $post) {
+        if($post->post_type ==DGDSCROLLBOXTYPE) {
+            $content= '<h5>Sign up for our Newsletter</h5>
     <ul>
         <li>Fresh trends</li>
         <li>Cases and examples</li>
@@ -239,6 +240,8 @@ Class DgdScrollboxAdmin {
         <input type="hidden" name="submitted" id="submitted" value="true" /><input type="text" name="email" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
     </form>
     <p class="stbMsgArea"></p>';
+        }
+        return $content;
     }
 
     public function enqueue_admin_style_n_script( $hook_suffix ) {
