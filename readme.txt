@@ -3,8 +3,8 @@ Contributors: pk2000,madisn,Eero Hermlin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.0
-Tested up to: 4.0
-Stable tag: 2.0.1
+Tested up to: 4.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,10 +50,10 @@ Highly customizable, you can display any content, any call-to-action with this p
 == Changelog ==
 
 = 2.0.2 =
-* Bugfix: Some pages broken if no boxes to show
+* Bugfix: Some pages functionality was broken if no boxes to show
 
 = 2.0.1 =
-* Bugfix: Scrollbox default content used also for other page types
+* Bugfix: Scrollbox default content was used also for other page types
 
 = 2.0.0 =
 * Support for multiple boxes each having own design and content
