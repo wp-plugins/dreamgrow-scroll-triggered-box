@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.0
 Tested up to: 4.0.1
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,9 @@ Highly customizable, you can display any content, any call-to-action with this p
 3. Tons of settings to make each box behave exactly as you want.
 
 == Changelog ==
+
+= 2.0.3 =
+* bugfix: Add Media button didn't work
 
 = 2.0.2 =
 * Bugfix: Some pages functionality was broken if no boxes to show
