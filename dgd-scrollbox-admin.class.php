@@ -444,18 +444,18 @@ Class DgdScrollboxAdmin {
                 <td>
 <table id="dgd_pos_selector">
 <tr>
-<td><a href="#void0" onClick="DGD.select2D.choose('top', 'left')"> </a></td>
-<td><a href="#void0" onClick="DGD.select2D.choose('top', 'center')"> </a></td>
-<td><a href="#void0" onClick="DGD.select2D.choose('top', 'right')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('top', 'left')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('top', 'center')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('top', 'right')"> </a></td>
 </tr>
 <tr>
-<td><a href="#void0" onClick="DGD.select2D.choose('center', 'left')"> </a></td>
-<td><a href="#void0" onClick="DGD.select2D.choose('center', 'center')"> </a></td>
-<td><a href="#void0" onClick="DGD.select2D.choose('center', 'right')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('center', 'left')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('center', 'center')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('center', 'right')"> </a></td>
 </tr><tr>
-<td><a href="#void0" onClick="DGD.select2D.choose('bottom', 'left')"> </a></td>
-<td><a href="#void0" onClick="DGD.select2D.choose('bottom', 'center')"> </a></td>
-<td><a href="#void0" onClick="DGD.select2D.choose('bottom', 'right')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('bottom', 'left')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('bottom', 'center')"> </a></td>
+<td><a href="#void0" onClick="$DGD.select2D.choose('bottom', 'right')"> </a></td>
 </tr>
 </table>
 <input type="hidden" name="dgd_stb[vpos]" value="<?=$dgd_stb['vpos'] ?>" id="vpos_selector">
@@ -895,7 +895,7 @@ Class DgdScrollboxAdmin {
         if($old_version_settings && !isset($old_version_settings['migrated'])) {
             DgdScrollboxAdmin::migrate_from_old_version(false);
         }
-        update_option('stb_version', '2.0.0');
+        update_option('stb_version', '2.0.3');
     }
 
     public static function uninstall() {
