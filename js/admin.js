@@ -38,7 +38,7 @@ jQuery(document).ready(function($){
 	try	{
 	    jQuery('.dgd-popup-color-picker').wpColorPicker();
 	} catch (err) {
-		$DGD.echo('WP 3.0 mode');
+		// $DGD.echo('WP 3.0 mode');
 	}
 	$DGD.select2D.init();
 	var upload_image_type=false;
