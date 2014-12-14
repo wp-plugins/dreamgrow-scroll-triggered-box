@@ -34,6 +34,14 @@ $DGD.select2D.init = function() {
 	$DGD.select2D.paint(ver, hor);
 }
 
+$DGD.showTab=function(tab) {
+	jQuery('.dgd_tab_container').find('.dgd_tab_content').addClass('hide');
+	jQuery('.dgd_tab_container').find('.'+tab).removeClass('hide');
+	jQuery('ul#dgd_tabs').find('li').removeClass('selected');
+	jQuery('ul#dgd_tabs').find('.'+tab).addClass('selected');
+}
+
+
 jQuery(document).ready(function($){
 	try	{
 	    jQuery('.dgd-popup-color-picker').wpColorPicker();

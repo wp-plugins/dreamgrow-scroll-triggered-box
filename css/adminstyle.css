@@ -13,3 +13,10 @@ table#dgd_pos_selector {width: 120px; border-spacing: 0px; border-collapse: coll
 }
 .dgd_form_footer { background: #dddddd                                                                                                                                                                                                                                                                                                       url('http://www.dreamgrow.com/wp-content/themes/dreamgrow_com/images/footer_grid.gif'); 
 }
+
+ul#dgd_tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0; }
+ul#dgd_tabs li { display: inline; color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none; cursor: pointer }
+ul#dgd_tabs li:hover { background-color: #f1f0ee; }
+ul#dgd_tabs li.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
+div.dgd_tab_container .dgd_tab_content { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
+div.dgd_tab_container .hide { display: none; }

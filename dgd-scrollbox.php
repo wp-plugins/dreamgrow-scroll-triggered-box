@@ -87,7 +87,7 @@ class DgdScrollbox {
         $headers = 'From: ' . $emailTo . "\r\n" . 'Reply-To: ' . $email;
 
         wp_mail($emailTo, $subject, $body, $headers);
-        echo __('You are subscribed. Thank You!', 'stb');
+        echo json_encode(array('html'=>'You are subscribed. Thank You!', 'status'=>200));
         die();
     }
 
@@ -171,10 +171,15 @@ class DgdScrollbox {
 
             // get showing options
             $show_on=get_post_meta($pop_up->ID, 'dgd_stb_show', true);
+            $hide_on=get_post_meta($pop_up->ID, 'dgd_stb_hide', true);
             $meta=get_post_meta($pop_up->ID, 'dgd_stb', true);
 
             $popupcookie=$meta['cookieLifetime'];
             $clientcookie=(isset($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]) ? $_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]*1 : -1);
+            if (isset($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]) && ($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]=='closed')) {
+                // user is registered
+                continue;
+            }
 
             if (isset($show_on['admin_only']) && !current_user_can('manage_options')) {
                 continue;
@@ -184,13 +189,21 @@ class DgdScrollbox {
                 continue;
             }
 
-            if( (isset($show_on['post_types']) && in_array(get_post_type($post->ID), array_keys($show_on['post_types']))) ||
-                (isset($show_on['frontpage']) && get_option('page_on_front')==$post->ID) ||
-                (isset($show_on['selected_pages']) && in_array($post->ID, array_values($show_on['selected_pages']) )) ||
-                (isset($show_on['categories']) && is_array($categories) && count(array_intersect($show_on['categories'], $categories))>0) ||
-                (isset($show_on['tags']) && is_array($tags) && count(array_intersect($show_on['tags'], $tags))>0) ) {
+            if (
+                ( 
+                 (isset($show_on['post_types']) && in_array(get_post_type($post->ID), array_keys($show_on['post_types']))) ||
+                 (isset($show_on['frontpage']) && get_option('page_on_front')==$post->ID) ||
+                 (isset($show_on['selected_pages']) && in_array($post->ID, array_values($show_on['selected_pages']) )) ||
+                 (isset($show_on['categories']) && is_array($categories) && count(array_intersect($show_on['categories'], $categories))>0) ||
+                 (isset($show_on['tags']) && is_array($tags) && count(array_intersect($show_on['tags'], $tags))>0)
+                )  &&  (
+                 !(isset($hide_on['selected_pages']) && in_array($post->ID, array_values($hide_on['selected_pages']) )) &&
+                 !(isset($hide_on['categories']) && is_array($categories) && count(array_intersect($hide_on['categories'], $categories))>0) &&
+                 !(isset($hide_on['tags']) && is_array($tags) && count(array_intersect($hide_on['tags'], $tags))>0)
+                )
+               ) {
                     $active_pop_ups[]=$pop_up;
-            } 
+               } 
         }
 
         return $active_pop_ups;

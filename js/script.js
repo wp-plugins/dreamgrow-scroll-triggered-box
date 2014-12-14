@@ -196,6 +196,16 @@ function dgdSetCookie(cname, exdays) {
 	document.cookie = cname + "=" + exdays + expires;
 }
 
+function dgdSetCookieCloseForever(cname) {
+    var d = new Date();
+	var expires='';
+	if(exdays!=0) {
+	    d.setTime(d.getTime() + (365*24*60*60*1000));
+		expires = "; expires="+d.toUTCString();
+	} 
+	document.cookie = cname + "=closed" + expires;
+}
+
 function dgdGetCookie(cname) {
     var name = cname + '=';
     var ca = document.cookie.split(';');
@@ -468,9 +478,18 @@ function dgdSubmitForm (e) {
 		beforeSend: function() {
 			message_container.html('<img src="'+scripthost+'img/37-1.gif" border="0">').show();
 		},
-		success: function (response) {
-			DGD.echo(message_container+'=>'+response);
-			message_container.html(response).show();
+		success: function (JSONstring) {
+				try {
+					response=jQuery.parseJSON(JSONstring);	
+				} catch (e) {
+					console.info('Unknown response: '+JSONstring);
+					return;
+				}
+			DGD.echo(message_container+'=>'+response.status+': '+response.html);
+			message_container.html(response.html).show();
+			if(response.status==200) {
+				// do something
+			}
 		}
 	});
 }

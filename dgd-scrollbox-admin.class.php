@@ -399,6 +399,7 @@ Class DgdScrollboxAdmin {
 
         $dgd_stb=get_post_meta( $post->ID, 'dgd_stb', true );
         $dgd_stb_show=get_post_meta( $post->ID, 'dgd_stb_show', true );
+        $dgd_stb_hide=get_post_meta( $post->ID, 'dgd_stb_hide', true );
 
         if(!$dgd_stb) {
             $dgd_stb=DgdScrollboxHelper::$dgd_stb_meta_default;
@@ -478,6 +479,12 @@ Class DgdScrollboxAdmin {
                 </td>
             </tr>
             <tr>
+                <td>Hide after submission</td>
+                <td>
+                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?=($dgd_stb['hide_submitted']?' checked="1"':'') ?>>
+                </td>
+            </tr>
+            <tr>
                 <td>Show</td>
                 <td>
                     <table>
@@ -489,40 +496,95 @@ Class DgdScrollboxAdmin {
                             <?php $this->stb_get_post_types($dgd_stb_show); ?><br><br>
                             <input name="dgd_stb_show[admin_only]" type="checkbox" class="tog" <?php checked(1, isset($dgd_stb_show['admin_only'])); ?>>Admin only
                         </td>
-                        <td width="25%" style="vertical-align: top">Pages:<br />
-                        <select name="dgd_stb_show[selected_pages][]" multiple="multiple" size="8">
-                            <?php 
-                            $walker = new Dgd_Page_Selector_Walker(isset($dgd_stb_show['selected_pages'])?$dgd_stb_show['selected_pages']:array());
-                            $options_list= wp_list_pages( array('title_li'=>'', 'post-type'=>'page','sort_column' => 'menu_order, post_title', 'echo'=>0, 'walker'=>$walker));
-                            $options_list=str_replace(array('</li>', "</ul>\n"), '', $options_list);
-                            $options_list=str_replace("<ul class='children'>\n", '    ', $options_list);
-                            echo $options_list;
-                            ?>
-                        </select>
-                        </td width="25%" style="vertical-align: top">
-                        <td>Categories:<br />
-                        <select name="dgd_stb_show[categories][]" multiple="multiple" size="8">
-                        <?php 
-                            $categories=get_categories();
-                            $new_array=array();
-                            foreach($categories as $category) {
-                                $new_array[$category->cat_ID]=$category->cat_name;
-                            }
-                        echo $this->populate_options($new_array,  (isset($dgd_stb_show['categories']) ? $dgd_stb_show['categories']: array()));
-                        ?>
-                        </select>
-                        </td>
-                        <td>Tags:<br />
-                        <select name="dgd_stb_show[tags][]" multiple="multiple" size="8">
-                        <?php
-                        $tags = get_tags();
-                        $new_array=array();
-                        foreach($tags as $tag) {
-                            $new_array[$tag->term_id]=$tag->name;
-                        }
-                        echo $this->populate_options($new_array, (isset($dgd_stb_show['tags']) ? $dgd_stb_show['tags']: array()));
-                        ?>
-                        </select>
+                        <td style="vertical-align: top">Exceptions:<br /> 
+                            <ul id="dgd_tabs">
+                                <li class="include selected" onClick="$DGD.showTab('include')">Include</li>
+                                <li class="exclude" onClick="$DGD.showTab('exclude')">Exclude</li>
+                            </ul>
+                            <div class="dgd_tab_container">
+                            <div class="dgd_tab_content include">
+                                <table>
+                                <tr>
+                                <td style="vertical-align: top">Pages:<br />
+                                    <select name="dgd_stb_show[selected_pages][]" multiple="multiple" size="8">
+                                        <?php 
+                                        $walker = new Dgd_Page_Selector_Walker(isset($dgd_stb_show['selected_pages'])?$dgd_stb_show['selected_pages']:array());
+                                        $options_list= wp_list_pages( array('title_li'=>'', 'post-type'=>'page','sort_column' => 'menu_order, post_title', 'echo'=>0, 'walker'=>$walker));
+                                        $options_list=str_replace(array('</li>', "</ul>\n"), '', $options_list);
+                                        $options_list=str_replace("<ul class='children'>\n", '    ', $options_list);
+                                        echo $options_list;
+                                        ?>
+                                    </select>
+                                </td>
+                                <td style="vertical-align: top">Categories:<br />
+                                    <select name="dgd_stb_show[categories][]" multiple="multiple" size="8">
+                                    <?php 
+                                        $categories=get_categories();
+                                        $new_array=array();
+                                        foreach($categories as $category) {
+                                            $new_array[$category->cat_ID]=$category->cat_name;
+                                        }
+                                    echo $this->populate_options($new_array,  (isset($dgd_stb_show['categories']) ? $dgd_stb_show['categories']: array()));
+                                    ?>
+                                    </select>
+                                </td>
+                                <td style="vertical-align: top">Tags:<br />
+                                    <select name="dgd_stb_show[tags][]" multiple="multiple" size="8">
+                                    <?php
+                                    $tags = get_tags();
+                                    $new_array=array();
+                                    foreach($tags as $tag) {
+                                        $new_array[$tag->term_id]=$tag->name;
+                                    }
+                                    echo $this->populate_options($new_array, (isset($dgd_stb_show['tags']) ? $dgd_stb_show['tags']: array()));
+                                    ?>
+                                    </select>
+                                </td>
+                                </tr>
+                                </table>
+                            </div>
+
+                            <div class="dgd_tab_content exclude hide">
+                                <table>
+                                <tr>
+                                <td style="vertical-align: top">Pages:<br />
+                                    <select name="dgd_stb_hide[selected_pages][]" multiple="multiple" size="8">
+                                        <?php 
+                                        $walker = new Dgd_Page_Selector_Walker(isset($dgd_stb_hide['selected_pages'])?$dgd_stb_hide['selected_pages']:array());
+                                        $options_list= wp_list_pages( array('title_li'=>'', 'post-type'=>'page','sort_column' => 'menu_order, post_title', 'echo'=>0, 'walker'=>$walker));
+                                        $options_list=str_replace(array('</li>', "</ul>\n"), '', $options_list);
+                                        $options_list=str_replace("<ul class='children'>\n", '    ', $options_list);
+                                        echo $options_list;
+                                        ?>
+                                    </select>
+                                </td>
+                                <td style="vertical-align: top">Categories:<br />
+                                    <select name="dgd_stb_hide[categories][]" multiple="multiple" size="8">
+                                    <?php 
+                                        $categories=get_categories();
+                                        $new_array=array();
+                                        foreach($categories as $category) {
+                                            $new_array[$category->cat_ID]=$category->cat_name;
+                                        }
+                                    echo $this->populate_options($new_array,  (isset($dgd_stb_hide['categories']) ? $dgd_stb_hide['categories']: array()));
+                                    ?>
+                                    </select>
+                                </td>
+                                <td style="vertical-align: top">Tags:<br />
+                                    <select name="dgd_stb_hide[tags][]" multiple="multiple" size="8">
+                                    <?php
+                                    $tags = get_tags();
+                                    $new_array=array();
+                                    foreach($tags as $tag) {
+                                        $new_array[$tag->term_id]=$tag->name;
+                                    }
+                                    echo $this->populate_options($new_array, (isset($dgd_stb_hide['tags']) ? $dgd_stb_hide['tags']: array()));
+                                    ?>
+                                    </select>
+                                </td>
+                                </tr>
+                                </table>
+                            </div>
                         </td>
                      </tr>
                      </table>
@@ -750,6 +812,11 @@ Class DgdScrollboxAdmin {
         if(isset($_POST['dgd_stb_show']) && is_array($_POST['dgd_stb_show'])) {
             update_post_meta( $post_id, 'dgd_stb_show', $_POST['dgd_stb_show']);
         }
+
+        if(isset($_POST['dgd_stb_hide']) && is_array($_POST['dgd_stb_hide'])) {
+            update_post_meta( $post_id, 'dgd_stb_hide', $_POST['dgd_stb_hide']);
+        }
+    
     }
 
     public function clear_migration_flag() {
