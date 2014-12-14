@@ -114,7 +114,7 @@ Release
 
 == ToDo list ==
 
-* Prevent javascript caching after plugin upgrades
-* Close box permanently after successful form submission
-* Fix admin menu icon on WP<3.8
+* Prevent javascript caching after plugin upgrades (2.0.4)
+* Close box permanently after successful form submission (2.0.4)
+* Fix admin menu icon on WP<3.8 (2.0.4)
 * On Twenty Twelwe theme background color of default submit button is wrong
