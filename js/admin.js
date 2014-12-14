@@ -74,4 +74,8 @@ jQuery(document).ready(function($){
 		}
 		return false;
 	});
+
+	// prevent broken icon to show on WP<3.8
+	jQuery('#menu-posts-dgdscrollbox').removeClass('menu-icon-dgdscrollbox').addClass('menu-icon-settings');
+	jQuery('img[src="http://dashicons-welcome-comments"]').remove();
 });

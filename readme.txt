@@ -111,3 +111,10 @@ Highly customizable, you can display any content, any call-to-action with this p
 
 = 1.0 =
 Release
+
+== ToDo list ==
+
+* Prevent javascript caching after plugin upgrades
+* Close box permanently after successful form submission
+* Fix admin menu icon on WP<3.8
+* On Twenty Twelwe theme background color of default submit button is wrong

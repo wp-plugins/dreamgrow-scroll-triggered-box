@@ -210,7 +210,7 @@ Class DgdScrollboxAdmin {
     public function __construct() {
         // register_activation_hook(__FILE__, array($this, 'install') );
         // register_deactivation_hook(__FILE__, array($this, 'uninstall') );
-        wp_register_script( 'dgd-scrollbox-plugin-js', plugins_url('js/admin.js', __FILE__ ), array('jquery','media-upload'), false, true );
+        wp_register_script( 'dgd-scrollbox-plugin-js', plugins_url('js/admin.js', __FILE__ ), array('jquery','media-upload'), DGDSCROLLBOX_VERSION, true );
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_style_n_script') );
         add_action('admin_init', array($this, 'dgd_scrollbox_editor') );
         add_action('save_post',  array($this, 'save_dgd_scrollbox_fields'), 10, 2 );
@@ -248,11 +248,12 @@ Class DgdScrollboxAdmin {
         // first check that $hook_suffix is appropriate for your admin page
         // http://www.webmaster-source.com/2010/01/08/using-the-wordpress-uploader-in-your-plugin-or-theme/
         wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_script('wp-color-picker' );
         wp_enqueue_style( 'thickbox' );
-	    wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ) );  
-	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ) );  
+        wp_enqueue_script('thickbox' );
+	    wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'media-upload' );
-        wp_enqueue_script( 'thickbox' );
         wp_enqueue_script( 'dgd-scrollbox-plugin-js' );
     }
 
@@ -895,7 +896,7 @@ Class DgdScrollboxAdmin {
         if($old_version_settings && !isset($old_version_settings['migrated'])) {
             DgdScrollboxAdmin::migrate_from_old_version(false);
         }
-        update_option('stb_version', '2.0.3');
+        update_option('stb_version', DGDSCROLLBOX_VERSION);
     }
 
     public static function uninstall() {

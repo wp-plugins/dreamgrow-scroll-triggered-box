@@ -1,11 +1,11 @@
 <?php
 /**
 Plugin Name: Scroll Triggered Box
-Plugin URI: http://dreamgrow.com
+Plugin URI: http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/
 Description: Scroll Triggered Box
-Version: 2.0.3
+Version: 2.0.4
 Author: Dreamgrow Digital
-Author URI: http://dreamgrow.com
+Author URI: http://www.dreamgrow.com
 License: GPL2
 */
 
@@ -14,10 +14,12 @@ if(!function_exists('wp_get_current_user')) {
 }
 
 define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // if you change it here, please change also in wpml-config.xml
+define('DGDSCROLLBOX_VERSION', '2.0.4');
 
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
 
 class DgdScrollbox {
+
     public function __construct() {
         add_action('init', array($this, 'create_dgd_scrollbox_post_type') );
         add_action('wp_footer',  array($this, 'show_scrollbox'));
@@ -104,7 +106,7 @@ class DgdScrollbox {
         // Activate everywhere
         // Activate on Tag
         $active_pop_ups=$this->get_matching_popups();
-        $html="\n<!--     ===== Dreamgrow Scroll Triggered Box =====   -->\n\n";
+        $html="\n<!--     ===== Dreamgrow Scroll Triggered Box ver. ".DGDSCROLLBOX_VERSION." =====   -->\n\n";
         $js=array();
         $closebutton='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
         if(count($active_pop_ups)>0) {
@@ -196,9 +198,9 @@ class DgdScrollbox {
 
     public function enqueue_style_n_script() {
         global $post;
-	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ) );  
-	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ) );  
-        wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery') );
+	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+        wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
         // wp_enqueue_script( 'dgd-scrollbox-plugin-social', plugins_url( 'js/social.js', __FILE__ ), array('dgd-scrollbox-plugin') );
 
         $image='';
