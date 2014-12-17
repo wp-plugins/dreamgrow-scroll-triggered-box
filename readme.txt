@@ -3,7 +3,7 @@ Contributors: pk2000,madisn,Eero Hermlin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.0
-Tested up to: 4.0.1
+Tested up to: 4.1
 Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
