@@ -599,7 +599,7 @@ Class DgdScrollboxAdmin {
         <tbody>
             <tr>
                 <td>Receiver email</td>
-                <td><input type="text" name="dgd_stb[receiver_email]" value="<?=$dgd_stb['receiver_email'] ?>"></td>
+                <td><input type="text" name="dgd_stb[receiver_email]" value="<?=$dgd_stb['receiver_email'] ?>"><br> (Leave email field empty if you want to use your own defined form, or "Contact Form 7", or some other third party form plugin)</td>
             </tr>
         </tbody>
         </table>

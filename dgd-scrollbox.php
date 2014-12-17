@@ -131,9 +131,12 @@ class DgdScrollbox {
                 $meta['hoff']=0;
                 //  $js[]=$meta;
                 if (isset($meta['migrated_no_css'])) {
-                    $meta['html']=$closebutton.'<div id="scrolltriggered">'.do_shortcode($pop_up->post_content).'</div>';
+                    // BUG: concider replacing do_shortcode with apply_filters('the_content')
+                    $meta['html']=$closebutton.'<div id="scrolltriggered">'.apply_filters('the_content', $pop_up->post_content).'</div>';
+                    // $meta['html']=$closebutton.'<div id="scrolltriggered">'.do_shortcode($pop_up->post_content).'</div>';
                 } else {
-                    $meta['html']=$closebutton.do_shortcode($pop_up->post_content);                
+                    // $meta['html']=$closebutton.do_shortcode($pop_up->post_content);                
+                    $meta['html']=$closebutton.apply_filters('the_content', $pop_up->post_content);                
                 }
 
                 $js[]=json_encode($meta);

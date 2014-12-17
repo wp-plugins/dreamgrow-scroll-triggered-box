@@ -247,7 +247,7 @@ function dgdPlaceBox(box) {
 	if(box.jsCss.borderWidth!='0px' && box.jsCss.borderColor!='')		box.div.css('border', box.jsCss.borderColor+' solid '+box.jsCss.borderWidth); 
 	if(box.jsCss.borderRadius!='0px')	box.div.css('border-radius', ''+box.jsCss.borderRadius); 
 	if(box.jsCss.boxShadow!='0px')			box.div.css('box-shadow', ''+box.jsCss.boxShadow+' '+box.jsCss.boxShadow+' 25px #888888'); 
-	if(box.jsCss.backgroundImageUrl!=null)		box.div.css('background-image', 'url('+box.jsCss.backgroundImageUrl+')');
+	if(box.jsCss.backgroundImageUrl!=null && box.jsCss.backgroundImageUrl!='')		box.div.css('background-image', 'url('+box.jsCss.backgroundImageUrl+')');
 
 	if(box.closeImageUrl!=null && box.closeImageUrl!=''){
 		// first tag in box.div is always close button, set this image as background
