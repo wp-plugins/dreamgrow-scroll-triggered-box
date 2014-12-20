@@ -1,7 +1,10 @@
 if(typeof ($DGD) == 'undefined') {
-	var $DGD = {};
+	var $DGD = {'debug':'1'};
+}
+
+if(typeof ($DGD.echo) == 'undefined') {
 	$DGD.echo=function(str) {
-		console.log(str);
+		if ($DGD.debug) console.log(str);
 	}
 }
 

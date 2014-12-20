@@ -13,7 +13,7 @@ if(!function_exists('wp_get_current_user')) {
     include(ABSPATH.'wp-includes/pluggable.php'); 
 }
 
-define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // if you change it here, please change also in wpml-config.xml
+define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // DO NOT TOUCH!
 define('DGDSCROLLBOX_VERSION', '2.0.4');
 
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
@@ -22,7 +22,7 @@ class DgdScrollbox {
 
     public function __construct() {
         add_action('init', array($this, 'create_dgd_scrollbox_post_type') );
-        add_action('wp_footer',  array($this, 'show_scrollbox'));
+        // add_action('wp_footer',  array($this, 'show_scrollbox'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_style_n_script') );
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
@@ -82,7 +82,9 @@ class DgdScrollbox {
                 $body.=$name.': '.$value."\n"; 
             }
         }
-        $body.='IP: '.$_SERVER['REMOTE_ADDR']."\n";
+        $body.="===============================\n";
+        $body.='Submitted from IP: '.$_SERVER['REMOTE_ADDR']."\n";
+        $body.='Used browser: '.$_SERVER['HTTP_USER_AGENT']."\n";
 
         $headers = 'From: ' . $emailTo . "\r\n" . 'Reply-To: ' . $email;
 
@@ -101,24 +103,15 @@ class DgdScrollbox {
     }
 
 
-    public function show_scrollbox() {
+    private function get_scrollboxes() {
         global $post;
-        // Activate everywhere
-        // Activate on Tag
+
         $active_pop_ups=$this->get_matching_popups();
-        $html="\n<!--     ===== Dreamgrow Scroll Triggered Box ver. ".DGDSCROLLBOX_VERSION." =====   -->\n\n";
         $js=array();
         $closebutton='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
         if(count($active_pop_ups)>0) {
             foreach($active_pop_ups as $pop_up) {
                 $meta=get_post_meta( $pop_up->ID, 'dgd_stb', true );
-
-                /*
-                if(isset($meta['theme']) && $meta['theme']) {
-                    wp_enqueue_style( 'dgd-scrollbox-plugin-template-'.$meta['theme'], 
-                        plugins_url( 'themes/'.$meta['theme'].'/style.css', __FILE__ ) );  
-                }
-                */
 
                 // set and unset some parameters
                 if(isset($meta['receiver_email']) && $meta['receiver_email']) {
@@ -131,31 +124,21 @@ class DgdScrollbox {
                 $meta['hoff']=0;
                 //  $js[]=$meta;
                 if (isset($meta['migrated_no_css'])) {
-                    // BUG: concider replacing do_shortcode with apply_filters('the_content')
                     $meta['html']=$closebutton.'<div id="scrolltriggered">'.apply_filters('the_content', $pop_up->post_content).'</div>';
-                    // $meta['html']=$closebutton.'<div id="scrolltriggered">'.do_shortcode($pop_up->post_content).'</div>';
                 } else {
-                    // $meta['html']=$closebutton.do_shortcode($pop_up->post_content);                
                     $meta['html']=$closebutton.apply_filters('the_content', $pop_up->post_content);                
                 }
 
-                $js[]=json_encode($meta);
+                $js[]=$meta;
             }
         } 
-        // wp_localize_script('dgd-popup-plugin', 'dgd_scrollboxes', array('l10n_print_after'=>"dgd_scrollboxes=[\n".$js."];\n"));
-        $html.= "<script type='text/javascript'>//<![CDATA[ \n";
-        $html.= "var dgd_scrollboxes=[".implode(','.PHP_EOL, $js)."];\n";
-        $html.= "var scripthost='".plugins_url('/',  __FILE__)."';\n"; 
-        $html.= "var head=document.getElementsByTagName('head')[0];\n";
-        $html.= "//]]>\n</script>\n";
-        $html.="\n<!--     ===== END OF Dreamgrow Scroll Triggered Box =====   -->\n\n";
-        echo $html;
+        return $js;
     }
 
     /**
         Returns array of popup page objects + meta info
     */
-    public function get_matching_popups() {
+    private function get_matching_popups() {
         global $post;
         $active_pop_ups=array();
 
@@ -179,8 +162,8 @@ class DgdScrollbox {
 
             $popupcookie=$meta['cookieLifetime'];
             $clientcookie=(isset($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]) ? $_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]*1 : -1);
-            if (isset($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]) && ($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]=='closed')) {
-                // user is registered
+            if ($clientcookie=='9000') {
+                // closed for ever
                 continue;
             }
 
@@ -217,7 +200,6 @@ class DgdScrollbox {
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
 	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
-        // wp_enqueue_script( 'dgd-scrollbox-plugin-social', plugins_url( 'js/social.js', __FILE__ ), array('dgd-scrollbox-plugin') );
 
         $image='';
         $thumbnail=false;
@@ -229,12 +211,14 @@ class DgdScrollbox {
         $data = array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('dgd_stb_nonce'),
-            'debug' => current_user_can('manage_options'),
+            'debug' => true, // current_user_can('manage_options'),
             'permalink' => get_permalink($post->ID),
             'title' => $post->post_title,
             'thumbnail' => $thumbnail,
+            'scripthost' => plugins_url('/',  __FILE__), 
+            'scrollboxes' => $this->get_scrollboxes(),
         );
-        wp_localize_script('dgd-scrollbox-plugin', 'dgdStbAjax', $data);
+        wp_localize_script('dgd-scrollbox-plugin', '$DGD', $data);
     }
 
     public function close_button($atts) {
