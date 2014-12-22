@@ -474,13 +474,18 @@ $DGD.submitForm=function (e) {
 }
 
 $DGD.generateBox=function (box) {
-	var boxdiv = document.createElement('div');
-	boxdiv.className='dgd_stb_box '+box.theme;
-	boxdiv.id=box.id;
-	boxdiv.innerHTML=box.html;
-	document.getElementsByTagName('body')[0].appendChild(boxdiv);
+	var boxdiv;
+	if(typeof box.html != 'undefined' && box.html!='') {
+		boxdiv = document.createElement('div');
+		boxdiv.className='dgd_stb_box '+box.theme;
+		boxdiv.id=box.id;
+		boxdiv.innerHTML=box.html;
+		document.getElementsByTagName('body')[0].appendChild(boxdiv);
+	} else {
+		boxdiv = document.getElementById(box.id);
+	}
 	this.loadCss(this.scripthost+'themes/'+box.theme+'/style.css'); 
-	if(box.receiver_email) {
+	if(typeof box.receiver_email != 'undefined' && box.receiver_email!='') {
 		// if receiver_email==1 then replace default action
 		var form=jQuery(boxdiv).find('form');
 		if(typeof form !='undefined') {

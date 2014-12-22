@@ -19,6 +19,8 @@ define('DGDSCROLLBOX_VERSION', '2.0.4');
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
 
 class DgdScrollbox {
+    public $html='';
+    private $output='html';
 
     public function __construct() {
         add_action('init', array($this, 'create_dgd_scrollbox_post_type') );
@@ -26,6 +28,7 @@ class DgdScrollbox {
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
         add_action('wp_ajax_nopriv_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
+        add_action('wp_footer',  array($this, 'do_footer'), 100);
         if(is_admin() && current_user_can('manage_options')) {
             require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-admin.class.php');
             new DgdScrollboxAdmin();
@@ -123,11 +126,15 @@ class DgdScrollbox {
                 $meta['hoff']=0;
                 //  $js[]=$meta;
                 if (isset($meta['migrated_no_css'])) {
-                    $meta['html']=$closebutton.'<div id="scrolltriggered">'.apply_filters('the_content', $pop_up->post_content).'</div>';
+                    $html=$closebutton.'<div id="scrolltriggered">'.apply_filters('the_content', $pop_up->post_content).'</div>';
                 } else {
-                    $meta['html']=$closebutton.apply_filters('the_content', $pop_up->post_content);                
+                    $html=$closebutton.apply_filters('the_content', $pop_up->post_content);                
                 }
-
+                if($this->output=='js') {
+                    $meta['html']=$html;
+                } else {
+                    $this->html.='<div class="dgd_stb_box '.$meta['theme'].'" id="'.$meta['id'].'">'.$html.'</div>'."\n\n";
+                }
                 $js[]=$meta;
             }
         } 
@@ -194,10 +201,17 @@ class DgdScrollbox {
         return $active_pop_ups;
     }
 
+    public function do_footer() {
+        // using HTML output assumingly gives better compatibility with other plugins
+        echo "\n<!--     ===== START Dreamgrow Scroll Triggered Box =====   -->\n\n";
+        echo $this->html;
+        echo "\n<!--     ===== END OF Dreamgrow Scroll Triggered Box =====   -->\n\n";
+    }
+
     public function enqueue_style_n_script() {
         global $post;
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
-	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+	    // wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
 
         $image='';
