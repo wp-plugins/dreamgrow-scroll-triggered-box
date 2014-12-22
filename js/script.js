@@ -410,19 +410,22 @@ $DGD.closeBox=function () {
 	}
 }
 
-$DGD.regTimedClose=function(box, seconds_to_close) {
-	box.closingTime=Date.now()+seconds_to_close*1000;
-	$DGD.boxes_wait_for_close[$DGD.boxes_wait_for_close.length]=box;
+$DGD.regTimedClose=function(box) {
+	if(box.submit_auto_close!='') {
+		box.closingTime=Date.now()+parseInt(box.submit_auto_close)*1000;
+		$DGD.boxes_wait_for_close[$DGD.boxes_wait_for_close.length]=box;
+	}
 }
 
 $DGD.closeAfterSubmit=function (box_id) {
 	var box=$DGD.getBoxById(box_id);
 	if(box && box.hide_submitted) {
 		// 9000 means 'for ever'
-		$DGD.setCookie(box_id, '9000');
+		box.cookieLifetime=9000;
+		$DGD.setCookie(box.id, box.cookieLifetime);
 	}
 	// register timed close
-	$DGD.regTimedClose(box, 3);
+	$DGD.regTimedClose(box);
 }
 
 $DGD.submitForm=function (e) {
@@ -525,8 +528,8 @@ $DGD.scrollboxInit=function () {
 		}
 
 		if(this.boxes_wait_for_scroll.length>0) {
-			window.onscroll = function(){$DGD.didScroll = true;};	// BUG: possible conflict area
-			window.onresize = function(){$DGD.didResize = true;};	// BUG: possible conflict area
+			jQuery(window).scroll(function() {$DGD.didScroll = true;});
+			jQuery(window).resize(function() {$DGD.didResize = true;});
 
 			setInterval(function() {
 				if($DGD.didScroll) {
@@ -563,6 +566,4 @@ $DGD.scrollboxInit=function () {
 }
 
 $DGD.echo('script.js loaded');
-jQuery( document ).ready(function() {
-	$DGD.scrollboxInit();
-});
+jQuery( document ).ready(function() { $DGD.scrollboxInit();});

@@ -138,6 +138,14 @@ Class DgdScrollboxAdmin {
         '12px' => '12px', '14px' => '14px', '16px' => '16px', '18px' => '18px', '20px' => '20px', 
         '25px'=>'25px', '30px'=>'30px', '35px'=>'35px', '40px'=>'40px', '45px'=>'45px', '50px'=>'50px');
 
+    protected $submit_auto_close_values = array ('' => 'no', '0.1'=>'immediately', 
+        '1'=>'after 1 second',
+        '2'=>'after 2 seconds',
+        '3'=>'after 3 seconds',
+        '5'=>'after 5 seconds',
+        '10'=>'after 10 seconds',
+        );
+
 
     protected static $cookie_options=array(
         '-1' =>'Each time',
@@ -210,7 +218,7 @@ Class DgdScrollboxAdmin {
     public function __construct() {
         // register_activation_hook(__FILE__, array($this, 'install') );
         // register_deactivation_hook(__FILE__, array($this, 'uninstall') );
-        wp_register_script( 'dgd-scrollbox-plugin-js', plugins_url('js/admin.js', __FILE__ ), array('jquery','media-upload'), DGDSCROLLBOX_VERSION, true );
+        wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery','media-upload'), DGDSCROLLBOX_VERSION, true );
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_style_n_script') );
         add_action('admin_init', array($this, 'dgd_scrollbox_editor') );
         add_action('save_post',  array($this, 'save_dgd_scrollbox_fields'), 10, 2 );
@@ -237,7 +245,7 @@ Class DgdScrollboxAdmin {
     </ul>
     <p>Enter your email and stay on top of things,</p>
     <form action="#" class="stbContactForm" method="post">
-        <input type="hidden" name="submitted" id="submitted" value="true" /><input type="text" name="email" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
+        <input type="hidden" name="submitted" id="submitted" value="true" /><input type="email" name="email" required="required" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
     </form>
     <p class="stbMsgArea"></p>';
         }
@@ -252,9 +260,9 @@ Class DgdScrollboxAdmin {
         wp_enqueue_style( 'thickbox' );
         wp_enqueue_script('thickbox' );
 	    wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
-	    wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+	    // wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'media-upload' );
-        wp_enqueue_script( 'dgd-scrollbox-plugin-js' );
+        wp_enqueue_script( 'dgd-scrollbox-plugin-admin' );
     }
 
 
@@ -423,6 +431,7 @@ Class DgdScrollboxAdmin {
 
         // var_dump($dgd_stb_show);
         ?>
+
         <h1>Where and how to trigger?</h1>
         <table class="dgd_admin">
             <tr>
@@ -479,12 +488,6 @@ Class DgdScrollboxAdmin {
                 </td>
             </tr>
             <tr>
-                <td>Hide after submission</td>
-                <td>
-                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?=($dgd_stb['hide_submitted']?' checked="1"':'') ?>>
-                </td>
-            </tr>
-            <tr>
                 <td>Show</td>
                 <td>
                     <table>
@@ -498,14 +501,13 @@ Class DgdScrollboxAdmin {
                         </td>
                         <td style="vertical-align: top">Exceptions:<br /> 
                             <ul id="dgd_tabs">
-                                <li class="include selected" onClick="$DGD.showTab('include')">Include</li>
-                                <li class="exclude" onClick="$DGD.showTab('exclude')">Exclude</li>
+                                <li class="include selected" onClick="$DGD.showTab(this, 'include')">Include</li>
+                                <li class="exclude" onClick="$DGD.showTab(this, 'exclude')">Exclude</li>
                             </ul>
                             <div class="dgd_tab_container">
                             <div class="dgd_tab_content include">
-                                <table>
-                                <tr>
-                                <td style="vertical-align: top">Pages:<br />
+                                <div class="thirdcolumn">
+                                Pages:<br />
                                     <select name="dgd_stb_show[selected_pages][]" multiple="multiple" size="8">
                                         <?php 
                                         $walker = new Dgd_Page_Selector_Walker(isset($dgd_stb_show['selected_pages'])?$dgd_stb_show['selected_pages']:array());
@@ -515,8 +517,9 @@ Class DgdScrollboxAdmin {
                                         echo $options_list;
                                         ?>
                                     </select>
-                                </td>
-                                <td style="vertical-align: top">Categories:<br />
+                                </div>
+                                <div class="thirdcolumn">
+                                Categories:<br />
                                     <select name="dgd_stb_show[categories][]" multiple="multiple" size="8">
                                     <?php 
                                         $categories=get_categories();
@@ -527,8 +530,8 @@ Class DgdScrollboxAdmin {
                                     echo $this->populate_options($new_array,  (isset($dgd_stb_show['categories']) ? $dgd_stb_show['categories']: array()));
                                     ?>
                                     </select>
-                                </td>
-                                <td style="vertical-align: top">Tags:<br />
+                                </div>
+                                <div class="thirdcolumn">Tags:<br />
                                     <select name="dgd_stb_show[tags][]" multiple="multiple" size="8">
                                     <?php
                                     $tags = get_tags();
@@ -539,15 +542,12 @@ Class DgdScrollboxAdmin {
                                     echo $this->populate_options($new_array, (isset($dgd_stb_show['tags']) ? $dgd_stb_show['tags']: array()));
                                     ?>
                                     </select>
-                                </td>
-                                </tr>
-                                </table>
+                                </div>
+                                <div class="dgd_clear"></div>
                             </div>
 
                             <div class="dgd_tab_content exclude hide">
-                                <table>
-                                <tr>
-                                <td style="vertical-align: top">Pages:<br />
+                                <div class="thirdcolumn">Pages:<br />
                                     <select name="dgd_stb_hide[selected_pages][]" multiple="multiple" size="8">
                                         <?php 
                                         $walker = new Dgd_Page_Selector_Walker(isset($dgd_stb_hide['selected_pages'])?$dgd_stb_hide['selected_pages']:array());
@@ -557,8 +557,8 @@ Class DgdScrollboxAdmin {
                                         echo $options_list;
                                         ?>
                                     </select>
-                                </td>
-                                <td style="vertical-align: top">Categories:<br />
+                                </div>
+                                <div class="thirdcolumn">Categories:<br />
                                     <select name="dgd_stb_hide[categories][]" multiple="multiple" size="8">
                                     <?php 
                                         $categories=get_categories();
@@ -569,8 +569,8 @@ Class DgdScrollboxAdmin {
                                     echo $this->populate_options($new_array,  (isset($dgd_stb_hide['categories']) ? $dgd_stb_hide['categories']: array()));
                                     ?>
                                     </select>
-                                </td>
-                                <td style="vertical-align: top">Tags:<br />
+                                </div>
+                                <div class="thirdcolumn">Tags:<br />
                                     <select name="dgd_stb_hide[tags][]" multiple="multiple" size="8">
                                     <?php
                                     $tags = get_tags();
@@ -581,9 +581,8 @@ Class DgdScrollboxAdmin {
                                     echo $this->populate_options($new_array, (isset($dgd_stb_hide['tags']) ? $dgd_stb_hide['tags']: array()));
                                     ?>
                                     </select>
-                                </td>
-                                </tr>
-                                </table>
+                                </div>
+                                <div class="dgd_clear"></div>
                             </div>
                         </td>
                      </tr>
@@ -593,18 +592,38 @@ Class DgdScrollboxAdmin {
         </table>
 
 
-        <h1>Where to send default form data?</h1>
+        <h1>Actions after form submission</h1>
 
         <table class="dgd_admin">
         <tbody>
             <tr>
-                <td>Receiver email</td>
-                <td><input type="text" name="dgd_stb[receiver_email]" value="<?=$dgd_stb['receiver_email'] ?>"><br> (Leave email field empty if you want to use your own defined form, or "Contact Form 7", or some other third party form plugin)</td>
+                <td>Send submitted values to email</td>
+                <td><input type="text" name="dgd_stb[receiver_email]" value="<?=$dgd_stb['receiver_email'] ?>" class="dgd_text_input"><br> (Leave email field empty if you want to use form from some another plugin, like "Contact Form 7")</td>
+            </tr>
+            <tr>
+                <td>Say "Thank you" message</td>
+                <td><input type="text" name="dgd_stb[thankyou]" value="<?=$dgd_stb['thankyou'] ?>" class="dgd_text_input">
+                <?php if(function_exists('icl_get_languages')){ echo '<br />(Please note, that you can change it for each translation separately)';} ?></td>
+            </tr>
+            <tr>
+                <td>Hide box automatically</td>
+                <td><select name="dgd_stb[submit_auto_close]">
+                    <?php
+                         echo $this->populate_options($this->submit_auto_close_values, $dgd_stb['submit_auto_close']);
+
+                    ?>
+                </select></td>
+            </tr>
+            <tr>
+                <td>Hide box permanently for this user</td>
+                <td>
+                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?=($dgd_stb['hide_submitted']?' checked="1"':'') ?>>
+                </td>
             </tr>
         </tbody>
         </table>
 
-        <h1>Popup design</h1>
+        <h1>Scrollbox design</h1>
         <table class="dgd_admin">
             <tr>
                 <td>Theme</td>
@@ -624,8 +643,8 @@ Class DgdScrollboxAdmin {
                     </select>
                     Margin: <select name="dgd_stb[jsCss][margin]">
                     <?= $this->populate_options($this->margin_options, $dgd_stb['jsCss']['margin']) ?>
-                    </select><br />
-                    When using background image, box size will default to image size.
+                    </select>
+                    <br />(When using background image, box size will default to image size.)
                     </td>
             </tr>
 
@@ -811,10 +830,14 @@ Class DgdScrollboxAdmin {
 
         if(isset($_POST['dgd_stb_show']) && is_array($_POST['dgd_stb_show'])) {
             update_post_meta( $post_id, 'dgd_stb_show', $_POST['dgd_stb_show']);
+        } else {
+            delete_post_meta( $post_id, 'dgd_stb_show');
         }
 
         if(isset($_POST['dgd_stb_hide']) && is_array($_POST['dgd_stb_hide'])) {
             update_post_meta( $post_id, 'dgd_stb_hide', $_POST['dgd_stb_hide']);
+        } else {
+            delete_post_meta( $post_id, 'dgd_stb_hide');        
         }
     
     }

@@ -37,11 +37,11 @@ $DGD.select2D.init = function() {
 	$DGD.select2D.paint(ver, hor);
 }
 
-$DGD.showTab=function(tab) {
-	jQuery('.dgd_tab_container').find('.dgd_tab_content').addClass('hide');
-	jQuery('.dgd_tab_container').find('.'+tab).removeClass('hide');
-	jQuery('ul#dgd_tabs').find('li').removeClass('selected');
-	jQuery('ul#dgd_tabs').find('.'+tab).addClass('selected');
+$DGD.showTab=function(elem, tab) {
+	jQuery(elem).parent('ul').next('.dgd_tab_container').find('.dgd_tab_content').addClass('hide');
+	jQuery(elem).parent('ul').next('.dgd_tab_container').find('.'+tab).removeClass('hide');
+	jQuery(elem).parent('ul').find('li').removeClass('selected');
+	jQuery(elem).addClass('selected');
 }
 
 
@@ -57,7 +57,7 @@ jQuery(document).ready(function($){
 	jQuery('#upload_bg_image_button').click(function() {
 		formfield = jQuery(this).prev('input');
 		tb_show('Choose background image', 'media-upload.php?type=image&amp;TB_iframe=true');
-		window.restore_send_to_editor = window.send_to_editor;
+		$DGD.restore_send_to_editor = window.send_to_editor;
 		window.send_to_editor=function(html) {
 			imgurl = jQuery('img',html).attr('src');
 			jQuery(formfield).val(imgurl);
@@ -66,7 +66,7 @@ jQuery(document).ready(function($){
 			jQuery(dgd_stb_height).append('<option value="'+imgheight+'" selected="selected">'+imgheight+'</option>');
 			jQuery(dgd_stb_width).append('<option value="'+imgwidth+'" selected="selected">'+imgwidth+'</option>');
 			tb_remove();		
-			window.send_to_editor=window.restore_send_to_editor;
+			window.send_to_editor=$DGD.restore_send_to_editor;
 		}
 		return false;
 	});
@@ -76,12 +76,12 @@ jQuery(document).ready(function($){
 		upload_image_type='closeimage';
 		// formfield = jQuery('#upload_image').attr('name');
 		tb_show('Choose close button image', 'media-upload.php?type=image&amp;TB_iframe=true');
-		window.restore_send_to_editor = window.send_to_editor;
+		$DGD.restore_send_to_editor = window.send_to_editor;
 		window.send_to_editor=function(html) {
 			imgurl = jQuery('img',html).attr('src');
 			jQuery(formfield).val(imgurl);
 			tb_remove();		
-			window.send_to_editor=window.restore_send_to_editor;
+			window.send_to_editor=$DGD.restore_send_to_editor;
 		}
 		return false;
 	});

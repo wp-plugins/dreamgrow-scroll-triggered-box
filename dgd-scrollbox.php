@@ -22,7 +22,6 @@ class DgdScrollbox {
 
     public function __construct() {
         add_action('init', array($this, 'create_dgd_scrollbox_post_type') );
-        // add_action('wp_footer',  array($this, 'show_scrollbox'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_style_n_script') );
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
@@ -89,7 +88,7 @@ class DgdScrollbox {
         $headers = 'From: ' . $emailTo . "\r\n" . 'Reply-To: ' . $email;
 
         wp_mail($emailTo, $subject, $body, $headers);
-        echo json_encode(array('html'=>'You are subscribed. Thank You!', 'status'=>200));
+        echo json_encode(array('html'=>$meta['thankyou'], 'status'=>200));
         die();
     }
 

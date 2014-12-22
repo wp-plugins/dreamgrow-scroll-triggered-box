@@ -69,6 +69,7 @@ Class DgdScrollboxHelper {
         'showDuration' => 0,
         'cookieLifetime' => 1,     // days
         'receiver_email' => '',
+        'thankyou' => 'You are subscribed. Thank You!',
     );
 
     public static $dgd_stb_show_meta_default = array(
