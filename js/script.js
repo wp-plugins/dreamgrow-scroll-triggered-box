@@ -8,7 +8,7 @@ if(typeof ($DGD.echo) == 'undefined') {
 	}
 }
 
-$DGD.didScroll = false;
+$DGD.didScroll = true;
 $DGD.didResize = false;
 $DGD.loadedthemes=[];
 $DGD.screenheight=2000;
@@ -434,6 +434,12 @@ $DGD.submitForm=function (e) {
 	var form=jQuery(this);
 	var box_id=form.closest('.dgd_stb_box').attr('id');
 	var message_container=form.next('p');
+	// BUG: add here fallback for situation where this <p> does not exist
+	if(typeof message_container == 'undefined') {
+		form.parent().append('<p class="stbMsgArea"></p>');
+		message_container=form.next('p.stbMsgArea');
+		$DGD.echo('P added');
+	}
 
 	var sendobj={};
 	sendobj.box=box_id;

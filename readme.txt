@@ -117,4 +117,10 @@ Release
 * Prevent javascript caching after plugin upgrades (2.0.4)
 * Close box permanently after successful form submission (2.0.4)
 * Fix admin menu icon on WP<3.8 (2.0.4)
-* On Twenty Twelwe theme background color of default submit button is wrong
+* On Twenty Twelwe theme background color of default submit button is wrong (2.1)
+* Ajax-driven third party form builders do not work (2.1)
+* Add translatable "thank you" message (2.1)
+* Add "ear" tab for closed scrollbox (2.2)
+* Add preview button for Admin screen (2.2)
+
+

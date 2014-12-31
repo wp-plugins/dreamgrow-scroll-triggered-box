@@ -72,9 +72,14 @@ class DgdScrollbox {
         }
         
         $box_id=(int)str_replace( DGDSCROLLBOXTYPE.'-', '', $_POST['box']);
-        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         $box_id = filter_var($box_id, FILTER_VALIDATE_INT);
         $meta=get_post_meta($box_id, 'dgd_stb', true );
+
+        if(isset($_POST['email'])) {
+            $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+        } else {
+            $email = $meta['receiver_email'];
+        }
 
         $emailTo = $meta['receiver_email'] ? $meta['receiver_email'] : get_settings('admin_email');
         $subject = __('Dgd Scrollbox submit on ' . get_bloginfo('name'));
