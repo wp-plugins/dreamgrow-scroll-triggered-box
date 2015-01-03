@@ -21,7 +21,7 @@ ul#dgd_tabs li.selected { color: #000; background-color: #f1f0ee; font-weight: b
 div.dgd_tab_container .dgd_tab_content { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
 div.dgd_tab_container td {  vertical-align: top; width: 30%; }
 div.dgd_tab_container .dgd_tab_content .thirdcolumn { width: 33%; float: left }
-div.dgd_tab_container select {  box-sizing: border-box; width: 95%; }
+div.dgd_tab_container select {  box-sizing: border-box; width: 95%; height: 10em !important; }
 
 div.dgd_tab_container .hide { display: none; }
 .dgd_clear { clear: both }

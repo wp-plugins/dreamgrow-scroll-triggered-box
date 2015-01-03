@@ -214,7 +214,7 @@ class DgdScrollbox {
     }
 
     public function enqueue_style_n_script() {
-        global $post;
+        global $post, $wp_version;
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
 	    // wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
@@ -226,6 +226,8 @@ class DgdScrollbox {
             $thumbnail=$image[0];
         } 
 
+        $scrollboxes_array=$this->get_scrollboxes();
+
         $data = array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('dgd_stb_nonce'),
@@ -234,8 +236,16 @@ class DgdScrollbox {
             'title' => $post->post_title,
             'thumbnail' => $thumbnail,
             'scripthost' => plugins_url('/',  __FILE__), 
-            'scrollboxes' => $this->get_scrollboxes(),
         );
+
+        if(version_compare($wp_version, '3.3', '>=')) {
+            // WP=3.3 or newer
+            $data['scrollboxes']= $scrollboxes_array;
+        } else {
+            // WP<3.3 does not support multi-dimensional arrays in wp_localize_script
+            // so we add $DGD.scrollboxes separately, without wp_localize_script encoding help
+            $data['l10n_print_after'] = '$DGD.scrollboxes = ' . json_encode( $scrollboxes_array ) . ';';
+        }
         wp_localize_script('dgd-scrollbox-plugin', '$DGD', $data);
     }
 

@@ -16,6 +16,7 @@ $DGD.screenwidth=4000;
 $DGD.boxes_wait_for_scroll=[];
 $DGD.boxes_with_relative_position=[];
 $DGD.boxes_wait_for_close=[];
+$DGD.boxes_wait_for_open=[];
 $DGD.docheight=2000;
 $DGD.toScroll=2000;
 
@@ -153,10 +154,14 @@ $DGD.calcScroll=function () {
 
 	for (var i=0; i<this.boxes_wait_for_scroll.length; i++) {
 		var box=this.boxes_wait_for_scroll[i];
-		if(rate>=box.trigger.scroll && box.hidden && !box.closed) {
-			this.showBox(box);
-		}
-		if(rate<box.trigger.scroll && !box.hidden) {
+		if(box.trigger.action=='scroll' && rate>=box.trigger.scroll && box.hidden && !box.closed) {
+			if(box.trigger.delaytime>0) {
+				this.regTimedOpening(box, box.trigger.delaytime);
+			} else {
+				this.showBox(box);
+			}
+		} 
+		if(box.trigger.action=='scroll' && rate<box.trigger.scroll && !box.hidden) {
 			this.hideBox(box);
 		}
 	}
@@ -229,7 +234,7 @@ $DGD.placeBox=function (box) {
 
 	// set div properties first as they affect position calculations later
 	if(box.jsCss.backgroundColor!=null && box.jsCss.backgroundColor!='')		box.div.css('background-color', box.jsCss.backgroundColor); 
-	if(box.jsCss.padding!=null)		box.div.css('padding', box.jsCss.padding); 
+	if(box.jsCss.padding!=null)		box.div.css('padding', box.jsCss.padding+'px'); 
 	box.jsCss.margin=parseInt(box.jsCss.margin); 
 	if(box.jsCss.borderWidth!='0px' && box.jsCss.borderColor!='')		box.div.css('border', box.jsCss.borderColor+' solid '+box.jsCss.borderWidth); 
 	if(box.jsCss.borderRadius!='0px')	box.div.css('border-radius', ''+box.jsCss.borderRadius); 
@@ -380,6 +385,21 @@ $DGD.hideBox=function (box) {
 	box.div.animate(box.anim_from, box.transition.speed, 'swing', function() { box.div.css('display', 'none'); });
 }
 
+$DGD.regTimedClose=function(box, seconds) {
+	if(seconds>0) {
+		box.closingTime=Date.now()+parseInt(seconds)*1000;
+		$DGD.boxes_wait_for_close[$DGD.boxes_wait_for_close.length]=box;
+	}
+}
+
+$DGD.regTimedOpening=function(box, seconds) {
+	if(seconds>0) {
+		box.openingTime=Date.now()+parseInt(seconds);
+		$DGD.boxes_wait_for_open[$DGD.boxes_wait_for_open.length]=box;
+	}
+}
+
+
 $DGD.showBox=function (box) {
 	this.echo('show box '+box.id);
 	if(!box) box=this;
@@ -390,6 +410,10 @@ $DGD.showBox=function (box) {
 	box.hidden=false;
 	box.div.css('display','block').stop(true, true);
 	box.div.animate(box.anim_to, box.transition.speed, 'swing');
+	if(box.delay_auto_close>0) {
+		$DGD.echo('reg timed close:'+box.delay_auto_close);
+		$DGD.regTimedClose(box, box.delay_auto_close);
+	}
 }
 
 $DGD.getBoxById=function (box_id) {
@@ -397,6 +421,16 @@ $DGD.getBoxById=function (box_id) {
 		if($DGD.scrollboxes[i].id==box_id) return $DGD.scrollboxes[i];
 	}
 	return false;
+}
+
+$DGD.getBoxByElementAction=function(elem, e) {
+	for (var i=0; i<$DGD.scrollboxes.length; i++) {
+		var box=$DGD.scrollboxes[i];
+		if(box.trigger.action==e.type && jQuery(box.trigger.element).get(0)==elem) {
+			return box;
+		}
+	}
+
 }
 
 $DGD.closeBox=function () {
@@ -410,13 +444,6 @@ $DGD.closeBox=function () {
 	}
 }
 
-$DGD.regTimedClose=function(box) {
-	if(box.submit_auto_close!='') {
-		box.closingTime=Date.now()+parseInt(box.submit_auto_close)*1000;
-		$DGD.boxes_wait_for_close[$DGD.boxes_wait_for_close.length]=box;
-	}
-}
-
 $DGD.closeAfterSubmit=function (box_id) {
 	var box=$DGD.getBoxById(box_id);
 	if(box && box.hide_submitted) {
@@ -425,7 +452,7 @@ $DGD.closeAfterSubmit=function (box_id) {
 		$DGD.setCookie(box.id, box.cookieLifetime);
 	}
 	// register timed close
-	$DGD.regTimedClose(box);
+	$DGD.regTimedClose(box, box.submit_auto_close);
 }
 
 $DGD.submitForm=function (e) {
@@ -512,6 +539,8 @@ $DGD.scrollboxInit=function () {
 
 		for (var i=0; i<this.scrollboxes.length; i++) {
 			var box=this.scrollboxes[i];
+			var box_id = ''
+			box_id+=this.scrollboxes[i].id;
 
 			this.echo('i:'+i+' box:'+box);
 			this.echo('box '+box.id+' mob '+ box.hide_mobile);
@@ -528,14 +557,22 @@ $DGD.scrollboxInit=function () {
 			this.placeBox(box);	
 
 			// start timers
-			if(box.trigger.action=='delay') {		// time action triggered box
-				this.showBox(box);
-			}else if (box.trigger.action=='scroll') { // scroll action triggered box
-				box.trigger.delaytime=0;
-				this.boxes_wait_for_scroll[this.boxes_wait_for_scroll.length]=box;
-			}else if (box.trigger.action=='element') { // element action triggered box
+			if (box.trigger.action=='mouseover' || box.trigger.action=='click') {
+				if(jQuery(box.trigger.element).length>0) {
+					if(box.trigger.action=='mouseover') {
+						jQuery(box.trigger.element).mouseover(function(e) {
+							$DGD.showBox($DGD.getBoxByElementAction(this, e));
+						});
+					} else {
+						jQuery(box.trigger.element).click(function(e) {
+							$DGD.showBox($DGD.getBoxByElementAction(this, e));
+						});
+					}
+				}
+			} else {
 				this.boxes_wait_for_scroll[this.boxes_wait_for_scroll.length]=box;
 			}
+
 		}
 
 		if(this.boxes_wait_for_scroll.length>0) {
@@ -561,10 +598,20 @@ $DGD.scrollboxInit=function () {
 							box.closed=true;
 							$DGD.hideBox(box);
 							// remove box from queue
-							$DGD.boxes_wait_for_close.splice[i];
+							$DGD.boxes_wait_for_close.splice(i, 1);
+						}
+					}				
+				}
+				if($DGD.boxes_wait_for_open.length>0) {
+					var d=Date.now();
+					for(var i=0; i<$DGD.boxes_wait_for_open.length; i++) {
+						var box=$DGD.boxes_wait_for_open[i];
+						if(box.openingTime<d) {
+							$DGD.showBox(box);
+							// remove box from queue
+							$DGD.boxes_wait_for_open.splice(i, 1);
 						}
 					}
-				
 				}
 			}, 333);
 		}

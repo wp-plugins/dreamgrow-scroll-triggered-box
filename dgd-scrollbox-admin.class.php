@@ -32,10 +32,10 @@ Class DgdScrollboxAdmin {
         '450'=>'450', '500'=>'500', '550'=>'550', '600'=>'600', '650'=>'650', '700'=>'700');
 
     protected $trigger_options = array(
-        'scroll' => 'Scroll',
-        'element' => 'Element',
-        // 'delay' => 'Time delay',
-        // 'scroll_delay' => 'Scroll + delay',
+        'scroll' => 'Scroll and/or Time delay',
+        'element' => 'Scroll to Element',
+        'click' => 'Click on Element',
+        'mouseover' => 'Mouse over Element',
         );
 
 
@@ -45,7 +45,7 @@ Class DgdScrollboxAdmin {
         );
 
     protected $scroll_options = array(
-        '10' => '10 %', '20' => '20 %', '30' => '30 %', '40' => '40 %', '50' => '50 %', '60' => '60 %',
+        '0' => '0 %', '10' => '10 %', '20' => '20 %', '30' => '30 %', '40' => '40 %', '50' => '50 %', '60' => '60 %',
         '70' => '70 %', '80' => '80 %', '90' => '90 %', '99' => '100 %',
         );
 
@@ -55,9 +55,10 @@ Class DgdScrollboxAdmin {
         );
 
     // how long popup is visible, msec
-    protected $showtime_options = array(
-        '0' => 'manual close only', 
-        '3000' => '3 sec', '5000' => '5 sec', '8000' => '8 sec', '10000' => '10 sec', '20000' => '20 sec', '40000' => '40 sec', 
+    protected $delay_auto_close_options = array(
+        '0' => 'No auto close', 
+        '3' => '3 sec', '5' => '5 sec', '8' => '8 sec', '10' => '10 sec', '20' => '20 sec', 
+        '40' => '40 sec', '60' => '1 minute', '120'=> '2 minutes', '180'=> '3 minutes',
         );
 
     // Vertical positioning options
@@ -138,12 +139,9 @@ Class DgdScrollboxAdmin {
         '12px' => '12px', '14px' => '14px', '16px' => '16px', '18px' => '18px', '20px' => '20px', 
         '25px'=>'25px', '30px'=>'30px', '35px'=>'35px', '40px'=>'40px', '45px'=>'45px', '50px'=>'50px');
 
-    protected $submit_auto_close_values = array ('' => 'no', '0.1'=>'immediately', 
-        '1'=>'after 1 second',
-        '2'=>'after 2 seconds',
-        '3'=>'after 3 seconds',
-        '5'=>'after 5 seconds',
-        '10'=>'after 10 seconds',
+    protected $submit_auto_close_values = array ('0' => 'no auto close', '0.1'=>'immediately', 
+        '1'=>'1 second', '2'=>'2 seconds', '3'=>'3 seconds', '5'=>'5 seconds',
+        '10'=>'10 seconds', '20'=>'20 seconds', '60'=>'1 minute',
         );
 
 
@@ -323,9 +321,9 @@ Class DgdScrollboxAdmin {
         }
         ?>
         <h1>General actions</h1>
-        <a href="edit.php?post_type=<?=DGDSCROLLBOXTYPE ?>&page=dgd_scrollbox_general_settings&action=force_migrate">Migrate again from old plugin</a><br>
-        <a href="edit.php?post_type=<?=DGDSCROLLBOXTYPE ?>&page=dgd_scrollbox_general_settings&action=show_stb_options">Show old plugin options</a><br>
-        <a href="edit.php?post_type=<?=DGDSCROLLBOXTYPE ?>&page=dgd_scrollbox_general_settings&action=undo_migration">Clear migration flag</a><br>
+        <a href="edit.php?post_type=<?php echo DGDSCROLLBOXTYPE ?>&page=dgd_scrollbox_general_settings&action=force_migrate">Migrate again from old plugin</a><br>
+        <a href="edit.php?post_type=<?php echo DGDSCROLLBOXTYPE ?>&page=dgd_scrollbox_general_settings&action=show_stb_options">Show old plugin options</a><br>
+        <a href="edit.php?post_type=<?php echo DGDSCROLLBOXTYPE ?>&page=dgd_scrollbox_general_settings&action=undo_migration">Clear migration flag</a><br>
         <?php
     }
 
@@ -440,16 +438,16 @@ Class DgdScrollboxAdmin {
                 <td>Triggering action</td>
                 <td>
                     <select name="dgd_stb[trigger][action]">
-                        <?= $this->populate_options($this->trigger_options, $dgd_stb['trigger']['action']) ?>
+                        <?php echo $this->populate_options($this->trigger_options, $dgd_stb['trigger']['action']) ?>
                     </select>
-                    <!-- Delay: <select name="dgd_stb[trigger][delaytime]">
-                        <?php // echo $this->populate_options($this->delaytime_options, $dgd_stb['trigger']['delaytime']) 
-                        ?>
-                    </select> -->
                     Scroll: <select name="dgd_stb[trigger][scroll]">
-                        <?= $this->populate_options($this->scroll_options, $dgd_stb['trigger']['scroll']) ?>
+                        <?php echo $this->populate_options($this->scroll_options, $dgd_stb['trigger']['scroll']) ?>
                     </select>
-                    Element: <input type="text" name="dgd_stb[trigger][element]" value="<?=$dgd_stb['trigger']['element'] ?>">
+                    Additional time delay: <select name="dgd_stb[trigger][delaytime]">
+                        <?php echo $this->populate_options($this->delaytime_options, $dgd_stb['trigger']['delaytime']) ?>
+                    </select>
+
+                    Element: <input type="text" name="dgd_stb[trigger][element]" value="<?php echo $dgd_stb['trigger']['element'] ?>"><br>
                 </td>
             </tr>
             <tr>
@@ -471,22 +469,22 @@ Class DgdScrollboxAdmin {
 <td><a href="#void0" onClick="$DGD.select2D.choose('bottom', 'right')"> </a></td>
 </tr>
 </table>
-<input type="hidden" name="dgd_stb[vpos]" value="<?=$dgd_stb['vpos'] ?>" id="vpos_selector">
-<input type="hidden" name="dgd_stb[hpos]" value="<?=$dgd_stb['hpos'] ?>" id="hpos_selector">
+<input type="hidden" name="dgd_stb[vpos]" value="<?php echo $dgd_stb['vpos'] ?>" id="vpos_selector">
+<input type="hidden" name="dgd_stb[hpos]" value="<?php echo $dgd_stb['hpos'] ?>" id="hpos_selector">
                 </td>
             </tr>
             <tr>
                 <td>Popup frequency</td>
                 <td>
                     <select name="dgd_stb[cookieLifetime]">
-                    <?= $this->populate_options(DgdScrollboxAdmin::$cookie_options, $dgd_stb['cookieLifetime']) ?>
+                    <?php echo  $this->populate_options(DgdScrollboxAdmin::$cookie_options, $dgd_stb['cookieLifetime']) ?>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Hide on mobiles</td>
                 <td>
-                    <input type="checkbox" name="dgd_stb[hide_mobile]" value="1"<?=($dgd_stb['hide_mobile']?' checked="1"':'') ?>>
+                    <input type="checkbox" name="dgd_stb[hide_mobile]" value="1"<?php echo ($dgd_stb['hide_mobile']?' checked="1"':'') ?>>
                 </td>
             </tr>
             <tr>
@@ -600,15 +598,15 @@ Class DgdScrollboxAdmin {
         <tbody>
             <tr>
                 <td>Send submitted values to email</td>
-                <td><input type="text" name="dgd_stb[receiver_email]" value="<?=$dgd_stb['receiver_email'] ?>" class="dgd_text_input"><br> (Leave email field empty if you want to use form from some another plugin, like "Contact Form 7")</td>
+                <td><input type="text" name="dgd_stb[receiver_email]" value="<?php echo $dgd_stb['receiver_email'] ?>" class="dgd_text_input"><br> (Leave email field empty if you want to use form from third party plugin)</td>
             </tr>
             <tr>
-                <td>Say "Thank you" message</td>
-                <td><input type="text" name="dgd_stb[thankyou]" value="<?=$dgd_stb['thankyou'] ?>" class="dgd_text_input">
+                <td>"Thank you" message</td>
+                <td><input type="text" name="dgd_stb[thankyou]" value="<?php echo $dgd_stb['thankyou'] ?>" class="dgd_text_input">
                 <?php if(function_exists('icl_get_languages')){ echo '<br />(Please note, that you can change it for each translation separately)';} ?></td>
             </tr>
             <tr>
-                <td>Hide box automatically</td>
+                <td>Close box automatically after "Thank You" message is shown for</td>
                 <td><select name="dgd_stb[submit_auto_close]">
                     <?php
                          echo $this->populate_options($this->submit_auto_close_values, $dgd_stb['submit_auto_close']);
@@ -617,34 +615,50 @@ Class DgdScrollboxAdmin {
                 </select></td>
             </tr>
             <tr>
-                <td>Hide box permanently for this user</td>
+                <td>Close box permanently for this user</td>
                 <td>
-                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?=($dgd_stb['hide_submitted']?' checked="1"':'') ?>>
+                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php echo ($dgd_stb['hide_submitted']?' checked="1"':'') ?>>
                 </td>
             </tr>
         </tbody>
         </table>
 
+        <h1>Auto close</h1>
+
+        <table class="dgd_admin">
+        <tbody>
+            <tr>
+                <td>Hide box automatically after it has been visible for</td>
+                <td>
+                    <select name="dgd_stb[delay_auto_close]">
+                    <?php echo $this->populate_options($this->delay_auto_close_options, $dgd_stb['delay_auto_close']) ?>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+
+
         <h1>Scrollbox design</h1>
         <table class="dgd_admin">
             <tr>
                 <td>Theme</td>
-                <td><select name="dgd_stb[theme]"><?=$this->get_templates($dgd_stb['theme']) ?></select></td>
+                <td><select name="dgd_stb[theme]"><?php echo $this->get_templates($dgd_stb['theme']) ?></select></td>
             </tr>
             <tr>
                 <td class="dgd_leftcol">Popup box dimensions (px)</td>
                 <td>
                     Height: <select name="dgd_stb[height]" id="dgd_stb_height">
-                    <?= $this->populate_options($this->height_select_options, $dgd_stb['height']) ?>
+                    <?php echo  $this->populate_options($this->height_select_options, $dgd_stb['height']) ?>
                     </select> 
                     Width: <select name="dgd_stb[width]" id="dgd_stb_width">
-                    <?= $this->populate_options($this->width_select_options, $dgd_stb['width']) ?>
+                    <?php echo  $this->populate_options($this->width_select_options, $dgd_stb['width']) ?>
                     </select>
                     Padding: <select name="dgd_stb[jsCss][padding]">
-                    <?= $this->populate_options($this->padding_options, $dgd_stb['jsCss']['padding']) ?>
+                    <?php echo  $this->populate_options($this->padding_options, $dgd_stb['jsCss']['padding']) ?>
                     </select>
                     Margin: <select name="dgd_stb[jsCss][margin]">
-                    <?= $this->populate_options($this->margin_options, $dgd_stb['jsCss']['margin']) ?>
+                    <?php echo  $this->populate_options($this->margin_options, $dgd_stb['jsCss']['margin']) ?>
                     </select>
                     <br />(When using background image, box size will default to image size.)
                     </td>
@@ -653,9 +667,9 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Popup style</td>
                 <td>
-                    Back color <input type="text" name="dgd_stb[jsCss][backgroundColor]" value="<?=$dgd_stb['jsCss']['backgroundColor'] ?>" class="dgd-popup-color-picker" />
+                    Back color <input type="text" name="dgd_stb[jsCss][backgroundColor]" value="<?php echo $dgd_stb['jsCss']['backgroundColor'] ?>" class="dgd-popup-color-picker" />
                     Box shadow <select name="dgd_stb[jsCss][boxShadow]">
-                    <?= $this->populate_options($this->shadow_options, $dgd_stb['jsCss']['boxShadow']) ?>
+                    <?php echo  $this->populate_options($this->shadow_options, $dgd_stb['jsCss']['boxShadow']) ?>
                     </select>
                 </td>
             </tr>
@@ -663,12 +677,12 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Border</td>
                 <td>
-                    Color <input type="text" name="dgd_stb[jsCss][borderColor]" value="<?=$dgd_stb['jsCss']['borderColor'] ?>" class="dgd-popup-color-picker" />
+                    Color <input type="text" name="dgd_stb[jsCss][borderColor]" value="<?php echo $dgd_stb['jsCss']['borderColor'] ?>" class="dgd-popup-color-picker" />
                     Width  <select name="dgd_stb[jsCss][borderWidth]">
-                    <?= $this->populate_options($this->borderwidth_options, $dgd_stb['jsCss']['borderWidth']) ?>
+                    <?php echo  $this->populate_options($this->borderwidth_options, $dgd_stb['jsCss']['borderWidth']) ?>
                     </select>
                     Corner radius <select name="dgd_stb[jsCss][borderRadius]">
-                    <?= $this->populate_options($this->borderradius_options, $dgd_stb['jsCss']['borderRadius']) ?>
+                    <?php echo  $this->populate_options($this->borderradius_options, $dgd_stb['jsCss']['borderRadius']) ?>
                     </select>
 
                 </td>
@@ -678,7 +692,7 @@ Class DgdScrollboxAdmin {
             <tr>
             <td>Background Image</td>
             <td><label for="upload_image">
-                <input type="text" size="36" name="dgd_stb[jsCss][backgroundImageUrl]" value="<?= $dgd_stb['jsCss']['backgroundImageUrl'] ?>" />
+                <input type="text" size="36" name="dgd_stb[jsCss][backgroundImageUrl]" value="<?php echo  $dgd_stb['jsCss']['backgroundImageUrl'] ?>" />
                 <input id="upload_bg_image_button" type="button" value="Upload" />
                 <br />Enter an URL or upload bacground image.
                 </label></td>
@@ -687,29 +701,17 @@ Class DgdScrollboxAdmin {
             <tr>
             <td>Close button Image</td>
             <td><label for="upload_image">
-                <input type="text" size="36" name="dgd_stb[closeImageUrl]" value="<?= $dgd_stb['closeImageUrl'] ?>" />
+                <input type="text" size="36" name="dgd_stb[closeImageUrl]" value="<?php echo  $dgd_stb['closeImageUrl'] ?>" />
                 <input id="upload_close_image_button" type="button" value="Upload" />
                 <br />Enter an URL or upload your custom close button image.
                 </label></td>
             </tr>          
 
-            <!--
-            <tr>
-                <td style="width: 200px">Popup duration</td>
-                <td>
-                    <select name="dgd_stb[showDuration]">
-                    <?php 
-                        // echo $this->populate_options($this->showtime_options, $dgd_stb['showDuration']) 
-                    ?>
-                    </select>
-                </td>
-            </tr>
-            -->
             <tr>
                 <td>Slide in direction</td>
                 <td>
                     <select name="dgd_stb[transition][from]">
-                    <?= $this->populate_options($this->from_options, $dgd_stb['transition']['from']) ?>
+                    <?php echo  $this->populate_options($this->from_options, $dgd_stb['transition']['from']) ?>
                     </select>
                 </td>
             </tr>
@@ -717,14 +719,14 @@ Class DgdScrollboxAdmin {
                 <td>Additional effect</td>
                 <td>
                     <select name="dgd_stb[transition][effect]">
-                    <?= $this->populate_options($this->trans_options, $dgd_stb['transition']['effect']) ?>
+                    <?php echo  $this->populate_options($this->trans_options, $dgd_stb['transition']['effect']) ?>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Transition duration</td>
                 <td><select name="dgd_stb[transition][speed]">
-                    <?= $this->populate_options($this->speed_options, $dgd_stb['transition']['speed']) ?>
+                    <?php echo  $this->populate_options($this->speed_options, $dgd_stb['transition']['speed']) ?>
                     </select>
                 </td>
             </tr>
@@ -737,22 +739,22 @@ Class DgdScrollboxAdmin {
                 <td><?php _e('Social buttons', 'stb'); ?></td>
                 <td>
                     <select name="dgd_stb[social][facebook]">
-                        <?= $this->populate_options($this->facebook_options, $dgd_stb['social']['facebook']) ?>
+                        <?php echo  $this->populate_options($this->facebook_options, $dgd_stb['social']['facebook']) ?>
                     </select> <label for="bpages">Facebook</label><br />
                     <select name="dgd_stb[social][twitter]">
-                        <?= $this->populate_options($this->twitter_options, $dgd_stb['social']['twitter']) ?>
+                        <?php echo  $this->populate_options($this->twitter_options, $dgd_stb['social']['twitter']) ?>
                     </select> <label for="bposts">Twitter</label><br />
                     <select name="dgd_stb[social][google]">
-                        <?= $this->populate_options($this->google_options, $dgd_stb['social']['google']) ?>
+                        <?php echo  $this->populate_options($this->google_options, $dgd_stb['social']['google']) ?>
                     </select> <label for="bposts">Google+</label><br />
                     <select name="dgd_stb[social][pinterest]">
-                        <?= $this->populate_options($this->pinterest_options, $dgd_stb['social']['pinterest']) ?>
+                        <?php echo  $this->populate_options($this->pinterest_options, $dgd_stb['social']['pinterest']) ?>
                     </select> <label for="bposts">Pinterest</label> <small>* Pin it button will only be displayed on the pages that have a featured image.</small><br />
                     <select name="dgd_stb[social][stumbleupon]">
-                        <?= $this->populate_options($this->stumbleupon_options, $dgd_stb['social']['stumbleupon']) ?>
+                        <?php echo  $this->populate_options($this->stumbleupon_options, $dgd_stb['social']['stumbleupon']) ?>
                     </select> <label for="bposts">Stumbleupon</label><br />
                     <select name="dgd_stb[social][linkedin]">
-                        <?= $this->populate_options($this->linkedin_options, $dgd_stb['social']['linkedin']) ?>
+                        <?php echo  $this->populate_options($this->linkedin_options, $dgd_stb['social']['linkedin']) ?>
                     </select> <label for="bposts">LinkedIN</label>
                 </td>
             </tr>
