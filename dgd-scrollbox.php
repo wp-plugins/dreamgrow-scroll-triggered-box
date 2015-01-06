@@ -231,7 +231,7 @@ class DgdScrollbox {
         $data = array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('dgd_stb_nonce'),
-            'debug' => true, // current_user_can('manage_options'),
+            'debug' => (current_user_can('manage_options') ? '1' : ''),
             'permalink' => get_permalink($post->ID),
             'title' => $post->post_title,
             'thumbnail' => $thumbnail,
