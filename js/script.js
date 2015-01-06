@@ -461,12 +461,12 @@ $DGD.submitForm=function (e) {
 	var form=jQuery(this);
 	var box_id=form.closest('.dgd_stb_box').attr('id');
 	var message_container=form.next('p');
-	// BUG: add here fallback for situation where this <p> does not exist
-	if(typeof message_container == 'undefined') {
+	// Fallback for situation where this <p> does not exist
+	if(message_container.length==0) {
 		form.parent().append('<p class="stbMsgArea"></p>');
-		message_container=form.next('p.stbMsgArea');
+		message_container=form.parent().find('p.stbMsgArea');
 		$DGD.echo('P added');
-	}
+	} 
 
 	var sendobj={};
 	sendobj.box=box_id;
