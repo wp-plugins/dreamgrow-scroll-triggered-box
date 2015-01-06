@@ -34,8 +34,8 @@
 
 .dgd_stb_box.big_blue form { overflow: hidden; margin: 10px 0 0 0; }
 .dgd_stb_box.big_blue form input { line-height: 30px; background-color: #282d34; -webkit-border-radius: 5px; border-radius: 5px; color: #FFF; display: block; float: left; padding: 0 5px; border: none; width: 60%; height: 30px; -webkit-box-shadow: 0px 1px 0px 1px #93b3c2; box-shadow: 0px 1px 0px 1px #93b3c2; }
-.dgd_stb_box.big_blue form input.submit, .dgd_stb_box form input[type=submit] { background-color: #be1616 !important; width: 33% !important; cursor: pointer; float: right !important; }
-.dgd_stb_box.big_blue form input.submit:hover, .dgd_stb_box form input[type=submit]:hover { background-color: #db1010 !important; }
+.dgd_stb_box.big_blue form input.submit, .dgd_stb_box form input[type=submit] { background-color: #be1616; background-image: none; width: 33% !important; cursor: pointer; float: right !important; }
+.dgd_stb_box.big_blue form input.submit:hover, .dgd_stb_box form input[type=submit]:hover { background-color: #db1010; }
 
 
 .dgd_stb_box.big_blue .dgd_stb_box_close { top: 8px; right: 8px; background-color: #497387; width: 26px; height: 26px; color: #FFF; font-size: 16px; font-family: Tahoma, Geneva, sans-serif; text-align: center; text-decoration: none; -webkit-border-radius: 13px; border-radius: 13px; -webkit-box-shadow: inset 1px 0 1px 1px #6b95a9; box-shadow: inset 1px 0 1px 1px #6b95a9; }

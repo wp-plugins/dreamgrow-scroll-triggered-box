@@ -34,8 +34,8 @@
 
 .dgd_stb_box.clean_white form { overflow: hidden; margin: 10px 0 0 0; }
 .dgd_stb_box.clean_white form input { line-height: 30px; background-color: #e5e5e5; -webkit-border-radius: 5px; border-radius: 5px; color: #7a7a7a; display: block; float: left; padding: 0 10px; border: solid 1px #c3c5c6; width: 57%; outline: none; height: 30px; }
-.dgd_stb_box.clean_white form input.submit, .dgd_stb_box form input[type=submit] { background-color: #be1616 !important; width: 33% !important; height: 32px !important; cursor: pointer; float: right !important; color: #FFF !important; }
-.dgd_stb_box.clean_white form input.submit:hover, .dgd_stb_box form input[type=submit]:hover { background-color: #db1010 !important; }
+.dgd_stb_box.clean_white form input.submit, .dgd_stb_box form input[type=submit] { background-color: #be1616; background-image: none; width: 33% !important; height: 32px !important; cursor: pointer; float: right !important; color: #FFF !important; }
+.dgd_stb_box.clean_white form input.submit:hover, .dgd_stb_box form input[type=submit]:hover { background-color: #db1010s; }
 
 
 .dgd_stb_box.clean_white .dgd_stb_box_close { top: 8px; right: 8px; background-color: #f2efef; width: 20px; height: 20px; color: #424242; font-size: 13px; line-height: 18px; font-family: Tahoma, Geneva, sans-serif; text-align: center; text-decoration: none; -webkit-border-radius: 10px; border-radius: 10px; -webkit-box-shadow: 0px 0px 0px 4px #d3d2d2; box-shadow: 0px 0px 0px 4px #d3d2d2; }
