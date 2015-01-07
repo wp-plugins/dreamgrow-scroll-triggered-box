@@ -256,12 +256,7 @@ Class DgdScrollboxAdmin {
         // http://www.webmaster-source.com/2010/01/08/using-the-wordpress-uploader-in-your-plugin-or-theme/
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script('wp-color-picker' );
-        // wp_enqueue_style( 'thickbox' );
-        // wp_enqueue_script('thickbox' );
 	    wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
-	    // wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
-        // BUG: Gravity Forms doesn't cooperate with 'media-upload'
-        // wp_enqueue_script( 'media-upload' );
         wp_enqueue_script( 'dgd-scrollbox-plugin-admin' );
     }
 
@@ -417,7 +412,9 @@ Class DgdScrollboxAdmin {
             $dgd_stb_show=DgdScrollboxHelper::$dgd_stb_show_meta_default;        
         }
 
-        
+        if(!isset($dgd_stb['thankyou'])) {
+            $dgd_stb['thankyou']=DgdScrollboxHelper::$dgd_stb_meta_default['thankyou'];
+        }        
 
         if(!array_key_exists($dgd_stb['height'], $this->height_select_options)) {
             $this->height_select_options[$dgd_stb['height']]=$dgd_stb['height'];
@@ -985,11 +982,20 @@ Class DgdScrollboxAdmin {
 
     public static function install() {
         if (!current_user_can('activate_plugins')) return;
-        // check old version and migrate to default popup
-        $old_version_settings=get_option('stb_settings');
-        if($old_version_settings && !isset($old_version_settings['migrated'])) {
-            DgdScrollboxAdmin::migrate_from_old_version(false);
+
+        $old_version=get_option('stb_version', '1.4');
+       
+        if(version_compare($old_version, '2.0', '<')) {
+            $old_version_settings=get_option('stb_settings');
+            if($old_version_settings && !isset($old_version_settings['migrated'])) {
+                DgdScrollboxAdmin::migrate_from_old_version(false);
+            }        
         }
+        
+        if(version_compare($old_version, '2.1', '<')) {
+            // do something at plugin upgrade
+        }
+
         update_option('stb_version', DGDSCROLLBOX_VERSION);
     }
 

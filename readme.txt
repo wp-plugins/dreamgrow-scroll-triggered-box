@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 2.0.3
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,16 @@ Highly customizable, you can display any content, any call-to-action with this p
 3. Tons of settings to make each box behave exactly as you want.
 
 == Changelog ==
+
+= 2.1 =
+* Tested and fixed usage together with some third party plugins / shortcodes (example: Contact Form 7, Gravity Forms, WooCommerce, Use Google Libraries)
+* Added custom triggering options (time delay, element mouseover, element click). Now is also possible to trigger without scroll.
+* In addition to pages inclusion list also pages exclusion list exists
+* Added editable and translatable "Thank you" message
+* Added option to auto close after defined period of showing
+* Added option to close forever for submitted users
+* Added support for "embed" shortcode
+* Fixed submit button background on some themes
 
 = 2.0.3 =
 * bugfix: Add Media button didn't work
