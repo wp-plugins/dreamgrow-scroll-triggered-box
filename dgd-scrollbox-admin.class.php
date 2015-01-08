@@ -614,7 +614,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Close box permanently for this user</td>
                 <td>
-                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php echo ($dgd_stb['hide_submitted']?' checked="1"':'') ?>>
+                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php echo (isset($dgd_stb['hide_submitted'])?' checked="1"':'') ?>>
                 </td>
             </tr>
         </tbody>
