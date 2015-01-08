@@ -3,7 +3,6 @@
     This class creates admin interface for DreamGrow Scroll Triggered Boxes
 
 
-
 */
 require_once(plugin_dir_path(__FILE__).'dgd-page-selector-walker.class.php');
 
