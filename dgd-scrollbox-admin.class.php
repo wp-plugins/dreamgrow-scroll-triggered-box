@@ -1,5 +1,6 @@
 <?php
 /*
+
     This class creates admin interface for DreamGrow Scroll Triggered Boxes
 
 
