@@ -217,7 +217,6 @@ Class DgdScrollboxAdmin {
         // register_activation_hook(__FILE__, array($this, 'install') );
         // register_deactivation_hook(__FILE__, array($this, 'uninstall') );
         // wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery','media-upload'), DGDSCROLLBOX_VERSION, true );
-        wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, true );
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_style_n_script') );
         add_action('admin_init', array($this, 'dgd_scrollbox_editor') );
         add_action('save_post',  array($this, 'save_dgd_scrollbox_fields'), 10, 2 );
@@ -256,7 +255,8 @@ Class DgdScrollboxAdmin {
         // http://www.webmaster-source.com/2010/01/08/using-the-wordpress-uploader-in-your-plugin-or-theme/
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script('wp-color-picker' );
-	    wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+        wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, true );
+        wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin-admin' );
     }
 
