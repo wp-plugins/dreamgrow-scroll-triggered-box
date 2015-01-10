@@ -1,4 +1,4 @@
-/*jslint browser: true */
+/*jslint browser: true, continue: true, regexp: true */
 /*global $DGD */
 /*global jQuery */
 /*global FB */
@@ -163,7 +163,7 @@ $DGD.calcScroll = function () {
         rate = Math.round((scrolled + 0.001) * 10 / (this.toScroll + 0.001)) * 10,
         i,
         box;
-    for (i = 0; i < this.boxes_wait_for_scroll.length; i++) {
+    for (i = 0; i < this.boxes_wait_for_scroll.length; i = i + 1) {
         box = this.boxes_wait_for_scroll[i];
         if (box.trigger.action === 'scroll' && rate >= box.trigger.scroll && box.hidden && !box.closed) {
             if (box.trigger.delaytime > 0) {
@@ -180,7 +180,7 @@ $DGD.calcScroll = function () {
 
 $DGD.fixPosition = function () {
     var i, box;
-    for (i = 0; i < this.boxes_with_relative_position.length; i++) {
+    for (i = 0; i < this.boxes_with_relative_position.length; i = i + 1) {
         box = this.boxes_with_relative_position[i];
         if (box.vpos === 'center') { box.div.css('top', (this.screenheight - box.height) / 2 + 'px'); }
         if (box.hpos === 'center') { box.div.css('left', (this.screenwidth - box.width) / 2 + 'px'); }
@@ -199,7 +199,7 @@ $DGD.setCookie = function (cname, exdays) {
 $DGD.getCookie = function (cname) {
     // returns integer representing stored cookie value
     var name = cname + '=', ca = document.cookie.split(';'), i, c;
-    for (i = 0; i < ca.length; i++) {
+    for (i = 0; i < ca.length; i = i + 1) {
         c = ca[i];
         while (c.charAt(0) === ' ') { c = c.substring(1); }
         if (c.indexOf(name) !== -1) { return parseInt(c.substring(name.length, c.length), 10); }
@@ -429,7 +429,7 @@ $DGD.showBox = function (box) {
 
 $DGD.getBoxById = function (box_id) {
     var i;
-    for (i = 0; i < $DGD.scrollboxes.length; i++) {
+    for (i = 0; i < $DGD.scrollboxes.length; i = i + 1) {
         if ($DGD.scrollboxes[i].id === box_id) { return $DGD.scrollboxes[i]; }
     }
     return false;
@@ -437,7 +437,7 @@ $DGD.getBoxById = function (box_id) {
 
 $DGD.getBoxByElementAction = function (e) {
     var i, box;
-    for (i = 0; i < $DGD.scrollboxes.length; i++) {
+    for (i = 0; i < $DGD.scrollboxes.length; i = i + 1) {
         box = $DGD.scrollboxes[i];
         if (box.trigger.action === e.type && jQuery(box.trigger.element).get(0) === e.currentTarget) {
             return box;
@@ -541,7 +541,7 @@ $DGD.scrollboxInit = function () {
     if (this.scrollboxes.length > 0) {
         this.measureScreen();
 
-        for (i = 0; i < this.scrollboxes.length; i++) {
+        for (i = 0; i < this.scrollboxes.length; i = i + 1) {
             box = this.scrollboxes[i];
             box.cookieLifetime = parseInt(box.cookieLifetime, 10);
             if ((typeof box.hide_mobile === 'string') && is_mobile_user) {
@@ -581,7 +581,7 @@ $DGD.scrollboxInit = function () {
                 }
                 if ($DGD.boxes_wait_for_close.length > 0) {
                     d = Date.now();
-                    for (i = 0; i < $DGD.boxes_wait_for_close.length; i++) {
+                    for (i = 0; i < $DGD.boxes_wait_for_close.length; i = i + 1) {
                         box = $DGD.boxes_wait_for_close[i];
                         if (box.closingTime < d) {
                             // time to wrap it up
@@ -594,7 +594,7 @@ $DGD.scrollboxInit = function () {
                 }
                 if ($DGD.boxes_wait_for_open.length > 0) {
                     d = Date.now();
-                    for (i = 0; i < $DGD.boxes_wait_for_open.length; i++) {
+                    for (i = 0; i < $DGD.boxes_wait_for_open.length; i = i + 1) {
                         box = $DGD.boxes_wait_for_open[i];
                         if (box.openingTime < d) {
                             $DGD.showBox(box);
