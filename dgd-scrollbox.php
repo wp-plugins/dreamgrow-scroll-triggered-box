@@ -65,10 +65,9 @@ class DgdScrollbox {
     }
 
     public function dgd_stb_form_process() {
-        
         $nonce = $_POST['stbNonce'];        
         if (!wp_verify_nonce($nonce, 'dgd_stb_nonce')) {
-            die ('Sorry, but you must reload this page!');
+            die (json_encode(array('html'=>'Sorry, but you must reload this page!', 'status'=>'500')));
         }
         
         $box_id=(int)str_replace( DGDSCROLLBOXTYPE.'-', '', $_POST['box']);
@@ -89,7 +88,7 @@ class DgdScrollbox {
         $body="Submitted values:\n";
         foreach($_POST as $name=>$value) {
             if(!in_array($name, array('action', 'stbNonce', 'submitted'))) { 
-                $body.=$name.': '.$value."\n"; 
+                $body.=htmlspecialchars($name).': '.htmlspecialchars($value)."\n"; 
             }
         }
         $body.="===============================\n";
@@ -99,8 +98,7 @@ class DgdScrollbox {
         $headers = 'From: ' . $emailTo . "\r\n" . 'Reply-To: ' . $email;
 
         wp_mail($emailTo, $subject, $body, $headers);
-        echo json_encode(array('html'=>$meta['thankyou'], 'status'=>200));
-        die();
+        die(json_encode(array('html'=>$meta['thankyou'], 'status'=>'200')));
     }
 
     public function fix_content_filter() {
@@ -125,9 +123,9 @@ class DgdScrollbox {
 
                 // set and unset some parameters
                 if(isset($meta['receiver_email']) && $meta['receiver_email']) {
-                    $meta['receiver_email']=1;
+                    $meta['receiver_email']='1';
                 } else {
-                    $meta['receiver_email']=0;
+                    $meta['receiver_email']='0';
                 }
                 $meta['id']=DGDSCROLLBOXTYPE.'-'.$pop_up->ID;
                 $meta['voff']=0;
