@@ -642,6 +642,11 @@ Class DgdScrollboxAdmin {
                 <td>Theme</td>
                 <td><select name="dgd_stb[theme]"><?php echo $this->get_templates($dgd_stb['theme']) ?></select></td>
             </tr>
+
+            <tr>
+                <td>Enable Widget area</td>
+                <td><input type="checkbox" name="dgd_stb[widget_enabled]" value="1"<?php echo (isset($dgd_stb['widget_enabled'])?' checked="1"':'') ?>></td>
+            </tr>
             <tr>
                 <td class="dgd_leftcol">Popup box dimensions (px)</td>
                 <td>
@@ -981,7 +986,6 @@ Class DgdScrollboxAdmin {
     }
 
     public static function install() {
-        if (!current_user_can('activate_plugins')) return;
 
         $old_version=get_option('stb_version', '1.4');
        
@@ -1000,7 +1004,6 @@ Class DgdScrollboxAdmin {
     }
 
     public static function uninstall() {
-        if (!current_user_can('activate_plugins')) return;
         // clean up. delete default options
         // $pop_ups = get_pages( array('post_type'=>DGDSCROLLBOXTYPE));
         //  foreach($pop_ups as $pop_up) {

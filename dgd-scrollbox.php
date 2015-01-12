@@ -3,23 +3,22 @@
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/
 Description: Scroll Triggered Box
-Version: 2.1
+Version: 2.1.1
 Author: Dreamgrow Digital
 Author URI: http://www.dreamgrow.com
 License: GPL2
 */
 
-if(!function_exists('wp_get_current_user')) {
-    include(ABSPATH.'wp-includes/pluggable.php'); 
-}
+if(!defined('DGDSCROLLBOXTYPE'))
+    define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // DO NOT TOUCH!
 
-define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // DO NOT TOUCH!
-define('DGDSCROLLBOX_VERSION', '2.1');
+if(!defined('DGDSCROLLBOX_VERSION'))
+    define('DGDSCROLLBOX_VERSION', '2.1.1');
 
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
 
 class DgdScrollbox {
-    public $html='';
+    public $html=array();
     private $output='html';
 
     public function __construct() {
@@ -29,7 +28,8 @@ class DgdScrollbox {
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
         add_action('wp_ajax_nopriv_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
         add_action('wp_footer',  array($this, 'do_footer'), 100);
-        if(is_admin() && current_user_can('manage_options')) {
+        add_action('widgets_init', array($this, 'scrollbox_widgets_init'), 15);
+        if(is_admin()) {
             require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-admin.class.php');
             new DgdScrollboxAdmin();
             register_activation_hook(__FILE__, array('DgdScrollboxAdmin', 'install') );
@@ -62,6 +62,18 @@ class DgdScrollbox {
           'supports' =>array('title', 'editor'),
         )
       );
+    }
+
+    public function scrollbox_widgets_init() {
+        register_sidebar( array(
+            'name' => 'Scrollbox',
+            'id' => 'scrollbox_1',
+            'description' => 'Dreamgrow scroll triggered box',
+            'before_widget' => '<div>',
+            'after_widget' => '</div>',
+            'before_title' => '<h2 class="rounded">',
+            'after_title' => '</h2>',
+        ) );
     }
 
     public function dgd_stb_form_process() {
@@ -110,10 +122,23 @@ class DgdScrollbox {
         // </div>        
     }
 
+    private function get_html() {
+        $output='';
+        if(is_active_sidebar( 'scrollbox_1' )) { 
+            ob_start();
+            dynamic_sidebar('scrollbox_1'); 
+            $dgd_sidebar_widget_content=ob_get_clean();
+        }
+        foreach($this->html as $box) {
+            $output.='<div class="dgd_stb_box '.$box['theme'].'" id="'.$box['id'].'">';
+            $output.=$box['html'];
+            if($box['widget_enabled']) $output.=$dgd_sidebar_widget_content;
+            $output.='</div>'."\n\n";
+        }
+        return $output;
+    }
 
     private function get_scrollboxes() {
-        global $post;
-
         $active_pop_ups=$this->get_matching_popups();
         $js=array();
         $closebutton='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
@@ -132,14 +157,20 @@ class DgdScrollbox {
                 $meta['hoff']=0;
                 //  $js[]=$meta;
                 if (isset($meta['migrated_no_css'])) {
-                    $html=$closebutton.'<div id="scrolltriggered">'.apply_filters('the_content', $pop_up->post_content).'</div>';
+                    $html=$closebutton.'<div id="scrolltriggered">'.do_shortcode($pop_up->post_content).'</div>';
                 } else {
-                    $html=$closebutton.apply_filters('the_content', $pop_up->post_content);                
+                    // $html=$closebutton.apply_filters('the_content', $pop_up->post_content);                
+                    $html=$closebutton.do_shortcode($pop_up->post_content);                
                 }
                 if($this->output=='js') {
                     $meta['html']=$html;
                 } else {
-                    $this->html.='<div class="dgd_stb_box '.$meta['theme'].'" id="'.$meta['id'].'">'.$html.'</div>'."\n\n";
+                    $this->html[]=array(
+                        'id'=>$meta['id'],
+                        'theme'=>$meta['theme'],
+                        'widget_enabled'=>$meta['widget_enabled'],
+                        'html'=>$html,
+                        );
                 }
                 $js[]=$meta;
             }
@@ -210,14 +241,13 @@ class DgdScrollbox {
     public function do_footer() {
         // using HTML output assumingly gives better compatibility with other plugins
         echo "\n<!--     ===== START Dreamgrow Scroll Triggered Box =====   -->\n\n";
-        echo $this->html;
+        echo $this->get_html();
         echo "\n<!--     ===== END OF Dreamgrow Scroll Triggered Box =====   -->\n\n";
     }
 
     public function enqueue_style_n_script() {
         global $post, $wp_version;
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
-	    // wp_enqueue_style( 'visualidiot-real-world', plugins_url( 'css/visualidiot-real-world.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
 
         $image='';

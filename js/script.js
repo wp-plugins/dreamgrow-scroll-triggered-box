@@ -1,4 +1,4 @@
-/*jslint browser: true, continue: true, regexp: true */
+/*jslint browser: true, continue: true, regexp: true, plusplus: true */
 /*global $DGD */
 /*global jQuery */
 /*global FB */
@@ -6,7 +6,6 @@
 /*global IN */
 /*global console */
 /*global twttr */
-'use strict';
 
 if (typeof $DGD !== 'object') {
     var $DGD = {'debug' : '1'};
@@ -163,7 +162,7 @@ $DGD.calcScroll = function () {
         rate = Math.round((scrolled + 0.001) * 10 / (this.toScroll + 0.001)) * 10,
         i,
         box;
-    for (i = 0; i < this.boxes_wait_for_scroll.length; i = i + 1) {
+    for (i = 0; i < this.boxes_wait_for_scroll.length; i++) {
         box = this.boxes_wait_for_scroll[i];
         if (box.trigger.action === 'scroll' && rate >= box.trigger.scroll && box.hidden && !box.closed) {
             if (box.trigger.delaytime > 0) {
@@ -180,7 +179,7 @@ $DGD.calcScroll = function () {
 
 $DGD.fixPosition = function () {
     var i, box;
-    for (i = 0; i < this.boxes_with_relative_position.length; i = i + 1) {
+    for (i = 0; i < this.boxes_with_relative_position.length; i++) {
         box = this.boxes_with_relative_position[i];
         if (box.vpos === 'center') { box.div.css('top', (this.screenheight - box.height) / 2 + 'px'); }
         if (box.hpos === 'center') { box.div.css('left', (this.screenwidth - box.width) / 2 + 'px'); }
@@ -199,7 +198,7 @@ $DGD.setCookie = function (cname, exdays) {
 $DGD.getCookie = function (cname) {
     // returns integer representing stored cookie value
     var name = cname + '=', ca = document.cookie.split(';'), i, c;
-    for (i = 0; i < ca.length; i = i + 1) {
+    for (i = 0; i < ca.length; i++) {
         c = ca[i];
         while (c.charAt(0) === ' ') { c = c.substring(1); }
         if (c.indexOf(name) !== -1) { return parseInt(c.substring(name.length, c.length), 10); }
@@ -236,7 +235,7 @@ $DGD.placeBox = function (box) {
         };
     box.div = jQuery('#' + box.id);
     box.hidden = true;        // box is temporarily not visible
-    box.closed = false;    // box is closed, do not show again 
+    box.closed = false;    // box is closed, do not show again
     box.anim_from = {};
     box.anim_to = {};
 
@@ -286,6 +285,7 @@ $DGD.placeBox = function (box) {
     case 'fade':
         box.anim_from.opacity = 0;
         box.anim_to.opacity = 1;
+        box.div.css('opacity', 0);
         break;
     }
 
@@ -318,7 +318,7 @@ $DGD.placeBox = function (box) {
             box.vpos_from = box.vpos_to;
         }
         break;
-    default: // case 'bottom' 
+    default: // case 'bottom'
         box.vpos_att = 'bottom';
         box.vpos_to = box.jsCss.margin;
         switch (box.transition.from) {
@@ -429,7 +429,7 @@ $DGD.showBox = function (box) {
 
 $DGD.getBoxById = function (box_id) {
     var i;
-    for (i = 0; i < $DGD.scrollboxes.length; i = i + 1) {
+    for (i = 0; i < $DGD.scrollboxes.length; i++) {
         if ($DGD.scrollboxes[i].id === box_id) { return $DGD.scrollboxes[i]; }
     }
     return false;
@@ -437,7 +437,7 @@ $DGD.getBoxById = function (box_id) {
 
 $DGD.getBoxByElementAction = function (e) {
     var i, box;
-    for (i = 0; i < $DGD.scrollboxes.length; i = i + 1) {
+    for (i = 0; i < $DGD.scrollboxes.length; i++) {
         box = $DGD.scrollboxes[i];
         if (box.trigger.action === e.type && jQuery(box.trigger.element).get(0) === e.currentTarget) {
             return box;
@@ -446,7 +446,7 @@ $DGD.getBoxByElementAction = function (e) {
 };
 
 $DGD.closeBox = function () {
-    // closeBox is initiated from Static context, use $DGD instead of 'this' 
+    // closeBox is initiated from Static context, use $DGD instead of 'this'
     var box = $DGD.getBoxById(jQuery(this).closest('.dgd_stb_box').attr('id'));
     if (box) {
         box.closed = true;
@@ -541,7 +541,7 @@ $DGD.scrollboxInit = function () {
     if (this.scrollboxes.length > 0) {
         this.measureScreen();
 
-        for (i = 0; i < this.scrollboxes.length; i = i + 1) {
+        for (i = 0; i < this.scrollboxes.length; i++) {
             box = this.scrollboxes[i];
             box.cookieLifetime = parseInt(box.cookieLifetime, 10);
             if ((typeof box.hide_mobile === 'string') && is_mobile_user) {
@@ -581,7 +581,7 @@ $DGD.scrollboxInit = function () {
                 }
                 if ($DGD.boxes_wait_for_close.length > 0) {
                     d = Date.now();
-                    for (i = 0; i < $DGD.boxes_wait_for_close.length; i = i + 1) {
+                    for (i = 0; i < $DGD.boxes_wait_for_close.length; i++) {
                         box = $DGD.boxes_wait_for_close[i];
                         if (box.closingTime < d) {
                             // time to wrap it up
@@ -594,7 +594,7 @@ $DGD.scrollboxInit = function () {
                 }
                 if ($DGD.boxes_wait_for_open.length > 0) {
                     d = Date.now();
-                    for (i = 0; i < $DGD.boxes_wait_for_open.length; i = i + 1) {
+                    for (i = 0; i < $DGD.boxes_wait_for_open.length; i++) {
                         box = $DGD.boxes_wait_for_open[i];
                         if (box.openingTime < d) {
                             $DGD.showBox(box);
