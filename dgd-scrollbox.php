@@ -67,7 +67,7 @@ class DgdScrollbox {
     public function scrollbox_widgets_init() {
         register_sidebar( array(
             'name' => 'Scrollbox',
-            'id' => 'scrollbox_1',
+            'id' => DGDSCROLLBOXTYPE.'_1',
             'description' => 'Dreamgrow scroll triggered box',
             'before_widget' => '<div>',
             'after_widget' => '</div>',
@@ -122,18 +122,24 @@ class DgdScrollbox {
         // </div>        
     }
 
+    private function get_widget_content() {
+        if(is_active_sidebar( DGDSCROLLBOXTYPE.'_1' )) { 
+            ob_start();
+            dynamic_sidebar( DGDSCROLLBOXTYPE.'_1' ); 
+            return ob_get_clean();
+        }
+        return '';
+    }
+
     private function get_html() {
         $output='';
-        if(is_active_sidebar( 'scrollbox_1' )) { 
-            ob_start();
-            dynamic_sidebar('scrollbox_1'); 
-            $dgd_sidebar_widget_content=ob_get_clean();
-        }
+        $widget_content=$this->get_widget_content();
+
         foreach($this->html as $box) {
             $output.='<div class="dgd_stb_box '.$box['theme'].'" id="'.$box['id'].'">';
             $output.='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
-            $output.=$box['html'];
-            if($box['widget_enabled']) $output.=$dgd_sidebar_widget_content;
+            $output.=do_shortcode($box['html']);
+            if($box['widget_enabled']) $output.=$widget_content;
             $output.='</div>'."\n\n";
         }
         return $output;
@@ -161,7 +167,7 @@ class DgdScrollbox {
                 $meta['id']=DGDSCROLLBOXTYPE.'-'.$pop_up->ID;
                 $meta['voff']=0;
                 $meta['hoff']=0;
-                $html=do_shortcode($pop_up->post_content);                
+                $html=$pop_up->post_content;                
                 if (isset($meta['migrated_no_css'])) {
                     $html='<div id="scrolltriggered">'.$html.'</div>';
                 } 
