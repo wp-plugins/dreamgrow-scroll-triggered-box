@@ -31,7 +31,7 @@ Class DgdScrollboxHelper {
         'trigger' => array(
             'action'=>'scroll', // (scroll|delay|scroll_delay|element)
             'scroll' => 50,     // % of page must be scrolled to trigger
-            'delay' => 0,       // time in seconds to wait to trigger
+            'delaytime' => 0,       // time in seconds to wait to trigger
             'element' =>'',     // element shown to trigger
             ),
         'height' => 'auto',
@@ -65,10 +65,11 @@ Class DgdScrollboxHelper {
         ),
         'closeImageUrl' => '',
         'hide_mobile' => 1,
-        'show_admin' => 1,
-        'showDuration' => 0,
+        'submit_auto_close' => 5,
+        'delay_auto_close' => 40,
+        'hide_submitted' => 1,
         'cookieLifetime' => 1,     // days
-        'receiver_email' => '',
+        'receiver_email' => false,
         'thankyou' => 'You are subscribed. Thank You!',
         'widget_enabled' => 1,
     );
@@ -79,6 +80,7 @@ Class DgdScrollboxHelper {
         'categories' => array(),
         'tags' => array(),
         'post_types' => array ('page'=>1, 'post'=>1),
+        'admin_only' => false,
     );
 
 
@@ -203,6 +205,6 @@ $sampleHtml =  '<h5>Sign up for our Newsletter</h5>
     </ul>
     <p>Enter your email and stay on top of things,</p>
     <form action="#" class="stbContactForm" method="post">
-        <input type="hidden" name="submitted" id="submitted" value="true" /><input type="text" name="email" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
+        <input type="text" name="email" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
     </form>
     <p class="stbMsgArea"></p>';

@@ -49,6 +49,12 @@ Highly customizable, you can display any content, any call-to-action with this p
 
 == Changelog ==
 
+= 2.1.1 ==
+* Added Widgets support!
+* Added support for W3 Total Cache and other minification tools
+* Fixed bug with content area stuff showing in scrollbox
+* Fixed bug with "fade-in" not working
+
 = 2.1 =
 * Tested and fixed usage together with some third party plugins / shortcodes (example: Contact Form 7, Gravity Forms, WooCommerce, Use Google Libraries)
 * Added custom triggering options (time delay, element mouseover, element click). Now is also possible to trigger without scroll.
@@ -56,7 +62,6 @@ Highly customizable, you can display any content, any call-to-action with this p
 * Added editable and translatable "Thank you" message
 * Added option to auto close after defined period of showing
 * Added option to close forever for submitted users
-* Added support for "embed" shortcode
 * Fixed submit button background on some themes
 
 = 2.0.3 =

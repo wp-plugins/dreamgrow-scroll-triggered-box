@@ -235,7 +235,7 @@ Class DgdScrollboxAdmin {
 
     function dgd_scrollbox_default($content, $post) {
         if($post->post_type == DGDSCROLLBOXTYPE) {
-            $content= '<h5>Sign up for our Newsletter</h5>
+            $content= '    <h5>Sign up for our Newsletter</h5>
     <ul>
         <li>Fresh trends</li>
         <li>Cases and examples</li>
@@ -243,7 +243,7 @@ Class DgdScrollboxAdmin {
     </ul>
     <p>Enter your email and stay on top of things,</p>
     <form action="#" class="stbContactForm" method="post">
-        <input type="hidden" name="submitted" id="submitted" value="true" /><input type="email" name="email" required="required" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
+        <input type="email" name="email" required="required" id="email" value="" /><input type="submit" class="stb-submit" value="Subscribe" />
     </form>
     <p class="stbMsgArea"></p>';
         }
@@ -412,9 +412,14 @@ Class DgdScrollboxAdmin {
             $dgd_stb_show=DgdScrollboxHelper::$dgd_stb_show_meta_default;        
         }
 
-        if(!isset($dgd_stb['thankyou'])) {
-            $dgd_stb['thankyou']=DgdScrollboxHelper::$dgd_stb_meta_default['thankyou'];
-        }        
+        if($dgd_stb['receiver_email']===false) $dgd_stb['receiver_email']= get_option('admin_email');
+
+        /* Re-define some variables for old version scrollboxes */
+        if(!isset($dgd_stb['thankyou'])) $dgd_stb['thankyou']=DgdScrollboxHelper::$dgd_stb_meta_default['thankyou'];
+        if(!isset($dgd_stb['submit_auto_close'])) $dgd_stb['submit_auto_close'] = 5;
+        if(!isset($dgd_stb['delay_auto_close'])) $dgd_stb['delay_auto_close'] = 0;
+        if(!isset($dgd_stb['widget_enabled'])) $dgd_stb['widget_enabled'] = 1;
+
 
         if(!array_key_exists($dgd_stb['height'], $this->height_select_options)) {
             $this->height_select_options[$dgd_stb['height']]=$dgd_stb['height'];
@@ -426,7 +431,7 @@ Class DgdScrollboxAdmin {
             ksort($this->width_select_options);
         }
 
-        // var_dump($dgd_stb_show);
+        // var_dump($dgd_stb);
         ?>
 
         <h1>Where and how to trigger?</h1>

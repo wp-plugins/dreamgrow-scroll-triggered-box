@@ -95,7 +95,7 @@ class DgdScrollbox {
             $email = $meta['receiver_email'];
         }
 
-        $emailTo = $meta['receiver_email'] ? $meta['receiver_email'] : get_settings('admin_email');
+        $emailTo = $meta['receiver_email'] ? $meta['receiver_email'] : get_option('admin_email');
         $subject = __('Dgd Scrollbox submit on ' . get_bloginfo('name'));
         $body="Submitted values:\n";
         foreach($_POST as $name=>$value) {
