@@ -131,6 +131,7 @@ class DgdScrollbox {
         }
         foreach($this->html as $box) {
             $output.='<div class="dgd_stb_box '.$box['theme'].'" id="'.$box['id'].'">';
+            $output.='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
             $output.=$box['html'];
             if($box['widget_enabled']) $output.=$dgd_sidebar_widget_content;
             $output.='</div>'."\n\n";
@@ -141,7 +142,7 @@ class DgdScrollbox {
     private function get_scrollboxes() {
         $active_pop_ups=$this->get_matching_popups();
         $js=array();
-        $closebutton='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
+        $widget_enabled=false;
         if(count($active_pop_ups)>0) {
             foreach($active_pop_ups as $pop_up) {
                 $meta=get_post_meta( $pop_up->ID, 'dgd_stb', true );
@@ -152,23 +153,25 @@ class DgdScrollbox {
                 } else {
                     $meta['receiver_email']='0';
                 }
+                
+                if(isset($meta['widget_enabled'])) {
+                    $widget_enabled=true;
+                }
+
                 $meta['id']=DGDSCROLLBOXTYPE.'-'.$pop_up->ID;
                 $meta['voff']=0;
                 $meta['hoff']=0;
-                //  $js[]=$meta;
+                $html=do_shortcode($pop_up->post_content);                
                 if (isset($meta['migrated_no_css'])) {
-                    $html=$closebutton.'<div id="scrolltriggered">'.do_shortcode($pop_up->post_content).'</div>';
-                } else {
-                    // $html=$closebutton.apply_filters('the_content', $pop_up->post_content);                
-                    $html=$closebutton.do_shortcode($pop_up->post_content);                
-                }
+                    $html='<div id="scrolltriggered">'.$html.'</div>';
+                } 
                 if($this->output=='js') {
                     $meta['html']=$html;
                 } else {
                     $this->html[]=array(
                         'id'=>$meta['id'],
                         'theme'=>$meta['theme'],
-                        'widget_enabled'=>$meta['widget_enabled'],
+                        'widget_enabled'=>$widget_enabled,
                         'html'=>$html,
                         );
                 }
@@ -239,7 +242,7 @@ class DgdScrollbox {
     }
 
     public function do_footer() {
-        // using HTML output assumingly gives better compatibility with other plugins
+        // using HTML output gives better compatibility with other plugins
         echo "\n<!--     ===== START Dreamgrow Scroll Triggered Box =====   -->\n\n";
         echo $this->get_html();
         echo "\n<!--     ===== END OF Dreamgrow Scroll Triggered Box =====   -->\n\n";
