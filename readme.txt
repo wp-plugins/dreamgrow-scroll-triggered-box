@@ -49,7 +49,7 @@ Highly customizable, you can display any content, any call-to-action with this p
 
 == Changelog ==
 
-= 2.1.1 ==
+= 2.1.1 =
 * Added Widgets support!
 * Added support for W3 Total Cache and other minification tools
 * Fixed bug with content area stuff showing in scrollbox
