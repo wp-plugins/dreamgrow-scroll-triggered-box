@@ -49,7 +49,7 @@ Highly customizable, you can display any content, any call-to-action with this p
 
 == Frequently Asked Questions ==
 
-= Box does not show up, or box shows only in one browser and not in another =
+= Box does not show up. Box shows only in one browser and not in another =
 
 * Possibly you have checked "Where and how to trigger?"->"show"->"Admin only" and not logged in, or logged in only in one browser.
 * If you have closed box from "x" (close button in upper right corner) or made submission, it waits till the time defined in "Popup frequency" setting. To overcome this you must either:
@@ -57,8 +57,8 @@ Highly customizable, you can display any content, any call-to-action with this p
  * set "Popup frequency" setting to "Each time", or
  * use browser in "incognito mode" (where it does not use cookies from previous browser sessions). 
 * If box uses setting "close forever after submission" and there is made submission (even mistakenly pressed "submit" followed by lightning-fast back button press counts), it will not appear any more as well. To overcome this you must delete cookie or use browser in "incognito mode" (please see previous point). 
-* If you use some cache ("performance") plugin, then it could happen that boxes will appear only to new posts/pages. That's because older pages are already cached withoutbox. To get boxes working also for pages created before box creation, you must use your cache plugin empty (purge) cache option.
-* It might happen also that you have checked "Hide on mobiles", but one of your browsers uses some mobile browser user-agent string.
+* If you use some cache ("performance") plugin, then it could happen that boxes will appear only to new posts/pages. That's because older pages are already cached without box. To get boxes working also for pages created before box creation, you must use your cache plugin empty (purge) cache option.
+* It might happen also that you have checked "Hide on mobiles", but one of your browsers uses actually some mobile browser user-agent string.
 
 = I don't get any e-mails =
 
@@ -82,8 +82,8 @@ You must use some MailChimp plugin what provides MailChimp submission form eithe
 = How I can use Widgets in boxes =
 
 * Open WP admin menu->Appearance->Widgets. Drag needed widget to Widget area named "Scrollbox". 
-* In Scrollbox, please enable using Widgets by checking "Scrollbox design"->"Enable Widget area". (This must be done separately, as you may have several Scrollboxes but want to show Widget only one of them).
-* If Widget is all you want to show, you can remove existing Scrollbox content completely. 
+* In Scrollbox Admin screen, please enable using Widgets by checking "Scrollbox design"->"Enable Widget area". (This must be done separately, as you may have several Scrollboxes but want to show Widget only one of them).
+* If Widget is all you want to show, you can remove existing box default content completely. 
 * If Widget contains some sort of submission form (feedback, comment insertion, user registration...) you must take into account suggestions for 3rd party submission form plugin users above.
 
 = There's only "email" field but I would like to get names or user questions/feedback also =
@@ -104,7 +104,7 @@ Message: <input name="feedback" type="text" value="" />
 </form>
 <p class="stbMsgArea"></p>`
 
-And it works. PS. e-mail field is not mandatory.
+And it works. PS. e-mail field is not even mandatory.
 
 
 = I'm using it with some 3rd party submission form, but now some options does not work =
@@ -119,12 +119,12 @@ Sorry, but preview is not developed yet.
 
 Adjust settings in "Scrollbox design"->"Popup box dimensions" 
 
-= Idea is ok but existing templates does not fit to my site =
+= Idea is OK, but existing templates do not fit to my site or my needs =
 
 * You don't have to limit yourself with default css and default html. Open the editor in "HTML" mode, clear everything and start from scratch. Only sky is the limit. 
 * In "Scrollbox design"->"Theme", choose "I'm using my own theme". In this case plugin default styles for text and button are not used and you can use purely your own CSS definitions for any of the elements.
 * There are many settings in Admin screen "Scrollbox design" section, try them out.
-* Try using custom background image ("Scrollbox design"->"Background Image"), plugin supports also backgrounds with transparent areas and alpha channels (e.g. partially transparent .png images). Using partially transparent background image you can create really eye-catching Scrollboxes. NB. Scrollbox will be resized to match with background picture. When using transparent background image, background color field must be empty.
+* Try using custom background image ("Scrollbox design"->"Background Image"). Plugin supports also iamges with transparent areas (.gif, .png) and even .png files opacity (e.g. alpha channels or partial transparency). With using partially transparent background image you can create really eye-catching Scrollboxes. NB. Box will be resized to match with background image. When using transparency or opacity in background image, background color field must be empty.
 
 = I need to do amendments to one of plugin templates =
 
@@ -138,9 +138,9 @@ Example. Changing submit button border, text color and background color needs ad
 
 Avoid changing any plugin files under plugin directory, including css files. Such changes will get lost during upgrades. Overwriting with !important is sufficient. 
 
-= I want to use structured message instead of just plain text message. =
+= I want to use structured feedback message instead of just one plain sentence =
 
-Thank you field allows you to use HTML.
+Go ahead, "Thank you" field allows you to use HTML.
 
 = I would like to redirect users to another page after submission =
 
