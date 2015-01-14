@@ -47,6 +47,107 @@ Highly customizable, you can display any content, any call-to-action with this p
 2. Select posts, pages, categories and tags that show the box. Display the box top, bottom, left, right or middle. Or if you so wish several boxes per page.
 3. Tons of settings to make each box behave exactly as you want.
 
+== Frequently Asked Questions ==
+
+= Box does not show up, or box shows only in one browser and not in another =
+
+* Possibly you have checked "Where and how to trigger?"->"show"->"Admin only" and not logged in, or logged in only in one browser.
+* If you have closed box from "x" (close button in upper right corner) or made submission, it waits till the time defined in "Popup frequency" setting. To overcome this you must either:
+ * delete cookie (it's named like "dgd_scrollbox-00000"), or 
+ * set "Popup frequency" setting to "Each time", or
+ * use browser in "incognito mode" (where it does not use cookies from previous browser sessions). 
+* If box uses setting "close forever after submission" and there is made submission (even mistakenly pressed "submit" followed by lightning-fast back button press counts), it will not appear any more as well. To overcome this you must delete cookie or use browser in "incognito mode" (please see previous point). 
+* If you use some cache ("performance") plugin, then it could happen that boxes will appear only to new posts/pages. That's because older pages are already cached withoutbox. To get boxes working also for pages created before box creation, you must use your cache plugin empty (purge) cache option.
+* It might happen also that you have checked "Hide on mobiles", but one of your browsers uses some mobile browser user-agent string.
+
+= I don't get any e-mails =
+
+Please check following:
+
+* is "Actions after form submission"->"Send submitted values to email" filled with valid e-mail address, and
+* does your WordPress installation allow sending e-mails to that e-mail (sometimes some domains e-mails are not sent out), and
+* maybe the notification e-mails are ended up into "spam" folder of your Inbox.
+
+
+= How to use some other plugin submission form plugin (Gravity Forms, Contact Form 7 ...) with Scroll Triggered Box  =
+
+* When using any 3rd party submission form, "Actions after form submission"->"Send submitted values to email" field must be empty.  
+* Prefer shortcode over Widget option.
+* Please note that options in "Actions after form submission" and "Auto close" sections work only together with plugin own submission form.
+
+= How to integrate Scrollboxes with MailChimp =
+
+You must use some MailChimp plugin what provides MailChimp submission form either by shortcode or Widget. 
+
+= How I can use Widgets in boxes =
+
+* Open WP admin menu->Appearance->Widgets. Drag needed widget to Widget area named "Scrollbox". 
+* In Scrollbox, please enable using Widgets by checking "Scrollbox design"->"Enable Widget area". (This must be done separately, as you may have several Scrollboxes but want to show Widget only one of them).
+* If Widget is all you want to show, you can remove existing Scrollbox content completely. 
+* If Widget contains some sort of submission form (feedback, comment insertion, user registration...) you must take into account suggestions for 3rd party submission form plugin users above.
+
+= There's only "email" field but I would like to get names or user questions/feedback also =
+
+* You can manually add unlimited number of text, textarea, select fields in HTML format inside of existing `<form>` tags, they are included to notification e-mail automatically.
+* Example about adding feedback field: open scroll box editor in HTML mode and add `<input name="Feedback" type="text" value="" />`. HTML content of Scrollbox will become something like this:
+`<h5>Sign up for our Newsletter</h5>
+<ul>
+	<li>Fresh trends</li>
+	<li>Cases and examples</li>
+	<li>Research and statistics</li>
+</ul>
+Enter your email and stay on top of things,
+<form class="stbContactForm" action="#" method="post">
+E-mail: <input id="email" name="email" required="required" type="email" value="" />
+Message: <input name="feedback" type="text" value="" />
+<input class="stb-submit" type="submit" value="Subscribe" />
+</form>
+<p class="stbMsgArea"></p>`
+
+And it works. PS. e-mail field is not mandatory.
+
+
+= I'm using it with some 3rd party submission form, but now some options does not work =
+
+Options in "Actions after form submission" and "Auto close" section will work only with plugin own submission form and when "Actions after form submission"->"Send submitted values to email" is filled.
+
+= Preview (or view) button does not work =
+
+Sorry, but preview is not developed yet.
+
+= Some of the box contents do not fit into the box area =
+
+Adjust settings in "Scrollbox design"->"Popup box dimensions" 
+
+= Idea is ok but existing templates does not fit to my site =
+
+* You don't have to limit yourself with default css and default html. Open the editor in "HTML" mode, clear everything and start from scratch. Only sky is the limit. 
+* In "Scrollbox design"->"Theme", choose "I'm using my own theme". In this case plugin default styles for text and button are not used and you can use purely your own CSS definitions for any of the elements.
+* There are many settings in Admin screen "Scrollbox design" section, try them out.
+* Try using custom background image ("Scrollbox design"->"Background Image"), plugin supports also backgrounds with transparent areas and alpha channels (e.g. partially transparent .png images). Using partially transparent background image you can create really eye-catching Scrollboxes. NB. Scrollbox will be resized to match with background picture. When using transparent background image, background color field must be empty.
+
+= I need to do amendments to one of plugin templates =
+
+Best way to change some of plugin styles is with adding style definition to your own theme css file and overwriting plugin css values with !important keyword. 
+Example. Changing submit button border, text color and background color needs adding of following block into  some of your theme css file:
+`input.stb-submit {
+    color: navy !important;
+    border: 2px solid black !important;
+    background-color: whitesmoke !important;
+}`
+
+Avoid changing any plugin files under plugin directory, including css files. Such changes will get lost during upgrades. Overwriting with !important is sufficient. 
+
+= I want to use structured message instead of just plain text message. =
+
+Thank you field allows you to use HTML.
+
+= I would like to redirect users to another page after submission =
+
+There's no "user-friendly" way at the moment, but it can be achieved by entering into ""Thank you" message" field this piece of HTML: 
+`<script>window.location='http://yourdomain.com/path';</script>` 
+(Of course use actual URL instead of 'http://yourdomain.com/path').
+
 == Changelog ==
 
 = 2.1.1 =
@@ -130,6 +231,7 @@ Release
 == ToDo list ==
 
 * Add "ear" tab for closed scrollbox (2.2)
-* Add preview button for Admin screen (2.2)
-
+* Support Preview button for Admin screen (2.2)
+* Fix "undefined index: hide_mobile" notification
+* Fix "Enable Widget area" checkbox (always checked)
 
