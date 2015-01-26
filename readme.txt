@@ -69,7 +69,7 @@ Please check following:
 * maybe the notification e-mails are ended up into "spam" folder of your Inbox.
 
 
-= How to use some other plugin submission form plugin (Gravity Forms, Contact Form 7 ...) with Scroll Triggered Box  =
+= How to use some other plugin's submission form (Gravity Forms, Contact Form 7 ...) with Scroll Triggered Box  =
 
 * When using any 3rd party submission form, "Actions after form submission"->"Send submitted values to email" field must be empty.  
 * Prefer shortcode over Widget option.
@@ -150,11 +150,15 @@ There's no "user-friendly" way at the moment, but it can be achieved by entering
 
 == Changelog ==
 
+= 2.1.2 =
+* Scrollbox allow empty DIV, P and SPAN tags (to work together with MailChimp native code, for example)
+* Bugfix: Scrollbox will now appear also if first page is set to blog page
+
 = 2.1.1 =
 * Added Widgets support!
-* Added support for W3 Total Cache and other minification tools
-* Fixed bug with content area stuff showing in scrollbox
-* Fixed bug with "fade-in" not working
+* Added support for JavaScript minification tools
+* Bugfix: content area stuff is showing in scrollbox
+* Bugfix: "fade-in" not working
 
 = 2.1 =
 * Tested and fixed usage together with some third party plugins / shortcodes (example: Contact Form 7, Gravity Forms, WooCommerce, Use Google Libraries)
@@ -163,7 +167,7 @@ There's no "user-friendly" way at the moment, but it can be achieved by entering
 * Added editable and translatable "Thank you" message
 * Added option to auto close after defined period of showing
 * Added option to close forever for submitted users
-* Fixed submit button background on some themes
+* Bugfix: submit button background was wrong on some themes
 
 = 2.0.3 =
 * bugfix: Add Media button didn't work
@@ -234,4 +238,4 @@ Release
 * Support Preview button for Admin screen (2.2)
 * Fix "undefined index: hide_mobile" notification
 * Fix "Enable Widget area" checkbox (always checked)
-
+* Fix bug scrollbox sometimes not appearing on first page.

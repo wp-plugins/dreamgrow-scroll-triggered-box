@@ -229,7 +229,16 @@ Class DgdScrollboxAdmin {
     }
 
     function tiny_mce_fix( $init ) {
-        // reserved for future
+        global $post;
+        // assuming that scrollbox will not contain html copy-pasted from Word etc.
+        $valid_elements = 'div[!id|!name|!class|!style],p[!id|!name|!class|!style],span[!id|!name|!class|!style]';
+        if($post->post_type == DGDSCROLLBOXTYPE) {
+            if(isset($init['extended_valid_elements'])) {
+                $init['extended_valid_elements'] .= ','.$valid_elements;
+            } else {
+                $init['extended_valid_elements'] = $valid_elements;
+            }
+        }
         return $init;
     }
 
@@ -486,7 +495,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Hide on mobiles</td>
                 <td>
-                    <input type="checkbox" name="dgd_stb[hide_mobile]" value="1"<?php echo ($dgd_stb['hide_mobile']?' checked="1"':'') ?>>
+                    <label><input type="checkbox" name="dgd_stb[hide_mobile]" value="1"<?php echo (isset($dgd_stb['hide_mobile'])?' checked="1"':'') ?>> Hide on mobiles</label>
                 </td>
             </tr>
             <tr>
@@ -495,11 +504,9 @@ Class DgdScrollboxAdmin {
                     <table>
                     <tr>
                         <td width="25%" style="vertical-align: top">On all following:<br />
-                            <input name="dgd_stb_show[frontpage]" type="checkbox" id="bfpage"
-                                   class="tog" <?php checked(1, isset($dgd_stb_show['frontpage'])); ?>><label
-                            for="bfpage"><?php _e('Frontpage', 'stb'); ?></label>
-                            <?php $this->stb_get_post_types($dgd_stb_show); ?><br><br>
-                            <input name="dgd_stb_show[admin_only]" type="checkbox" class="tog" <?php checked(1, isset($dgd_stb_show['admin_only'])); ?>>Admin only
+                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" <?php checked(1, isset($dgd_stb_show['frontpage'])); ?>>Frontpage</label>
+                            <?php $this->stb_get_post_types($dgd_stb_show); ?><br /><br />
+                            <label><input name="dgd_stb_show[admin_only]" type="checkbox" <?php checked(1, isset($dgd_stb_show['admin_only'])); ?> class="dgd_checkalert"><span class="dgd_checkalert">Admin only</span></label>
                         </td>
                         <td style="vertical-align: top">Exceptions:<br /> 
                             <ul id="dgd_tabs">
@@ -617,9 +624,9 @@ Class DgdScrollboxAdmin {
                 </select></td>
             </tr>
             <tr>
-                <td>Close box permanently for this user</td>
+                <td>Close permanently</td>
                 <td>
-                    <input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php echo (isset($dgd_stb['hide_submitted'])?' checked="1"':'') ?>>
+                    <label><input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php echo (isset($dgd_stb['hide_submitted'])?' checked="1"':'') ?>>Close box permanently for subscribed user</label>
                 </td>
             </tr>
         </tbody>
@@ -649,8 +656,8 @@ Class DgdScrollboxAdmin {
             </tr>
 
             <tr>
-                <td>Enable Widget area</td>
-                <td><input type="checkbox" name="dgd_stb[widget_enabled]" value="1"<?php echo (isset($dgd_stb['widget_enabled'])?' checked="1"':'') ?>></td>
+                <td>Widget</td>
+                <td><label><input type="checkbox" name="dgd_stb[widget_enabled]" value="1"<?php echo (isset($dgd_stb['widget_enabled'])?' checked="1"':'') ?>>Enable Widget area</label></td>
             </tr>
             <tr>
                 <td class="dgd_leftcol">Popup box dimensions (px)</td>
@@ -745,24 +752,24 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td><?php _e('Social buttons', 'stb'); ?></td>
                 <td>
-                    <select name="dgd_stb[social][facebook]">
+                    <label><select name="dgd_stb[social][facebook]">
                         <?php echo  $this->populate_options($this->facebook_options, $dgd_stb['social']['facebook']) ?>
-                    </select> <label for="bpages">Facebook</label><br />
-                    <select name="dgd_stb[social][twitter]">
+                    </select> Facebook</label><br />
+                    <label><select name="dgd_stb[social][twitter]">
                         <?php echo  $this->populate_options($this->twitter_options, $dgd_stb['social']['twitter']) ?>
-                    </select> <label for="bposts">Twitter</label><br />
-                    <select name="dgd_stb[social][google]">
+                    </select> Twitter</label><br />
+                    <label><select name="dgd_stb[social][google]">
                         <?php echo  $this->populate_options($this->google_options, $dgd_stb['social']['google']) ?>
-                    </select> <label for="bposts">Google+</label><br />
-                    <select name="dgd_stb[social][pinterest]">
+                    </select> Google+</label><br />
+                    <label><select name="dgd_stb[social][pinterest]">
                         <?php echo  $this->populate_options($this->pinterest_options, $dgd_stb['social']['pinterest']) ?>
-                    </select> <label for="bposts">Pinterest</label> <small>* Pin it button will only be displayed on the pages that have a featured image.</small><br />
-                    <select name="dgd_stb[social][stumbleupon]">
+                    </select> Pinterest</label> <small>* Pin it button will only be displayed on the pages that have a featured image.</small><br />
+                    <label><select name="dgd_stb[social][stumbleupon]">
                         <?php echo  $this->populate_options($this->stumbleupon_options, $dgd_stb['social']['stumbleupon']) ?>
-                    </select> <label for="bposts">Stumbleupon</label><br />
-                    <select name="dgd_stb[social][linkedin]">
+                    </select> Stumbleupon</label><br />
+                    <label><select name="dgd_stb[social][linkedin]">
                         <?php echo  $this->populate_options($this->linkedin_options, $dgd_stb['social']['linkedin']) ?>
-                    </select> <label for="bposts">LinkedIN</label>
+                    </select> LinkedIN</label>
                 </td>
             </tr>
 
@@ -800,8 +807,8 @@ Class DgdScrollboxAdmin {
                     $id = $post_type->name;
                     $label = $post_type->label;
                     echo '<br/>
-                          <input name="dgd_stb_show[post_types]['.$id.']" type="checkbox" id="b'.$id.'" class="tog" '.
-                          checked(1, isset($options['post_types'][$id]), false) .'><label for="b'.$id.'">'. $label .'</label>';
+                          <label><input name="dgd_stb_show[post_types]['.$id.']" type="checkbox" '.
+                          checked(1, isset($options['post_types'][$id]), false) .'>'. $label .'</label>';
                 }
             }
         }
@@ -831,6 +838,17 @@ Class DgdScrollboxAdmin {
         // Check post type for Dgd Popup
         if ( $post->post_type == DGDSCROLLBOXTYPE ) {
             $this->save_options($post_id, false);
+            // always clear cache when saving Scrollbox - otherwise cached pages will show old Scrollbox
+            // Thanks http://scratch99.com/wordpress/development/clearing-cache-when-widget-saved/ to hint
+            // it's rather experimental, but worth to try
+            if (function_exists('w3tc_pgcache_flush')) { 
+                // W3 Total Cache
+                @w3tc_pgcache_flush(); 
+            }
+            if (function_exists('wp_cache_clean_cache')) {
+                // WP Super Cache
+                @wp_cache_clean_cache( $GLOBALS['file_prefix'] );
+            }
         }
     }
 

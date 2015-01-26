@@ -3,7 +3,7 @@
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/
 Description: Scroll Triggered Box
-Version: 2.1.1
+Version: 2.1.2
 Author: Dreamgrow Digital
 Author URI: http://www.dreamgrow.com
 License: GPL2
@@ -13,7 +13,7 @@ if(!defined('DGDSCROLLBOXTYPE'))
     define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // DO NOT TOUCH!
 
 if(!defined('DGDSCROLLBOX_VERSION'))
-    define('DGDSCROLLBOX_VERSION', '2.1.1');
+    define('DGDSCROLLBOX_VERSION', '2.1.2');
 
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
 
@@ -230,7 +230,7 @@ class DgdScrollbox {
             if (
                 ( 
                  (isset($show_on['post_types']) && in_array(get_post_type($post->ID), array_keys($show_on['post_types']))) ||
-                 (isset($show_on['frontpage']) && get_option('page_on_front')==$post->ID) ||
+                 (isset($show_on['frontpage']) && is_front_page()) ||
                  (isset($show_on['selected_pages']) && in_array($post->ID, array_values($show_on['selected_pages']) )) ||
                  (isset($show_on['categories']) && is_array($categories) && count(array_intersect($show_on['categories'], $categories))>0) ||
                  (isset($show_on['tags']) && is_array($tags) && count(array_intersect($show_on['tags'], $tags))>0)

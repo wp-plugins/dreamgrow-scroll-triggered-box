@@ -7,10 +7,8 @@ table#dgd_pos_selector {width: 120px; border-spacing: 0px; border-collapse: coll
 #dgd_pos_selector td { border: solid black 1px; padding: 0px; margin: 0px; }
 #dgd_pos_selector a {display: block; width: 40px; height: 30px}
 
-#dgd_pos_selector a:hover {background: pink
-}
-#dgd_pos_selector a.selected {background: red
-}
+#dgd_pos_selector a:hover {background: pink }
+#dgd_pos_selector a.selected {background: red }
 .dgd_form_footer { background: #dddddd                                                                                                                                                                                                                                                                                                       url('http://www.dreamgrow.com/wp-content/themes/dreamgrow_com/images/footer_grid.gif'); 
 }
 
@@ -26,3 +24,5 @@ div.dgd_tab_container select {  box-sizing: border-box; width: 95%; height: 10em
 div.dgd_tab_container .hide { display: none; }
 .dgd_clear { clear: both }
 .dgd_text_input { box-sizing: border-box; width: 100%; }
+
+:checked + .dgd_checkalert { color: red; font-weight: bold; }
