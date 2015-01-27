@@ -838,9 +838,10 @@ Class DgdScrollboxAdmin {
         // Check post type for Dgd Popup
         if ( $post->post_type == DGDSCROLLBOXTYPE ) {
             $this->save_options($post_id, false);
-            // always clear cache when saving Scrollbox - otherwise cached pages will show old Scrollbox
-            // Thanks http://scratch99.com/wordpress/development/clearing-cache-when-widget-saved/ to hint
-            // it's rather experimental, but worth to try
+            // Clear cache when saving Scrollbox - otherwise cached pages will show old Scrollbox
+            // Hint from http://scratch99.com/wordpress/development/clearing-cache-when-widget-saved/ 
+            // it's experimental, but sometimes worth to try??
+            /*
             if (function_exists('w3tc_pgcache_flush')) { 
                 // W3 Total Cache
                 @w3tc_pgcache_flush(); 
@@ -849,6 +850,7 @@ Class DgdScrollboxAdmin {
                 // WP Super Cache
                 @wp_cache_clean_cache( $GLOBALS['file_prefix'] );
             }
+            */
         }
     }
 
