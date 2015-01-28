@@ -427,7 +427,6 @@ Class DgdScrollboxAdmin {
         if(!isset($dgd_stb['thankyou'])) $dgd_stb['thankyou']=DgdScrollboxHelper::$dgd_stb_meta_default['thankyou'];
         if(!isset($dgd_stb['submit_auto_close'])) $dgd_stb['submit_auto_close'] = 5;
         if(!isset($dgd_stb['delay_auto_close'])) $dgd_stb['delay_auto_close'] = 0;
-        if(!isset($dgd_stb['widget_enabled'])) $dgd_stb['widget_enabled'] = 1;
 
 
         if(!array_key_exists($dgd_stb['height'], $this->height_select_options)) {
@@ -504,7 +503,11 @@ Class DgdScrollboxAdmin {
                     <table>
                     <tr>
                         <td width="25%" style="vertical-align: top">On all following:<br />
-                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" <?php checked(1, isset($dgd_stb_show['frontpage'])); ?>>Frontpage</label>
+                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" <?php checked(1, isset($dgd_stb_show['frontpage'])); ?>>Frontpage</label><br />
+                            <label><input name="dgd_stb_show[postspage]" type="checkbox" <?php checked(1, isset($dgd_stb_show['postspage'])); 
+                            ?>>Blog page</label><br />
+                            <label><input name="dgd_stb_show[error404]" type="checkbox" <?php checked(1, isset($dgd_stb_show['error404'])); 
+                            ?>>Error 404 page</label><br />
                             <?php $this->stb_get_post_types($dgd_stb_show); ?><br /><br />
                             <label><input name="dgd_stb_show[admin_only]" type="checkbox" <?php checked(1, isset($dgd_stb_show['admin_only'])); ?> class="dgd_checkalert"><span class="dgd_checkalert">Admin only</span></label>
                         </td>

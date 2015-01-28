@@ -3,7 +3,7 @@
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/
 Description: Scroll Triggered Box
-Version: 2.1.2
+Version: 2.1.3
 Author: Dreamgrow Digital
 Author URI: http://www.dreamgrow.com
 License: GPL2
@@ -13,16 +13,20 @@ if(!defined('DGDSCROLLBOXTYPE'))
     define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // DO NOT TOUCH!
 
 if(!defined('DGDSCROLLBOX_VERSION'))
-    define('DGDSCROLLBOX_VERSION', '2.1.2');
+    define('DGDSCROLLBOX_VERSION', '2.1.3');
 
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
 
 class DgdScrollbox {
     public $html=array();
     private $output='html';
+    private $post_id;
+    private $post_title;
+    private $permalink;
 
     public function __construct() {
         add_action('init', array($this, 'create_dgd_scrollbox_post_type') );
+        add_action('wp', array($this, 'get_original_post_id'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_style_n_script') );
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
@@ -62,6 +66,12 @@ class DgdScrollbox {
           'supports' =>array('title', 'editor'),
         )
       );
+    }
+
+    public function get_original_post_id() {
+        $post=get_queried_object();
+        $this->post_id = $post->ID;
+        $this->post_title = $post->post_title;
     }
 
     public function scrollbox_widgets_init() {
@@ -191,19 +201,12 @@ class DgdScrollbox {
         Returns array of popup page objects + meta info
     */
     private function get_matching_popups() {
-        global $post;
         $active_pop_ups=array();
 
-        if(!isset($post->ID)) {
-            // Error 404 page, do we possibly need to show any popups here? Assume not.
-            return array();
-        }
-
-        $tags=DgdScrollboxHelper::get_all_tags_ids($post->ID);
-        $categories=wp_get_post_categories( $post->ID );
+        $tags=DgdScrollboxHelper::get_all_tags_ids($this->post_id);
+        $categories=wp_get_post_categories( $this->post_id );
         $pop_ups = get_pages( array('post_type'=>DGDSCROLLBOXTYPE, 'post_status' => 'publish')); 
         
-
         // compare pop-up definition with page, 
         foreach($pop_ups as $pop_up) {
 
@@ -229,13 +232,15 @@ class DgdScrollbox {
 
             if (
                 ( 
-                 (isset($show_on['post_types']) && in_array(get_post_type($post->ID), array_keys($show_on['post_types']))) ||
+                 (isset($show_on['post_types']) && in_array(get_post_type($this->post_id), array_keys($show_on['post_types']))) ||
                  (isset($show_on['frontpage']) && is_front_page()) ||
-                 (isset($show_on['selected_pages']) && in_array($post->ID, array_values($show_on['selected_pages']) )) ||
+                 (isset($show_on['postspage']) && ($this->post_id == get_option('page_for_posts'))) ||
+                 (isset($show_on['error404']) && ($this->post_id==0)) ||
+                 (isset($show_on['selected_pages']) && in_array($this->post_id, array_values($show_on['selected_pages']) )) ||
                  (isset($show_on['categories']) && is_array($categories) && count(array_intersect($show_on['categories'], $categories))>0) ||
                  (isset($show_on['tags']) && is_array($tags) && count(array_intersect($show_on['tags'], $tags))>0)
                 )  &&  (
-                 !(isset($hide_on['selected_pages']) && in_array($post->ID, array_values($hide_on['selected_pages']) )) &&
+                 !(isset($hide_on['selected_pages']) && in_array($this->post_id, array_values($hide_on['selected_pages']) )) &&
                  !(isset($hide_on['categories']) && is_array($categories) && count(array_intersect($hide_on['categories'], $categories))>0) &&
                  !(isset($hide_on['tags']) && is_array($tags) && count(array_intersect($hide_on['tags'], $tags))>0)
                 )
@@ -255,14 +260,15 @@ class DgdScrollbox {
     }
 
     public function enqueue_style_n_script() {
-        global $post, $wp_version;
+        global $wp_version;
+
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
 
         $image='';
         $thumbnail=false;
-        if(has_post_thumbnail($post->ID)) {
-            $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
+        if(has_post_thumbnail($this->post_id)) {
+            $image = wp_get_attachment_image_src(get_post_thumbnail_id($this->post_id), 'full');
             $thumbnail=$image[0];
         } 
 
@@ -272,8 +278,8 @@ class DgdScrollbox {
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('dgd_stb_nonce'),
             'debug' => (current_user_can('manage_options') ? '1' : ''),
-            'permalink' => get_permalink($post->ID),
-            'title' => $post->post_title,
+            'permalink' => get_permalink($this->post_id),
+            'title' => $this->post_title,
             'thumbnail' => $thumbnail,
             'scripthost' => plugins_url('/',  __FILE__), 
         );

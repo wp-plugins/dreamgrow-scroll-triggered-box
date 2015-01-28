@@ -11,9 +11,10 @@ Class DgdScrollboxHelper {
         'hide_mobile' => 1,
         'show_admin' => 1,
         'show' => array(
-            'page' => 'on',
-            'post' => 'on',
-            'frontpage' => 'on'
+            'page' => 1,
+            'post' => 1,
+            'frontpage' => 1,
+            'postspage' => 1,
         ),
         'theme' => 'default',
         'social' => array(
@@ -22,7 +23,7 @@ Class DgdScrollboxHelper {
             'google' => 0,
             'pinterest' => 0,
             'stumbleupon' => 0,
-            'linkedin' => 0
+            'linkedin' => 0,
         ),
         'receiver_email' => '',
     );
@@ -76,11 +77,13 @@ Class DgdScrollboxHelper {
 
     public static $dgd_stb_show_meta_default = array(
         'frontpage' => 1,
+        'postspage' => 1,
+        'error404' => null,
         'selected_pages' => array(),
         'categories' => array(),
         'tags' => array(),
         'post_types' => array ('page'=>1, 'post'=>1),
-        'admin_only' => false,
+        'admin_only' => null,
     );
 
 

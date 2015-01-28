@@ -2,7 +2,7 @@
 Contributors: pk2000,madisn,Eero Hermlin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
-Requires at least: 3.0
+Requires at least: 3.1
 Tested up to: 4.1
 Stable tag: 2.1.2
 License: GPLv2 or later
@@ -150,6 +150,9 @@ There's no "user-friendly" way at the moment, but it can be achieved by entering
 
 == Changelog ==
 
+= 2.1.3 =
+* Added Show->Posts page option
+
 = 2.1.2 =
 * Scrollbox allow empty DIV, P and SPAN tags (to work together with MailChimp native code, for example)
 * Bugfix: Scrollbox will now appear also if first page is set to blog page
@@ -236,6 +239,3 @@ Release
 
 * Add "ear" tab for closed scrollbox (2.2)
 * Support Preview button for Admin screen (2.2)
-* Fix "undefined index: hide_mobile" notification
-* Fix "Enable Widget area" checkbox (always checked)
-* Fix bug scrollbox sometimes not appearing on first page.
