@@ -231,7 +231,7 @@ Class DgdScrollboxAdmin {
     function tiny_mce_fix( $init ) {
         global $post;
         // assuming that scrollbox will not contain html copy-pasted from Word etc.
-        $valid_elements = 'div[!id|!name|!class|!style],p[!id|!name|!class|!style],span[!id|!name|!class|!style]';
+        $valid_elements = 'div[!id|!name|!class|!style],span[!id|!name|!class|!style]';
         if($post->post_type == DGDSCROLLBOXTYPE) {
             if(isset($init['extended_valid_elements'])) {
                 $init['extended_valid_elements'] .= ','.$valid_elements;
