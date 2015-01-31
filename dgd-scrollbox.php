@@ -31,6 +31,8 @@ class DgdScrollbox {
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
         add_action('wp_ajax_nopriv_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
+        add_action('wp_ajax_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
+        add_action('wp_ajax_nopriv_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
         add_action('wp_footer',  array($this, 'do_footer'), 100);
         add_action('widgets_init', array($this, 'scrollbox_widgets_init'), 15);
         if(is_admin()) {
@@ -140,6 +142,31 @@ class DgdScrollbox {
         }
         return '';
     }
+
+    public function dgd_stb_get_html() {
+        $nonce = $_POST['stbNonce'];        
+        if (!wp_verify_nonce($nonce, 'dgd_stb_nonce')) {
+            die (json_encode(array('html'=>'Sorry, but you must reload this page!', 'status'=>'500')));
+        }
+        $html=$_POST['html'];
+        $widget_enabled=$_POST['widget_enabled'];
+        $file_wp_load=ABSPATH.'wp-load.php';
+        if (file_exists($file_wp_load)){
+        	require_once($file_wp_load);
+            $html.=' fail leitud '.$file_wp_load;
+        } else {
+            $html.=' faili pole';
+        }
+        /*
+        */
+        // $output=apply_filters('the_content', $html);
+        $output=do_shortcode($html);
+        if($widget_enabled) {
+            $output.=$this->get_widget_content();
+        }
+        die(json_encode(array('html'=>$output, 'status'=>'200')));
+    }
+
 
     private function get_html() {
         $output='';

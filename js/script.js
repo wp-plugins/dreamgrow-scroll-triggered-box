@@ -512,7 +512,7 @@ $DGD.generateBox = function (box) {
         boxdiv = document.createElement('div');
         boxdiv.className = 'dgd_stb_box ' + box.theme;
         boxdiv.id = box.id;
-        boxdiv.innerHTML = box.html;
+        boxdiv.innerHTML = '<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>'+box.html;
         document.getElementsByTagName('body')[0].appendChild(boxdiv);
     } else {
         boxdiv = document.getElementById(box.id);
@@ -522,6 +522,7 @@ $DGD.generateBox = function (box) {
         form = jQuery(boxdiv).find('form');
         if (typeof form === 'object') { form.submit(this.submitForm); }
     }
+    return boxdiv;
 };
 
 $DGD.mouseEventHandler = function (e) {

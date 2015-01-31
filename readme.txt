@@ -148,6 +148,48 @@ There's no "user-friendly" way at the moment, but it can be achieved by entering
 `<script>window.location='http://yourdomain.com/path';</script>` 
 (Of course use actual URL instead of 'http://yourdomain.com/path').
 
+= What values can be used for Element triggering =
+
+"Element" field takes any single <a href="http://api.jquery.com/category/selectors/">jQuery selector</a>. General examples about them:
+
+<ul>
+<li>`#comments` - select HTML element having ID of 'comments'. <a href="http://api.jquery.com/id-selector/">jQuery about #ID selector</a></li>
+<li>`.comment-content` - select HTML element with a class of 'comment-content'. <a href="http://api.jquery.com/class-selector/">jQuery about .class selector</a></li>
+<li>`body` - select HTML body tag content `<body>...</body>` (e.g. whole page). <a href="http://api.jquery.com/element-selector/">jQuery about Element selector</a></li>
+</ul>
+And those can be combined, like this:
+
+<ul>
+<li>`h1.entry-title` - select h1 element having class 'entry-title'</li>
+<li>In case of separate triggering objects, <a href="http://api.jquery.com/multiple-selector/">use comma separated list</a></li>
+</ul>
+Here some common elements you can use on most WordPress themes:
+
+<ul>
+<li>`body` - Entire page</li>
+<li>`.site-title` - Site title</li>
+<li>`.site-description` - Site description ('Just another WordPress site')</li>
+<li>`.nav-menu` - Navbar</li>
+<li>`.entry-title` - Post title</li>
+<li>`.entry-date` - Post date</li>
+<li>`.author` - Post Author</li>
+<li>`.entry-content` - Post content</li>
+<li>`#comments` - Comments area</li>
+<li>`.comment-content` - Comment text (inside comments area)</li>
+<li>`#respond` - Comment form</li>
+<li>`#comment` - Comment form textarea</li>
+<li>`input#submit` - Comment submit button</li>
+<li>`#secondary` - Secondary area (Widgets area)</li>
+<li>`.widget_search` - Search Widget</li>
+<li>`.widget_recent_entries` - Recent Entries Widget</li>
+<li>`.widget_archive` - Archive Widget</li>
+<li>`.widget_categories` - Categories Widget</li>
+<li>`.widget_meta` - Meta Widget</li>
+<li>`#colophon` - Page Footer ("Proudly powered by WordPress")</li>
+<li>`.dgd_stb_box` - Any scrollbox content (Yes, you can trigger new box from another scroll triggered box)</li>
+</ul>
+
+
 == Changelog ==
 
 = 2.1.3 =

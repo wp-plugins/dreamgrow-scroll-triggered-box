@@ -60,15 +60,16 @@ $DGD.showTab = function (elem, tab) {
     jQuery(elem).addClass('selected');
 };
 
-jQuery(document).ready(function () {
-    'use strict';
+$DGD.attachColorPicker = function () {
     try {
         jQuery('.dgd-popup-color-picker').wpColorPicker();
     } catch (ignore) {
     }
-    $DGD.select2D.init();
-    $DGD.restore_send_to_editor = window.send_to_editor;
+}
 
+$DGD.imageUploadCallback = function () {
+
+    $DGD.restore_send_to_editor = window.send_to_editor;
     jQuery('#upload_bg_image_button').click(function () {
         var formfield = jQuery(this).prev('input');
         tb_show('Choose background image', 'media-upload.php?type=image&amp;TB_iframe=true');
@@ -98,8 +99,20 @@ jQuery(document).ready(function () {
         };
         return false;
     });
+}
 
+$DGD.oldVersionsSupport = function () {
     // prevent broken icon to show on WP<3.8
     jQuery('#menu-posts-dgdscrollbox').removeClass('menu-icon-dgdscrollbox').addClass('menu-icon-settings');
     jQuery('img[src="http://dashicons-welcome-comments"]').remove();
+}
+
+jQuery(document).ready(function () {
+    'use strict';
+    if(pagenow==='dgd_scrollbox') {
+        $DGD.select2D.init();
+        $DGD.attachColorPicker();
+        $DGD.imageUploadCallback();
+    }
+    $DGD.oldVersionsSupport();
 });

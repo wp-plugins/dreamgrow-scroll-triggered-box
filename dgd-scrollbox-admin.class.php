@@ -231,7 +231,8 @@ Class DgdScrollboxAdmin {
     function tiny_mce_fix( $init ) {
         global $post;
         // assuming that scrollbox will not contain html copy-pasted from Word etc.
-        $valid_elements = 'div[!id|!name|!class|!style],p[!id|!name|!class|!style],span[!id|!name|!class|!style]';
+        // $valid_elements = 'div[!id|!name|!class|!style],p[!id|!name|!class|!style],span[!id|!name|!class|!style]';
+        $valid_elements = 'div[!id|!name|!class|!style],span[!id|!name|!class|!style]';
         if($post->post_type == DGDSCROLLBOXTYPE) {
             if(isset($init['extended_valid_elements'])) {
                 $init['extended_valid_elements'] .= ','.$valid_elements;
@@ -260,13 +261,48 @@ Class DgdScrollboxAdmin {
     }
 
     public function enqueue_admin_style_n_script( $hook_suffix ) {
+        global $wp_version;
         // first check that $hook_suffix is appropriate for your admin page
         // http://www.webmaster-source.com/2010/01/08/using-the-wordpress-uploader-in-your-plugin-or-theme/
+
+        // Init $DGD variable for preview
+
+        $data = array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('dgd_stb_nonce'),
+            'debug' => '1',
+            'permalink' => get_home_url(),
+            'title' => 'Dreamgrow Scroll Triggered Box Preview',
+            'thumbnail' => '',
+            'scripthost' => plugins_url('/',  __FILE__), 
+        );
+
+        $meta=DgdScrollboxHelper::$dgd_stb_meta_default;
+        $meta['id']='dgd_scrollbox-preview';
+        $meta['voff']=0;
+        $meta['hoff']=0;
+
+        if(version_compare($wp_version, '3.3', '>=')) {
+            // WP=3.3 or newer
+            $data['scrollboxes']= array($meta);
+        } else {
+            // WP<3.3 does not support multi-dimensional arrays in wp_localize_script
+            // so we add $DGD.scrollboxes separately, without wp_localize_script encoding help
+            $data['l10n_print_after'] = '$DGD.scrollboxes = ' . json_encode( array($meta) ) . ';';
+        }
+
         wp_enqueue_style( 'wp-color-picker' );
-        wp_enqueue_script('wp-color-picker' );
-        wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, true );
         wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
+        wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, true );
+        wp_register_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
+        wp_register_script( 'dgd-scrollbox-plugin-preview', plugins_url('js/preview.js', __FILE__ ), array('jquery', 'dgd-scrollbox-plugin'), DGDSCROLLBOX_VERSION, true );
+
+        wp_enqueue_script('wp-color-picker' );
         wp_enqueue_script( 'dgd-scrollbox-plugin-admin' );
+        wp_enqueue_script( 'dgd-scrollbox-plugin-preview' );
+
+        wp_localize_script('dgd-scrollbox-plugin', '$DGD', $data);
     }
 
 
@@ -788,6 +824,7 @@ Class DgdScrollboxAdmin {
             if(is_array($selected_options) && in_array($key, $selected_options)) {
                     $rv.=' selected="1"';
             } else {
+                // BUG! 
                 $rv.=@selected( $selected_options, $key, false );
             }
             $rv.='>'.$label.'</option>'."\n";
