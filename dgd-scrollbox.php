@@ -148,22 +148,19 @@ class DgdScrollbox {
         if (!wp_verify_nonce($nonce, 'dgd_stb_nonce')) {
             die (json_encode(array('html'=>'Sorry, but you must reload this page!', 'status'=>'500')));
         }
-        $html=$_POST['html'];
+        $html=stripslashes($_POST['html']);
         $widget_enabled=$_POST['widget_enabled'];
+        /*
         $file_wp_load=ABSPATH.'wp-load.php';
         if (file_exists($file_wp_load)){
         	require_once($file_wp_load);
-            $html.=' fail leitud '.$file_wp_load;
-        } else {
-            $html.=' faili pole';
-        }
-        /*
+        } 
         */
-        // $output=apply_filters('the_content', $html);
         $output=do_shortcode($html);
         if($widget_enabled) {
             $output.=$this->get_widget_content();
         }
+        $output.=do_shortcode('[contact-form-7 id="19" title="Contact form 1"]');
         die(json_encode(array('html'=>$output, 'status'=>'200')));
     }
 

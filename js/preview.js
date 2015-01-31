@@ -46,7 +46,7 @@ $DGD.closePreview = function () {
 }
 
 
-$DGD.getHtml = function (preview) {
+$DGD.getHtmlAndShow = function (preview) {
     var sendobj = {};
 
     sendobj.html = preview.html;
@@ -65,6 +65,11 @@ $DGD.getHtml = function (preview) {
         },
         success: function (response) {
             console.debug(response.html);
+            preview.html=response.html;
+            $DGD.previewDiv = $DGD.generateBox(preview);
+            $DGD.placeBox(preview);
+            jQuery('.dgd_stb_box_close').click($DGD.closePreview);
+            $DGD.showBox(preview);
         },
         error: function (jqXHR, textStatus, errorThrown) {
             // console.debug(textStatus + ': ' + errorThrown);
@@ -82,17 +87,7 @@ $DGD.showPreview = function (e) {
     }
     $DGD.serializeObject(jQuery('form#post'), preview);
     preview.html=$DGD.getScrollboxContent();
-    // BUG: parse shortcode and add widget
-
-    /*
-    $DGD.previewDiv = $DGD.generateBox(preview);
-    $DGD.placeBox(preview);
-    jQuery('.dgd_stb_box_close').click($DGD.closePreview);
-    $DGD.showBox(preview);
-    */
-    $DGD.getHtml(preview);
-
-    // $DGD.echo(preview));
+    $DGD.getHtmlAndShow(preview);
     return false;
 };
 
