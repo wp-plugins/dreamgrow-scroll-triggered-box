@@ -94,9 +94,9 @@ $DGD.showPreview = function (e) {
 $DGD.replacePreviewButton = function () {
     if( pagenow==='dgd_scrollbox' ) {
         // $DGD.echo('We are at Scrollbox edit screen, do Preview button');
-        jQuery('#preview-action a#post-preview').remove();
-        jQuery('#preview-action').html('<a href="#" class="preview button" id="post-preview">Preview Scrollbox</a>');
-        jQuery('#preview-action a#post-preview').click(function () {$DGD.showPreview(event)});
+        // jQuery('#preview-action a#post-preview').remove();
+        // jQuery('#preview-action').html('<a href="#" class="preview button" id="post-preview">Preview Scrollbox</a>');
+        // jQuery('#preview-action a#post-preview').click(function () {$DGD.showPreview(event)});
     }
 };
 

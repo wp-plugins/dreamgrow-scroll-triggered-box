@@ -295,12 +295,12 @@ Class DgdScrollboxAdmin {
         wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, true );
-        wp_register_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
-        wp_register_script( 'dgd-scrollbox-plugin-preview', plugins_url('js/preview.js', __FILE__ ), array('jquery', 'dgd-scrollbox-plugin'), DGDSCROLLBOX_VERSION, true );
+        // wp_register_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
+        // wp_register_script( 'dgd-scrollbox-plugin-preview', plugins_url('js/preview.js', __FILE__ ), array('jquery', 'dgd-scrollbox-plugin'), DGDSCROLLBOX_VERSION, true );
 
         wp_enqueue_script('wp-color-picker' );
         wp_enqueue_script( 'dgd-scrollbox-plugin-admin' );
-        wp_enqueue_script( 'dgd-scrollbox-plugin-preview' );
+        // wp_enqueue_script( 'dgd-scrollbox-plugin-preview' );
 
         wp_localize_script('dgd-scrollbox-plugin', '$DGD', $data);
     }
@@ -461,6 +461,7 @@ Class DgdScrollboxAdmin {
 
         /* Re-define some variables for old version scrollboxes */
         if(!isset($dgd_stb['thankyou'])) $dgd_stb['thankyou']=DgdScrollboxHelper::$dgd_stb_meta_default['thankyou'];
+        if(!isset($dgd_stb['tabhtml'])) $dgd_stb['tabhtml']=DgdScrollboxHelper::$dgd_stb_meta_default['tabhtml'];
         if(!isset($dgd_stb['submit_auto_close'])) $dgd_stb['submit_auto_close'] = 5;
         if(!isset($dgd_stb['delay_auto_close'])) $dgd_stb['delay_auto_close'] = 0;
 
@@ -651,6 +652,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>"Thank you" message</td>
                 <td><input type="text" name="dgd_stb[thankyou]" value="<?php echo $dgd_stb['thankyou'] ?>" class="dgd_text_input">
+                <br />(this field accepts html)
                 <?php if(function_exists('icl_get_languages')){ echo '<br />(Please note, that you can change it for each translation separately)';} ?></td>
             </tr>
             <tr>
@@ -785,6 +787,22 @@ Class DgdScrollboxAdmin {
             </tr>
 
         </table>
+        <h1>Permanent tab</h1>
+        <table class="dgd_admin">
+            <tr>
+                <td>Show tab</td>
+                <td>
+                    <label><input type="checkbox" name="dgd_stb[tab]" value="1"<?php echo (isset($dgd_stb['tab'])?' checked="1"':'') ?>>After Scrollbox closing show tab for reopening</label>
+                </td>           
+            </tr>
+            <tr>
+                <td>"Tab" text</td>
+                <td><input type="text" name="dgd_stb[tabhtml]" value="<?php echo $dgd_stb['tabhtml'] ?>" class="dgd_text_input">
+                <br />(this field accepts html)</td>
+            </tr>
+
+        </table>
+
 
         <h1>Social buttons</h1>
         <table class="dgd_admin">

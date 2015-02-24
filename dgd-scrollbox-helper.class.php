@@ -73,6 +73,8 @@ Class DgdScrollboxHelper {
         'receiver_email' => false,
         'thankyou' => 'You are subscribed. Thank You!',
         'widget_enabled' => 1,
+        'tabhtml'=>'Subscribe!',
+        'tab'=>null,
     );
 
     public static $dgd_stb_show_meta_default = array(

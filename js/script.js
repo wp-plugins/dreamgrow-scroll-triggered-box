@@ -23,6 +23,7 @@ $DGD.boxes_wait_for_scroll = [];
 $DGD.boxes_with_relative_position = [];
 $DGD.boxes_wait_for_close = [];
 $DGD.boxes_wait_for_open = [];
+$DGD.tabs_to_open = [];
 $DGD.docheight = 2000;
 $DGD.toScroll = 2000;
 
@@ -102,19 +103,20 @@ function DgdCreateSocialButtons(box) {
         this.container = box.div;
     }
 
-    if (!jQuery(this.container).find('ul.stb_social').length) {
-        // add ul if needed
-        jQuery(this.container).append('<ul class="stb_social"></ul>');
-    }
-    this.ul = jQuery(this.container).find('ul.stb_social');
-
-    if (box.social && this.ul.length > 0) {
-        if (box.social.facebook) {this.addFbButton(); }
-        if (box.social.twitter) {this.addTwitterButton(); }
-        if (box.social.google) {this.addGoogleButton(); }
-        if (box.social.linkedin) {this.addLinkedinButton(); }
-        if (box.social.stumbleupon) {this.addStumbleuponButton(); }
-        if (box.social.pinterest) {this.addPinterestButton(); }
+    if (box.social) {
+        if (!jQuery(this.container).find('ul.stb_social').length) {
+            // add ul if needed
+            jQuery(this.container).append('<ul class="stb_social"></ul>');
+        }
+        this.ul = jQuery(this.container).find('ul.stb_social');
+        if(this.ul.length > 0) {
+            if (box.social.facebook) {this.addFbButton(); }
+            if (box.social.twitter) {this.addTwitterButton(); }
+            if (box.social.google) {this.addGoogleButton(); }
+            if (box.social.linkedin) {this.addLinkedinButton(); }
+            if (box.social.stumbleupon) {this.addStumbleuponButton(); }
+            if (box.social.pinterest) {this.addPinterestButton(); }
+        }
     }
 }
 
@@ -163,7 +165,7 @@ $DGD.calcScroll = function () {
             if (box.trigger.delaytime > 0) {
                 this.regTimedOpening(box, box.trigger.delaytime);
             } else {
-                this.showBox(box);
+                this.showBox(box, false);
             }
         }
         if (box.trigger.action === 'scroll' && rate < box.trigger.scroll && !box.hidden) {
@@ -182,12 +184,12 @@ $DGD.fixPosition = function () {
 };
 
 $DGD.setCookie = function (cname, exdays) {
-    var d = new Date(), expires = '';
+    var d = new Date(), expires = '', path='; path=/';
     if (exdays !== 0) {
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         expires = "; expires=" + d.toUTCString();
     }
-    document.cookie = cname + "=" + exdays + expires;
+    document.cookie = cname + "=" + exdays + expires + path;
 };
 
 $DGD.getCookie = function (cname) {
@@ -207,6 +209,7 @@ $DGD.checkCookie = function (box) {
     if (cookieval === box.cookieLifetime || cookieval === 9000) {
         // value from cookie exists and is same than in scrollbox: showing is disabled
         // value from cookie is 9000: showing is disabled
+        box.closed=true;
         return false;
     }
     // cookie does not exist OR value is changed: showing is enabled
@@ -252,17 +255,24 @@ $DGD.placeBox = function (box) {
 
     box.socialButtonEngine = new DgdCreateSocialButtons(box);
 
+    if(box.parentid) {
+        box.div.addClass('dgd_stb_tab');
+        box.div.click($DGD.closeBox);
+    }
+
     if (box.height === 'auto') {
         box.height = parseInt(box.div.outerHeight(true), 10);
     } else {
         box.height = parseInt(box.height, 10);
-        box.div.height(box.height);
+        // box.div.height(box.height);
+        box.div.css('height', box.height);
     }
     if (box.width === 'auto') {
         box.width = parseInt(box.div.outerWidth(true), 10);
     } else {
         box.width = parseInt(box.width, 10);
-        box.div.width(box.width);
+        // box.div.width(box.width);
+        box.div.css('width', box.width);
     }
 
     if (box.trigger.action === 'element') {
@@ -275,6 +285,7 @@ $DGD.placeBox = function (box) {
             this.echo('Element ' + box.trigger.element + ' is missing');
         }
     }
+
 
     switch (box.transition.effect) {
     case 'fade':
@@ -408,11 +419,14 @@ $DGD.regTimedOpening = function (box, seconds) {
     }
 };
 
-$DGD.showBox = function (box) {
+$DGD.showBox = function (box, forcedOpen) {
     if (!box) { box = this; }
-    if (!box.hidden || box.closed) {
+    if (!box.hidden || (box.closed && !forcedOpen)) {
         // already visible OR forcefully closed, return
         return;
+    }
+    if(box.tabid) {
+        $DGD.closeBox($DGD.getBoxById(box.tabid));
     }
     box.hidden = false;
     box.div.css('display', 'block').stop(true, true);
@@ -447,6 +461,12 @@ $DGD.closeBox = function () {
         box.closed = true;
         $DGD.hideBox(box);
         $DGD.setCookie(box.id, box.cookieLifetime);
+        if(box.tabid) {
+            $DGD.showBox($DGD.getBoxById(box.tabid), true);
+        }
+        if(box.parentid) {
+            $DGD.showBox($DGD.getBoxById(box.parentid), true);
+        }
     }
 };
 
@@ -528,7 +548,7 @@ $DGD.generateBox = function (box) {
 $DGD.mouseEventHandler = function (e) {
     var box = $DGD.getBoxByElementAction(e);
     if (box) {
-        $DGD.showBox(box);
+        $DGD.showBox(box, false);
     }
 };
 
@@ -545,12 +565,16 @@ $DGD.scrollboxInit = function () {
                 continue;
             }
 
-            if (!this.checkCookie(box)) {
-                continue;
-            }
-
             this.generateBox(box);
             this.placeBox(box);
+
+            if (!this.checkCookie(box)) {
+                // closed boxes will be not added to wait arrays, those can be opened only from tab (if exists)
+                if (box.tabid) {
+                    $DGD.tabs_to_open[this.tabs_to_open.length]=box.tabid;
+                }
+                continue;
+            }
 
             // start timers
             if (box.trigger.action === 'mouseover' || box.trigger.action === 'click') {
@@ -593,13 +617,18 @@ $DGD.scrollboxInit = function () {
                     for (i = 0; i < $DGD.boxes_wait_for_open.length; i++) {
                         box = $DGD.boxes_wait_for_open[i];
                         if (box.openingTime < d) {
-                            $DGD.showBox(box);
+                            $DGD.showBox(box, false);
                             // remove box from queue
                             $DGD.boxes_wait_for_open.splice(i, 1);
                         }
                     }
                 }
             }, 333);
+            if($DGD.tabs_to_open.length>0) {
+                for (i = 0; i < $DGD.tabs_to_open.length; i++) {
+                    $DGD.showBox($DGD.getBoxById($DGD.tabs_to_open[i]));
+                }
+            }
         }
 
         jQuery('.dgd_stb_box_close').click($DGD.closeBox);

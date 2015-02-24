@@ -1,4 +1,4 @@
-.dgd_stb_box {
+.dgd_stb_box, .dgd_stb_tab {
     z-index:100000; /* wpadminbar is 99999, needs to appear on top of this */
     display: none;
     position:fixed;
@@ -26,5 +26,9 @@
     display: block !important; 
     bottom: none !important; 
     z-index: auto !important; 
-    position: static !important 
+    position: static !important;
+}
+
+.dgd_stb_tab {
+    cursor: pointer;
 }

@@ -171,10 +171,11 @@ class DgdScrollbox {
 
         foreach($this->html as $box) {
             $output.='<div class="dgd_stb_box '.$box['theme'].'" id="'.$box['id'].'">';
-            $output.='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
+            if($box['show_close_button']) $output.='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
             $output.=do_shortcode($box['html']);
             if($box['widget_enabled']) $output.=$widget_content;
-            $output.='</div>'."\n\n";
+            $output.='</div>'."\n";
+            $output.="\n";
         }
         return $output;
     }
@@ -199,9 +200,12 @@ class DgdScrollbox {
                 }
 
                 $meta['id']=DGDSCROLLBOXTYPE.'-'.$pop_up->ID;
+                $meta['mode']='stb';
                 $meta['voff']=0;
                 $meta['hoff']=0;
-                $html=$pop_up->post_content;                
+
+                // post_content does not add <p> tags, must use wpautop function for that
+                $html=wpautop($pop_up->post_content);
                 if (isset($meta['migrated_no_css'])) {
                     $html='<div id="scrolltriggered">'.$html.'</div>';
                 } 
@@ -210,11 +214,61 @@ class DgdScrollbox {
                 } else {
                     $this->html[]=array(
                         'id'=>$meta['id'],
+                        'show_close_button'=>true,
                         'theme'=>$meta['theme'],
                         'widget_enabled'=>$widget_enabled,
                         'html'=>$html,
+                        // 'tabid'=>(isset($meta['tabid']) ? $meta['tabid'] : null),
                         );
                 }
+
+                if(isset($meta['tab'])) {
+                    $meta['tabid']=DGDSCROLLBOXTYPE.'-'.$pop_up->ID.'-tab';
+                    $tabmeta=array(
+                        'id'=>$meta['tabid'],
+                        'parentid'=>$meta['id'],
+                        'trigger' => array(
+                            'action'=>'tab',
+                            ),
+                        'height' => 'auto',
+                        'width' => 'auto',
+                        'vpos'=> (($meta['vpos']=='center' && $meta['hpos']=='center')? 'bottom' : $meta['vpos']),
+                        'hpos'=> $meta['hpos'],
+                        'theme' => $meta['theme'],
+                        'jsCss' => array (
+                            'margin' => '0',
+                            'backgroundImageUrl' => '',
+                            'backgroundColor' => $meta['jsCss']['backgroundColor'],
+                            'boxShadow' => '0px',
+                            'borderColor' => $meta['jsCss']['borderColor'],
+                            'borderWidth' => ($meta['jsCss']['borderWidth']=='0px' ? '0px' : '1px'),
+                            'borderRadius' => '',
+                            ),
+                        'transition' => array (
+                            'effect' => $meta['transition']['effect'],
+                            'from' => $meta['transition']['from'],
+                            'speed' => $meta['transition']['speed'],
+                            ),
+                        'closeImageUrl' => '',
+                        'hide_mobile' => $meta['hide_mobile'],
+                        'submit_auto_close' => 0,
+                        'delay_auto_close' => 0,
+                        'hide_submitted' => 0,
+                        'cookieLifetime' => -1,     // Tab will be always available
+                        'receiver_email' => $meta['receiver_email'],
+                        'thankyou' => $meta['thankyou'],
+                        'widget_enabled' => 0,
+                    );
+                    $this->html[]=array(
+                        'id'=>$meta['tabid'],
+                        'show_close_buttone'=>false,
+                        'theme'=>$meta['theme'],
+                        'widget_enabled'=>false,
+                        'html'=>$meta['tabhtml'],
+                    );
+                    $js[]=$tabmeta;
+                }
+                unset($meta['tabhtml']);
                 $js[]=$meta;
             }
         } 
@@ -241,14 +295,14 @@ class DgdScrollbox {
 
             $popupcookie=$meta['cookieLifetime'];
             $clientcookie=(isset($_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]) ? $_COOKIE[DGDSCROLLBOXTYPE.'-'.$pop_up->ID]*1 : -1);
-            if ($clientcookie=='9000') {
+            if ($clientcookie=='9000' && !isset($meta['tab'])) {
                 // closed for ever
                 continue;
             }
 
             if (isset($show_on['admin_only']) && !current_user_can('manage_options')) {
                 continue;
-            } else if($popupcookie>-1 && $clientcookie>-1 && $popupcookie>=$clientcookie) {
+            } else if($popupcookie>-1 && $clientcookie>-1 && $popupcookie>=$clientcookie && !isset($meta['tab'])) {
                 // client already has same or shorter cookie than server, skip
                 // $popupcookie==-1: show always
                 continue;

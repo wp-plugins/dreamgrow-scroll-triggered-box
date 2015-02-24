@@ -43,3 +43,10 @@
 
 
 .dgd_stb_box.clean_white .stbMsgArea { display: none; padding: 10px 0 0; margin: 0; }
+
+.dgd_stb_box.clean_white.dgd_stb_tab {
+	box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.1); 
+	padding: 2px 10px;
+	font-size: 12px;
+	line-height: 12px;
+}
