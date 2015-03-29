@@ -36,7 +36,9 @@ $DGD.initIframe = function () {
         iframeref.id = 'previewFrame';
         document.getElementsByTagName('body')[0].appendChild(iframeref);
 	    $DGD.iframe = document.getElementById('previewFrame');
-	}
+	} else {
+        $DGD.iframe.removeAttribute("style");
+    }
 	if (!$DGD.iframeDocument) {
 		$DGD.iframeDocument = $DGD.iframe.contentDocument || $DGD.iframe.contentWindow.document;
 	}

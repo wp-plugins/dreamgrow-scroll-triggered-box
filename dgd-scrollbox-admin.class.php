@@ -454,11 +454,10 @@ Class DgdScrollboxAdmin {
 
 
     function display_dgd_scrollbox_preview( $post ) {
-        if($post->post_type == DGDSCROLLBOXTYPE) {
+        // if firefox only?
         ?>
-        <iframe id="previewFrame"></iframe>
+        <iframe id="previewFrame" style="visibility: hidden"></iframe>
         <?php
-        }
     }
 
     function display_dgd_scrollbox_meta_box( $post ) {
@@ -849,9 +848,6 @@ Class DgdScrollboxAdmin {
 
 
         </table>
-
-        <iframe id="previewFrame"></iframe>
-
 
         <?php
     }
