@@ -27,25 +27,29 @@ div.dgd_tab_container .hide { display: none; }
 
 :checked + .dgd_checkalert { color: red; font-weight: bold; }
 
-#previewFrame {
+#dgd_preview_frame {
 	position: absolute;
 	right: 0px;
 	top: 0px;
 	z-index: 100000;
-	width: 100%;
-	height: 100%;
 	border: solid black 1px;
 	background: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
 	visibility: hidden;
 	opacity: 0;
 }
 
-#previewFrame.activate {
+#dgd_preview_frame.activate {
 	visibility: visible;
 	opacity: 1;
 }
 
-#donate {
+.dgd_preview_mode {
+	overflow: hidden;
+}
+
+#dgd_donate {
 	position: fixed;
 	right: 20px;
 	bottom: 10px;

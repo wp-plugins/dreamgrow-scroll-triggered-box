@@ -1,4 +1,4 @@
-/*jslint browser: true, continue: true, regexp: true, plusplus: true */
+/*jslint browser: true, continue: true, regexp: true, plusplus: true, sloppy: true */
 /*global $DGD */
 /*global jQuery */
 /*global FB */
@@ -6,7 +6,6 @@
 /*global IN */
 /*global console */
 /*global twttr */
-
 
 if (typeof $DGD.echo !== 'object') {
     $DGD.echo = function (str) {
@@ -108,7 +107,7 @@ function DgdCreateSocialButtons(box) {
             jQuery(this.container).append('<ul class="stb_social"></ul>');
         }
         this.ul = jQuery(this.container).find('ul.stb_social');
-        if(this.ul.length > 0) {
+        if (this.ul.length > 0) {
             if (box.social.facebook) {this.addFbButton(); }
             if (box.social.twitter) {this.addTwitterButton(); }
             if (box.social.google) {this.addGoogleButton(); }
@@ -119,29 +118,28 @@ function DgdCreateSocialButtons(box) {
     }
 }
 
-$DGD.addClass = function ( element, name ) {
-    element.className = element.className.replace( /\s+$/gi, '' ) + ' ' + name;
+$DGD.addClass = function (element, name) {
+    element.className = element.className.replace(/\s+$/gi, '') + ' ' + name;
 };
 
-$DGD.removeClass = function ( element, name ) {
-    element.className = element.className.replace( name, '' );
+$DGD.removeClass = function (element, name) {
+    element.className = element.className.replace(name, '');
 };
-
 
 $DGD.loadCss = function (cssObject, parent) {
     var cssUrl, fileref;
     if (typeof cssObject === 'string') {
-        cssUrl=cssObject;
+        cssUrl = cssObject;
         fileref = document.createElement('link');
         fileref.rel = 'stylesheet';
         fileref.type = 'text/css';
         fileref.href = cssUrl;
     } else if (typeof cssObject === 'object') {
         // console.log('CSS Object: '+cssObject);
-        cssUrl=cssObject.href;
-        fileref=cssObject;
+        cssUrl = cssObject.href;
+        fileref = cssObject;
     }
-    if (parent.childNodes.lenght>0) {
+    if (parent.childNodes.lenght > 0) {
         parent.insertBefore(fileref, parent.childNodes[0]);
     } else {
         parent.appendChild(fileref);
@@ -204,7 +202,7 @@ $DGD.fixPosition = function () {
 };
 
 $DGD.setCookie = function (cname, exdays) {
-    var d = new Date(), expires = '', path='; path=/';
+    var d = new Date(), expires = '', path = '; path=/';
     if (exdays !== 0) {
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         expires = "; expires=" + d.toUTCString();
@@ -229,7 +227,7 @@ $DGD.checkCookie = function (box) {
     if (cookieval === box.cookieLifetime || cookieval === 9000) {
         // value from cookie exists and is same than in scrollbox: showing is disabled
         // value from cookie is 9000: showing is disabled
-        box.closed=true;
+        box.closed = true;
         return false;
     }
     // cookie does not exist OR value is changed: showing is enabled
@@ -277,7 +275,7 @@ $DGD.placeBox = function (box) {
 
     box.socialButtonEngine = new DgdCreateSocialButtons(box);
 
-    if(box.parentid) {
+    if (box.parentid) {
         box.div.addClass('dgd_stb_tab');
         box.div.click($DGD.closeBox);
     }
@@ -447,7 +445,7 @@ $DGD.showBox = function (box, forcedOpen) {
         // already visible OR forcefully closed, return
         return;
     }
-    if(box.tabid) {
+    if (box.tabid) {
         $DGD.closeBox($DGD.getBoxById(box.tabid));
     }
     box.hidden = false;
@@ -483,10 +481,10 @@ $DGD.closeBox = function () {
         box.closed = true;
         $DGD.hideBox(box);
         $DGD.setCookie(box.id, box.cookieLifetime);
-        if(box.tabid) {
+        if (box.tabid) {
             $DGD.showBox($DGD.getBoxById(box.tabid), true);
         }
-        if(box.parentid) {
+        if (box.parentid) {
             $DGD.showBox($DGD.getBoxById(box.parentid), true);
         }
     }
@@ -554,7 +552,7 @@ $DGD.generateBox = function (box, boxparent) {
         newelem = document.createElement('div');
         newelem.className = 'dgd_stb_box ' + box.theme;
         newelem.id = box.id;
-        newelem.innerHTML = '<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>'+box.html;
+        newelem.innerHTML = '<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>' + box.html;
         boxdiv = boxparent.appendChild(newelem);
     } else {
         boxdiv = document.getElementById(box.id);
@@ -568,8 +566,6 @@ $DGD.generateBox = function (box, boxparent) {
             if (typeof form === 'object') { form.submit(this.submitForm); }
         }
         return boxdiv;
-    } else {
-        $DGD.echo('Box div not found');
     }
     return false;
 };
@@ -583,8 +579,10 @@ $DGD.mouseEventHandler = function (e) {
 
 $DGD.scrollboxInit = function () {
     var is_mobile_user = this.isMobile(navigator.userAgent || navigator.vendor || window.opera),
-        boxparent = document.getElementsByTagName('body')[0],   // possibility to append boxes to different elements, use <body> as default
-        i, box, d;
+        boxparent = document.body,   // possibility to append boxes to different elements, use <body> as default
+        i,
+        box,
+        d;
 
     if (this.scrollboxes.length > 0) {
         this.measureScreen();
@@ -603,7 +601,7 @@ $DGD.scrollboxInit = function () {
             if (!this.checkCookie(box)) {
                 // closed boxes will be not added to wait arrays, those can be opened only from tab (if exists)
                 if (box.tabid) {
-                    $DGD.tabs_to_open[this.tabs_to_open.length]=box.tabid;
+                    $DGD.tabs_to_open[this.tabs_to_open.length] = box.tabid;
                 }
                 continue;
             }
@@ -656,7 +654,7 @@ $DGD.scrollboxInit = function () {
                     }
                 }
             }, 333);
-            if($DGD.tabs_to_open.length>0) {
+            if ($DGD.tabs_to_open.length > 0) {
                 for (i = 0; i < $DGD.tabs_to_open.length; i++) {
                     $DGD.showBox($DGD.getBoxById($DGD.tabs_to_open[i]));
                 }

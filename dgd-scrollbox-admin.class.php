@@ -453,10 +453,10 @@ Class DgdScrollboxAdmin {
     }
 
 
-    function display_dgd_scrollbox_preview( $post ) {
+    function display_dgd_scrollbox_preview() {
         // if firefox only?
         ?>
-        <iframe id="previewFrame" style="visibility: hidden"></iframe>
+        <iframe id="dgd_preview_frame" style="visibility: hidden"></iframe>
         <?php
     }
 
