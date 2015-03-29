@@ -39,7 +39,7 @@ Class DgdScrollboxHelper {
         'width' => 300,
         'vpos' => 'bottom',
         'hpos' => 'right',
-        'include_css' => 1,
+        'include_css' => '1',
         'theme' => 'default',
         'jsCss' => array (
             'padding' => '10',
@@ -65,27 +65,27 @@ Class DgdScrollboxHelper {
             'linkedin' => 0
         ),
         'closeImageUrl' => '',
-        'hide_mobile' => 1,
+        'hide_mobile' => '1',
         'submit_auto_close' => 5,
         'delay_auto_close' => 40,
-        'hide_submitted' => 1,
+        'hide_submitted' => '1',
         'cookieLifetime' => 1,     // days
         'receiver_email' => false,
         'thankyou' => 'You are subscribed. Thank You!',
-        'widget_enabled' => 1,
+        'widget_enabled' => '1',
         'tabhtml'=>'Subscribe!',
-        'tab'=>null,
+        'tab'=>'1',
     );
 
     public static $dgd_stb_show_meta_default = array(
-        'frontpage' => 1,
-        'postspage' => 1,
-        'error404' => null,
+        'frontpage' => '1',
+        'postspage' => '1',
+        'error404' => '0',
         'selected_pages' => array(),
         'categories' => array(),
         'tags' => array(),
         'post_types' => array ('page'=>1, 'post'=>1),
-        'admin_only' => null,
+        'admin_only' => '0',
     );
 
 

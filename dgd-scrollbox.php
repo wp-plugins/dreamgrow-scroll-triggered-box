@@ -62,7 +62,6 @@ class DgdScrollbox {
           'show_in_nav_menus' => false,
           'show_in_menu' => true,
           'show_ui' => true,
-          'menu_position' => 20.001,
           'menu_icon' => 'dashicons-welcome-comments',
           'capability_type' => 'page', // to use custom template???
           'supports' =>array('title', 'editor'),

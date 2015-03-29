@@ -224,6 +224,8 @@ Class DgdScrollboxAdmin {
         add_action('admin_menu', array($this, 'register_general_settings_page'));
         add_action('parse_request', array($this, 'control_requests') );
         add_filter('tiny_mce_before_init', array($this, 'tiny_mce_fix'));
+        add_filter('admin_footer', array($this, 'display_dgd_scrollbox_preview'));
+        add_filter('admin_footer', array($this, 'display_donate_box'));
 
         // add_action( 'admin_notices', array($this, 'migrate_from_old_version'));
     }
@@ -295,12 +297,12 @@ Class DgdScrollboxAdmin {
         wp_enqueue_style( 'dgd-scrollbox-plugin', plugins_url( 'css/adminstyle.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_register_script( 'dgd-scrollbox-plugin-admin', plugins_url('js/admin.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, true );
-        // wp_register_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
-        // wp_register_script( 'dgd-scrollbox-plugin-preview', plugins_url('js/preview.js', __FILE__ ), array('jquery', 'dgd-scrollbox-plugin'), DGDSCROLLBOX_VERSION, true );
+        wp_register_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
+        wp_register_script( 'dgd-scrollbox-plugin-preview', plugins_url('js/preview.js', __FILE__ ), array('jquery', 'dgd-scrollbox-plugin'), DGDSCROLLBOX_VERSION, true );
 
         wp_enqueue_script('wp-color-picker' );
         wp_enqueue_script( 'dgd-scrollbox-plugin-admin' );
-        // wp_enqueue_script( 'dgd-scrollbox-plugin-preview' );
+        wp_enqueue_script( 'dgd-scrollbox-plugin-preview' );
 
         wp_localize_script('dgd-scrollbox-plugin', '$DGD', $data);
     }
@@ -314,14 +316,23 @@ Class DgdScrollboxAdmin {
             'normal',              // where to display (normal|advanced|side)
             'high'                  // priority among other boxes (high|core|default|low)
         );
-        add_meta_box( 'dgd_scrollbox_side_box', // meta box section html id
+        add_meta_box( 'dgd_donate_box', // meta box section html id
             'Donate $10, $20 or $50', // meta box title
-            array($this, 'display_dgd_scrollbox_side_box'), // meta box editor html function
+            array($this, 'display_donate_box'), // meta box editor html function
             DGDSCROLLBOXTYPE,             // post_type
             'side',              // where to display (normal|advanced|side)
             'default'                  // priority among other boxes (high|core|default|low)
         );
 
+        /*
+        add_meta_box( 'dgd_preview_box', // meta box section html id
+            'Preview', // meta box title
+            array($this, 'display_dgd_scrollbox_preview'), // meta box editor html function
+            DGDSCROLLBOXTYPE,             // post_type
+            'advanced',              // where to display (normal|advanced|side)
+            'low'                  // priority among other boxes (high|core|default|low)
+        );
+        */
     }
 
     function register_general_settings_page() {
@@ -415,12 +426,10 @@ Class DgdScrollboxAdmin {
     }
 
 
-    function display_dgd_scrollbox_side_box( $post ) {
-        $url = 'https://www.facebook.com/sharer/sharer.php?n=4&s=100';
-        $url .= '&p[summary]=' . urlencode('Scroll Triggered Box will boost your conversion rates! The plugin displays a pop-up box with customizable content.');
-        $url .= '&p[url]=' . urlencode('http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/');
-        $url .= '&p[title]=' . urlencode('Check out this WordPress plugin: Scroll Triggered Box');
+    function display_donate_box( $post ) {
+        if($post->post_type == DGDSCROLLBOXTYPE) {
     ?>
+            <!-- div id="donate" -->
             <p>If you like scroll triggered box. Please help to keep it alive by donating. Every cent counts!</p>
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
                 <input type="hidden" name="cmd" value="_s-xclick">
@@ -437,10 +446,20 @@ Class DgdScrollboxAdmin {
             <p style="word-break: break-all">Link to the plugin's home page from your blog:
                 <a href="http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/" target="_blank">http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/</a></p>
 
-            <p>Spread the word on <a target="_blank" href="http://twitter.com/intent/tweet/?text=Check%20out%20this%20WordPress%20plugin%3A%20Scroll%20Triggered%20Box&via=Dreamgrow&url=http%3A%2F%2Fwww.dreamgrow.com%2Fdreamgrow-scroll-triggered-box%2F">Twitter</a> or <a target="_blank" href="<?php echo $url ?>">Facebook</a></p>
+            <p>Spread the word on <a target="_blank" href="http://twitter.com/intent/tweet/?text=Check%20out%20this%20WordPress%20plugin%3A%20Scroll%20Triggered%20Box&via=Dreamgrow&url=http%3A%2F%2Fwww.dreamgrow.com%2Fdreamgrow-scroll-triggered-box%2F">Twitter</a> or <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?n=4&s=100&p[summary]=Scroll+Triggered+Box+will+boost+your+conversion+rates%21+The+plugin+displays+a+pop-up+box+with+customizable+content.&p[url]=http%3A%2F%2Fwww.dreamgrow.com%2Fdreamgrow-scroll-triggered-box%2F&p[title]=Check+out+this+WordPress+plugin%3A+Scroll+Triggered+Box">Facebook</a></p>
+            <!-- /div -->
         <?php
+        }
     }
 
+
+    function display_dgd_scrollbox_preview( $post ) {
+        if($post->post_type == DGDSCROLLBOXTYPE) {
+        ?>
+        <iframe id="previewFrame"></iframe>
+        <?php
+        }
+    }
 
     function display_dgd_scrollbox_meta_box( $post ) {
         global $dgd_stb_meta_default, $dgd_stb_show_meta_default, $wp_post_types;
@@ -476,7 +495,7 @@ Class DgdScrollboxAdmin {
             ksort($this->width_select_options);
         }
 
-        // var_dump($dgd_stb);
+        var_dump($dgd_stb_show);
         ?>
 
         <h1>Where and how to trigger?</h1>
@@ -531,7 +550,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Hide on mobiles</td>
                 <td>
-                    <label><input type="checkbox" name="dgd_stb[hide_mobile]" value="1"<?php echo (isset($dgd_stb['hide_mobile'])?' checked="1"':'') ?>> Hide on mobiles</label>
+                    <label><input type="checkbox" name="dgd_stb[hide_mobile]" value="1" <?php checked(1, $dgd_stb['hide_mobile']); ?>> Hide on mobiles</label>
                 </td>
             </tr>
             <tr>
@@ -540,13 +559,11 @@ Class DgdScrollboxAdmin {
                     <table>
                     <tr>
                         <td width="25%" style="vertical-align: top">On all following:<br />
-                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" <?php checked(1, isset($dgd_stb_show['frontpage'])); ?>>Frontpage</label><br />
-                            <label><input name="dgd_stb_show[postspage]" type="checkbox" <?php checked(1, isset($dgd_stb_show['postspage'])); 
-                            ?>>Blog page</label><br />
-                            <label><input name="dgd_stb_show[error404]" type="checkbox" <?php checked(1, isset($dgd_stb_show['error404'])); 
-                            ?>>Error 404 page</label><br />
+                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" value="1" <?php checked('1', $dgd_stb_show['frontpage']); ?>>Frontpage</label><br />
+                            <label><input name="dgd_stb_show[postspage]" type="checkbox" value="1" <?php checked('1', $dgd_stb_show['postspage']); ?>>Blog page</label><br />
+                            <label><input name="dgd_stb_show[error404]" type="checkbox" value="1" <?php checked('1', $dgd_stb_show['error404']);     ?>>Error 404 page</label><br />
                             <?php $this->stb_get_post_types($dgd_stb_show); ?><br /><br />
-                            <label><input name="dgd_stb_show[admin_only]" type="checkbox" <?php checked(1, isset($dgd_stb_show['admin_only'])); ?> class="dgd_checkalert"><span class="dgd_checkalert">Admin only</span></label>
+                            <label><input name="dgd_stb_show[admin_only]" type="checkbox" value="1" <?php checked(array('1', 'on'), $dgd_stb_show['admin_only']); ?> class="dgd_checkalert"><span class="dgd_checkalert">Admin only</span></label>
                         </td>
                         <td style="vertical-align: top">Exceptions:<br /> 
                             <ul id="dgd_tabs">
@@ -667,7 +684,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Close permanently</td>
                 <td>
-                    <label><input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php echo (isset($dgd_stb['hide_submitted'])?' checked="1"':'') ?>>Close box permanently for subscribed user</label>
+                    <label><input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php checked('1', $dgd_stb['hide_submitted']); ?>>Close box permanently for subscribed user</label>
                 </td>
             </tr>
         </tbody>
@@ -698,7 +715,7 @@ Class DgdScrollboxAdmin {
 
             <tr>
                 <td>Widget</td>
-                <td><label><input type="checkbox" name="dgd_stb[widget_enabled]" value="1"<?php echo (isset($dgd_stb['widget_enabled'])?' checked="1"':'') ?>>Enable Widget area</label></td>
+                <td><label><input type="checkbox" name="dgd_stb[widget_enabled]" value="1" <?php checked('1', $dgd_stb['widget_enabled']); ?>>Enable Widget area</label></td>
             </tr>
             <tr>
                 <td class="dgd_leftcol">Popup box dimensions (px)</td>
@@ -792,7 +809,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Show tab</td>
                 <td>
-                    <label><input type="checkbox" name="dgd_stb[tab]" value="1"<?php echo (isset($dgd_stb['tab'])?' checked="1"':'') ?>>After Scrollbox closing show tab for reopening</label>
+                    <label><input type="checkbox" name="dgd_stb[tab]" value="1" <?php checked('1', $dgd_stb['tab']); ?>>After Scrollbox closing show tab for reopening</label>
                 </td>           
             </tr>
             <tr>
@@ -832,6 +849,10 @@ Class DgdScrollboxAdmin {
 
 
         </table>
+
+        <iframe id="previewFrame"></iframe>
+
+
         <?php
     }
 
@@ -865,8 +886,8 @@ Class DgdScrollboxAdmin {
                     $id = $post_type->name;
                     $label = $post_type->label;
                     echo '<br/>
-                          <label><input name="dgd_stb_show[post_types]['.$id.']" type="checkbox" '.
-                          checked(1, isset($options['post_types'][$id]), false) .'>'. $label .'</label>';
+                          <label><input name="dgd_stb_show[post_types]['.$id.']" type="checkbox" value="1"'.
+                          checked('1', isset($options['post_types'][$id]), false) .'>'. $label .'</label>';
                 }
             }
         }

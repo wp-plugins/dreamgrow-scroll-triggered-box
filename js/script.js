@@ -16,7 +16,6 @@ if (typeof $DGD.echo !== 'object') {
 
 $DGD.didScroll = true;
 $DGD.didResize = false;
-$DGD.loadedthemes = [];
 $DGD.screenheight = 2000;
 $DGD.screenwidth = 4000;
 $DGD.boxes_wait_for_scroll = [];
@@ -120,12 +119,33 @@ function DgdCreateSocialButtons(box) {
     }
 }
 
-$DGD.loadCss = function (cssUrl) {
-    var fileref = document.createElement('link');
-    fileref.rel = 'stylesheet';
-    fileref.type = 'text/css';
-    fileref.href = cssUrl;
-    document.getElementsByTagName('head')[0].appendChild(fileref);
+$DGD.addClass = function ( element, name ) {
+    element.className = element.className.replace( /\s+$/gi, '' ) + ' ' + name;
+};
+
+$DGD.removeClass = function ( element, name ) {
+    element.className = element.className.replace( name, '' );
+};
+
+
+$DGD.loadCss = function (cssObject, parent) {
+    var cssUrl, fileref;
+    if (typeof cssObject === 'string') {
+        cssUrl=cssObject;
+        fileref = document.createElement('link');
+        fileref.rel = 'stylesheet';
+        fileref.type = 'text/css';
+        fileref.href = cssUrl;
+    } else if (typeof cssObject === 'object') {
+        // console.log('CSS Object: '+cssObject);
+        cssUrl=cssObject.href;
+        fileref=cssObject;
+    }
+    if (parent.childNodes.lenght>0) {
+        parent.insertBefore(fileref, parent.childNodes[0]);
+    } else {
+        parent.appendChild(fileref);
+    }
 };
 
 $DGD.measureScreen = function () {
@@ -231,7 +251,9 @@ $DGD.placeBox = function (box) {
             closebutton.css('top', '-' + (box.jsCss.margin + parseInt(box.div.css('border-top-width'), 10)) + 'px');
             closebutton.css('right', '-' + (box.jsCss.margin + parseInt(box.div.css('border-right-width'), 10)) + 'px');
         };
-    box.div = jQuery('#' + box.id);
+    if (!box.div) {
+        box.div = jQuery('#' + box.id);
+    }
     box.hidden = true;        // box is temporarily not visible
     box.closed = false;    // box is closed, do not show again
     box.anim_from = {};
@@ -526,23 +548,30 @@ $DGD.submitForm = function (e) {
     });
 };
 
-$DGD.generateBox = function (box) {
-    var boxdiv, form;
+$DGD.generateBox = function (box, boxparent) {
+    var boxdiv, form, newelem;
     if (typeof box.html === 'string' && box.html !== '') {
-        boxdiv = document.createElement('div');
-        boxdiv.className = 'dgd_stb_box ' + box.theme;
-        boxdiv.id = box.id;
-        boxdiv.innerHTML = '<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>'+box.html;
-        document.getElementsByTagName('body')[0].appendChild(boxdiv);
+        newelem = document.createElement('div');
+        newelem.className = 'dgd_stb_box ' + box.theme;
+        newelem.id = box.id;
+        newelem.innerHTML = '<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>'+box.html;
+        boxdiv = boxparent.appendChild(newelem);
     } else {
         boxdiv = document.getElementById(box.id);
     }
-    this.loadCss(this.scripthost + 'themes/' + box.theme + '/style.css');
-    if (typeof box.receiver_email === 'string' && box.receiver_email === '1') {
-        form = jQuery(boxdiv).find('form');
-        if (typeof form === 'object') { form.submit(this.submitForm); }
+    if (typeof boxdiv === 'object' && boxdiv) {
+        if (typeof box.theme === 'string') {
+            this.loadCss(this.scripthost + 'themes/' + box.theme + '/style.css', boxdiv);
+        }
+        if (typeof box.receiver_email === 'string' && box.receiver_email === '1') {
+            form = jQuery(boxdiv).find('form');
+            if (typeof form === 'object') { form.submit(this.submitForm); }
+        }
+        return boxdiv;
+    } else {
+        $DGD.echo('Box div not found');
     }
-    return boxdiv;
+    return false;
 };
 
 $DGD.mouseEventHandler = function (e) {
@@ -553,7 +582,10 @@ $DGD.mouseEventHandler = function (e) {
 };
 
 $DGD.scrollboxInit = function () {
-    var is_mobile_user = this.isMobile(navigator.userAgent || navigator.vendor || window.opera), i, box, d;
+    var is_mobile_user = this.isMobile(navigator.userAgent || navigator.vendor || window.opera),
+        boxparent = document.getElementsByTagName('body')[0],   // possibility to append boxes to different elements, use <body> as default
+        i, box, d;
+
     if (this.scrollboxes.length > 0) {
         this.measureScreen();
 
@@ -565,7 +597,7 @@ $DGD.scrollboxInit = function () {
                 continue;
             }
 
-            this.generateBox(box);
+            this.generateBox(box, boxparent);
             this.placeBox(box);
 
             if (!this.checkCookie(box)) {
