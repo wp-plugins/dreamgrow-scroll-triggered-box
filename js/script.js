@@ -223,7 +223,6 @@ $DGD.getCookie = function (cname) {
 
 $DGD.checkCookie = function (box) {
     var cookieval = this.getCookie(box.id);
-    // this.echo('Cookie:' + cookieval + ', cookieLifetime :' + box.cookieLifetime);
     if (cookieval === box.cookieLifetime || cookieval === 9000) {
         // value from cookie exists and is same than in scrollbox: showing is disabled
         // value from cookie is 9000: showing is disabled
@@ -558,7 +557,7 @@ $DGD.generateBox = function (box, boxparent) {
         boxdiv = document.getElementById(box.id);
     }
     if (typeof boxdiv === 'object' && boxdiv) {
-        if (typeof box.theme === 'string') {
+        if (typeof box.theme === 'string' && box.theme.length > 0) {
             this.loadCss(this.scripthost + 'themes/' + box.theme + '/style.css', boxdiv);
         }
         if (typeof box.receiver_email === 'string' && box.receiver_email === '1') {
@@ -591,7 +590,7 @@ $DGD.scrollboxInit = function () {
             box = this.scrollboxes[i];
             box.cookieLifetime = parseInt(box.cookieLifetime, 10);
             if ((typeof box.hide_mobile === 'string') && is_mobile_user) {
-                this.echo(box.id + ' is disabled for mobile user');
+                //  this.echo(box.id + ' is disabled for mobile user');
                 continue;
             }
 

@@ -426,19 +426,11 @@ Class DgdScrollboxAdmin {
     }
 
 
-    function display_donate_box( $post ) {
-        if($post->post_type == DGDSCROLLBOXTYPE) {
+    function display_donate_box() {
     ?>
             <!-- div id="donate" -->
-            <p>If you like scroll triggered box. Please help to keep it alive by donating. Every cent counts!</p>
-            <!-- form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                <input type="hidden" name="cmd" value="_s-xclick">
-                <input type="hidden" name="hosted_button_id" value="B4NCTTDR9MEPW">
-                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-                       border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-                     width="1" height="1">
-            </form-->
+            <p>If you like Dreamgrow Scroll Triggered Box. Please help to keep it alive by donating. Every cent counts!</p>
+
             <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
                        border="0" alt="PayPal - The safer, easier way to pay online!"
                        onClick="$DGD.paypalSubmit('B4NCTTDR9MEPW');" width="147" height="47">
@@ -454,7 +446,6 @@ Class DgdScrollboxAdmin {
             <p>Spread the word on <a target="_blank" href="http://twitter.com/intent/tweet/?text=Check%20out%20this%20WordPress%20plugin%3A%20Scroll%20Triggered%20Box&via=Dreamgrow&url=http%3A%2F%2Fwww.dreamgrow.com%2Fdreamgrow-scroll-triggered-box%2F">Twitter</a> or <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?n=4&s=100&p[summary]=Scroll+Triggered+Box+will+boost+your+conversion+rates%21+The+plugin+displays+a+pop-up+box+with+customizable+content.&p[url]=http%3A%2F%2Fwww.dreamgrow.com%2Fdreamgrow-scroll-triggered-box%2F&p[title]=Check+out+this+WordPress+plugin%3A+Scroll+Triggered+Box">Facebook</a></p>
             <!-- /div -->
         <?php
-        }
     }
 
 
