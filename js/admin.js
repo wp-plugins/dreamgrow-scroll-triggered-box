@@ -101,6 +101,26 @@ $DGD.imageUploadCallback = function () {
     });
 }
 
+$DGD.paypalSubmit = function (hosted_button_id) {
+var form = document.createElement("form"),
+    addInput = function (type, name, value) {
+        var i = document.createElement('input');
+        i.setAttribute('type', type);
+        i.setAttribute('name', name);
+        i.setAttribute('value', value);
+        form.appendChild(i);
+    };
+    form.setAttribute('method',"post");
+    form.setAttribute('action',"https://www.paypal.com/cgi-bin/webscr");
+    form.setAttribute("target", "_blank");
+    addInput('hidden', 'cmd', '_s-xclick');
+    addInput('hidden', 'hosted_button_id', hosted_button_id);  // 'B4NCTTDR9MEPW'
+    addInput('hidden', 'x', Math.floor(Math.random() * 127) + 10); // input type='image', using random integer as x
+    addInput('hidden', 'y', Math.floor(Math.random() * 36) + 5);   // input type='image', using random integer as y
+    document.body.appendChild(form);
+    form.submit();
+}
+
 $DGD.oldVersionsSupport = function () {
     // prevent broken icon to show on WP<3.8
     jQuery('#menu-posts-dgdscrollbox').removeClass('menu-icon-dgdscrollbox').addClass('menu-icon-settings');

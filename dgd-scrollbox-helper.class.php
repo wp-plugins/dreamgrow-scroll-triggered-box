@@ -80,7 +80,7 @@ Class DgdScrollboxHelper {
     public static $dgd_stb_show_meta_default = array(
         'frontpage' => '1',
         'postspage' => '1',
-        'error404' => '0',
+        'error404' => null,     // use null for isset function returning false
         'selected_pages' => array(),
         'categories' => array(),
         'tags' => array(),

@@ -225,7 +225,7 @@ Class DgdScrollboxAdmin {
         add_action('parse_request', array($this, 'control_requests') );
         add_filter('tiny_mce_before_init', array($this, 'tiny_mce_fix'));
         add_filter('admin_footer', array($this, 'display_dgd_scrollbox_preview'));
-        add_filter('admin_footer', array($this, 'display_donate_box'));
+        // add_filter('admin_footer', array($this, 'display_donate_box'));
 
         // add_action( 'admin_notices', array($this, 'migrate_from_old_version'));
     }
@@ -431,14 +431,19 @@ Class DgdScrollboxAdmin {
     ?>
             <!-- div id="donate" -->
             <p>If you like scroll triggered box. Please help to keep it alive by donating. Every cent counts!</p>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <!-- form action="https://www.paypal.com/cgi-bin/webscr" method="post">
                 <input type="hidden" name="cmd" value="_s-xclick">
                 <input type="hidden" name="hosted_button_id" value="B4NCTTDR9MEPW">
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
                        border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
                      width="1" height="1">
-            </form>
+            </form-->
+            <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+                       border="0" alt="PayPal - The safer, easier way to pay online!"
+                       onClick="$DGD.paypalSubmit('B4NCTTDR9MEPW');" width="147" height="47">
+            <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
+                     width="1" height="1">
             <p class="dgd_form_footer">How can you support the developement?</p>
 
             <p><a href="http://wordpress.org/support/view/plugin-reviews/dreamgrow-scroll-triggered-box?rate=5#postform" target="_blank">Leava a raving review *****</a></p>
@@ -549,7 +554,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Hide on mobiles</td>
                 <td>
-                    <label><input type="checkbox" name="dgd_stb[hide_mobile]" value="1" <?php checked(1, $dgd_stb['hide_mobile']); ?>> Hide on mobiles</label>
+                    <label><input type="checkbox" name="dgd_stb[hide_mobile]" value="1" <?php checked(1, isset($dgd_stb['hide_mobile'])); ?>> Hide on mobiles</label>
                 </td>
             </tr>
             <tr>
@@ -558,11 +563,11 @@ Class DgdScrollboxAdmin {
                     <table>
                     <tr>
                         <td width="25%" style="vertical-align: top">On all following:<br />
-                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" value="1" <?php checked('1', $dgd_stb_show['frontpage']); ?>>Frontpage</label><br />
-                            <label><input name="dgd_stb_show[postspage]" type="checkbox" value="1" <?php checked('1', $dgd_stb_show['postspage']); ?>>Blog page</label><br />
-                            <label><input name="dgd_stb_show[error404]" type="checkbox" value="1" <?php checked('1', $dgd_stb_show['error404']);     ?>>Error 404 page</label><br />
+                            <label><input name="dgd_stb_show[frontpage]" type="checkbox" value="1" <?php checked('1', isset($dgd_stb_show['frontpage'])); ?>>Frontpage</label><br />
+                            <label><input name="dgd_stb_show[postspage]" type="checkbox" value="1" <?php checked('1', isset($dgd_stb_show['postspage'])); ?>>Blog page</label><br />
+                            <label><input name="dgd_stb_show[error404]" type="checkbox" value="1" <?php checked('1', isset($dgd_stb_show['error404']));     ?>>Error 404 page</label><br />
                             <?php $this->stb_get_post_types($dgd_stb_show); ?><br /><br />
-                            <label><input name="dgd_stb_show[admin_only]" type="checkbox" value="1" <?php checked(array('1', 'on'), $dgd_stb_show['admin_only']); ?> class="dgd_checkalert"><span class="dgd_checkalert">Admin only</span></label>
+                            <label><input name="dgd_stb_show[admin_only]" type="checkbox" value="1" <?php checked(array('1', 'on'), isset($dgd_stb_show['admin_only'])); ?> class="dgd_checkalert"><span class="dgd_checkalert">Admin only</span></label>
                         </td>
                         <td style="vertical-align: top">Exceptions:<br /> 
                             <ul id="dgd_tabs">
@@ -683,7 +688,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Close permanently</td>
                 <td>
-                    <label><input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php checked('1', $dgd_stb['hide_submitted']); ?>>Close box permanently for subscribed user</label>
+                    <label><input type="checkbox" name="dgd_stb[hide_submitted]" value="1"<?php checked('1', isset($dgd_stb['hide_submitted'])); ?>>Close box permanently for subscribed user</label>
                 </td>
             </tr>
         </tbody>
@@ -714,7 +719,7 @@ Class DgdScrollboxAdmin {
 
             <tr>
                 <td>Widget</td>
-                <td><label><input type="checkbox" name="dgd_stb[widget_enabled]" value="1" <?php checked('1', $dgd_stb['widget_enabled']); ?>>Enable Widget area</label></td>
+                <td><label><input type="checkbox" name="dgd_stb[widget_enabled]" value="1" <?php checked('1', isset($dgd_stb['widget_enabled'])); ?>>Enable Widget area</label></td>
             </tr>
             <tr>
                 <td class="dgd_leftcol">Popup box dimensions (px)</td>
@@ -808,7 +813,7 @@ Class DgdScrollboxAdmin {
             <tr>
                 <td>Show tab</td>
                 <td>
-                    <label><input type="checkbox" name="dgd_stb[tab]" value="1" <?php checked('1', $dgd_stb['tab']); ?>>After Scrollbox closing show tab for reopening</label>
+                    <label><input type="checkbox" name="dgd_stb[tab]" value="1" <?php checked('1', isset($dgd_stb['tab'])); ?>>After Scrollbox closing show tab for reopening</label>
                 </td>           
             </tr>
             <tr>
