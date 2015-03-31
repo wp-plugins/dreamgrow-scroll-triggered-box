@@ -31,10 +31,9 @@ class DgdScrollbox {
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
         add_action('wp_ajax_nopriv_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
-        // add_action('wp_ajax_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
-        // add_action('wp_ajax_nopriv_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
         add_action('wp_footer',  array($this, 'do_footer'), 100);
         add_action('widgets_init', array($this, 'scrollbox_widgets_init'), 15);
+        add_filter('the_content', array($this, 'add_widget_to_scrollbox_content'));
         if(is_admin()) {
             require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-admin.class.php');
             new DgdScrollboxAdmin();
@@ -124,41 +123,26 @@ class DgdScrollbox {
         die(json_encode(array('html'=>$meta['thankyou'], 'status'=>'200')));
     }
 
-    public function fix_content_filter() {
-        // Remove br after hidden input
-        // <input id="submitted" name="submitted" type="hidden" value="true" /><br />
-        // <input id="stb-submit" type="submit" value="Subscribe" /></form>
-        // <p class="stbMsgArea">
-        // add &nbsp; to empty <p></p>
-        // </div>        
-    }
-
     private function get_widget_content() {
-        if(is_active_sidebar( DGDSCROLLBOXTYPE.'_1' )) { 
+        if(is_active_sidebar(DGDSCROLLBOXTYPE.'_1')) { 
             ob_start();
-            dynamic_sidebar( DGDSCROLLBOXTYPE.'_1' ); 
+            dynamic_sidebar(DGDSCROLLBOXTYPE.'_1'); 
             return ob_get_clean();
         }
         return '';
     }
 
-    /*
-    public function dgd_stb_get_html() {
-        $nonce = $_POST['stbNonce'];        
-        if (!wp_verify_nonce($nonce, 'dgd_stb_nonce')) {
-            die (json_encode(array('html'=>'Sorry, but you must reload this page!', 'status'=>'500')));
+    public function add_widget_to_scrollbox_content($content) {
+        // This is needed for preview
+        global $post;
+        if ($post->post_type == DGDSCROLLBOXTYPE) {
+            $meta=get_post_meta( $post->ID, 'dgd_stb', true );
+            if (isset($meta['widget_enabled'])) {
+                $content.=$this->get_widget_content();
+            }
         }
-        $html=stripslashes($_POST['html']);
-        $widget_enabled=$_POST['widget_enabled'];
-
-        $output=do_shortcode($html);
-        if($widget_enabled) {
-            $output.=$this->get_widget_content();
-        }
-        $output.=do_shortcode('[contact-form-7 id="19" title="Contact form 1"]');
-        die(json_encode(array('html'=>$output, 'status'=>'200')));
+        return $content;
     }
-    */
 
     private function get_html() {
         $output='';

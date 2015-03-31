@@ -1,18 +1,18 @@
-/*jslint browser: true, plusplus: true */
+/*jslint browser: true, plusplus: true, sloppy: true */
 /*global $DGD */
 /*global jQuery */
 /*global tb_show */
 /*global tb_remove */
 /*global console */
+/*global pagenow */
 
 
 if (typeof $DGD !== 'object') {
-    $DGD = { debug: true };
+    var $DGD = { 'debug': true };
 }
 
 if (typeof $DGD.echo !== 'object') {
     $DGD.echo = function (str) {
-        'use strict';
         if ($DGD.debug) {console.log(str); }
     };
 }
@@ -20,40 +20,42 @@ if (typeof $DGD.echo !== 'object') {
 $DGD.select2D = {};
 
 $DGD.select2D.paint = function (ver, hor) {
-    'use strict';
     var row = 0, col = 0;
     switch (ver) {
     case 'bottom':
         row++;
+        row++;
+        break;
     case 'center':
         row++;
+        break;
     }
     switch (hor) {
     case 'right':
         col++;
+        col++;
+        break;
     case 'center':
         col++;
+        break;
     }
     jQuery('#dgd_pos_selector .selected').removeClass('selected');
     jQuery('#dgd_pos_selector').find('tr:eq(' + row + ')').find('a:eq(' + col + ')').addClass('selected');
 };
 
 $DGD.select2D.choose = function (ver, hor) {
-    'use strict';
     jQuery('#hpos_selector').val(hor);
     jQuery('#vpos_selector').val(ver);
     $DGD.select2D.paint(ver, hor);
 };
 
 $DGD.select2D.init = function () {
-    'use strict';
     var ver = jQuery('#vpos_selector').val(),
         hor = jQuery('#hpos_selector').val();
     $DGD.select2D.paint(ver, hor);
 };
 
 $DGD.showTab = function (elem, tab) {
-    'use strict';
     jQuery(elem).parent('ul').next('.dgd_tab_container').find('.dgd_tab_content').addClass('hide');
     jQuery(elem).parent('ul').next('.dgd_tab_container').find('.' + tab).removeClass('hide');
     jQuery(elem).parent('ul').find('li').removeClass('selected');
@@ -65,10 +67,9 @@ $DGD.attachColorPicker = function () {
         jQuery('.dgd-popup-color-picker').wpColorPicker();
     } catch (ignore) {
     }
-}
+};
 
 $DGD.imageUploadCallback = function () {
-
     $DGD.restore_send_to_editor = window.send_to_editor;
     jQuery('#upload_bg_image_button').click(function () {
         var formfield = jQuery(this).prev('input');
@@ -99,37 +100,36 @@ $DGD.imageUploadCallback = function () {
         };
         return false;
     });
-}
+};
 
 $DGD.paypalSubmit = function (hosted_button_id) {
-var form = document.createElement("form"),
-    addInput = function (type, name, value) {
-        var i = document.createElement('input');
-        i.setAttribute('type', type);
-        i.setAttribute('name', name);
-        i.setAttribute('value', value);
-        form.appendChild(i);
-    };
-    form.setAttribute('method',"post");
-    form.setAttribute('action',"https://www.paypal.com/cgi-bin/webscr");
-    form.setAttribute("target", "_blank");
+    var form = document.createElement('form'),
+        addInput = function (type, name, value) {
+            var i = document.createElement('input');
+            i.setAttribute('type', type);
+            i.setAttribute('name', name);
+            i.setAttribute('value', value);
+            form.appendChild(i);
+        };
+    form.setAttribute('method', 'post');
+    form.setAttribute('action', 'https://www.paypal.com/cgi-bin/webscr');
+    form.setAttribute('target', '_blank');
     addInput('hidden', 'cmd', '_s-xclick');
     addInput('hidden', 'hosted_button_id', hosted_button_id);  // 'B4NCTTDR9MEPW'
     addInput('hidden', 'x', Math.floor(Math.random() * 127) + 10); // input type='image', using random integer as x
     addInput('hidden', 'y', Math.floor(Math.random() * 36) + 5);   // input type='image', using random integer as y
     document.body.appendChild(form);
     form.submit();
-}
+};
 
 $DGD.oldVersionsSupport = function () {
     // prevent broken icon to show on WP<3.8
     jQuery('#menu-posts-dgdscrollbox').removeClass('menu-icon-dgdscrollbox').addClass('menu-icon-settings');
     jQuery('img[src="http://dashicons-welcome-comments"]').remove();
-}
+};
 
 jQuery(document).ready(function () {
-    'use strict';
-    if(pagenow==='dgd_scrollbox') {
+    if (pagenow === 'dgd_scrollbox') {
         $DGD.select2D.init();
         $DGD.attachColorPicker();
         $DGD.imageUploadCallback();
