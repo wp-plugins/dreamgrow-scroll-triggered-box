@@ -2,8 +2,8 @@
 Contributors: pk2000,madisn,Eero Hermlin
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B4NCTTDR9MEPW
 Tags: call to action, pop-up, newsletter signup popup, newsletter sign-up, scroll triggered pop-up, subscription pop-up
-Requires at least: 3.1
-Tested up to: 4.1
+Requires at least: 3.0
+Tested up to: 4.1.1
 Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -191,6 +191,10 @@ Here some common elements you can use on most WordPress themes:
 
 
 == Changelog ==
+
+= 2.2.0 =
+* Added "Tab" for reopening closed Scrollbox
+* "Preview Scrollbox" button in Edit screen gives live preview (not guaranteed to work on older than WP 4.0)
 
 = 2.1.3 =
 * Added Show->Posts page option

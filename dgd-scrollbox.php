@@ -3,7 +3,7 @@
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/
 Description: Scroll Triggered Box
-Version: 2.1.3
+Version: 2.2.0
 Author: Dreamgrow Digital
 Author URI: http://www.dreamgrow.com
 License: GPL2
@@ -13,7 +13,7 @@ if(!defined('DGDSCROLLBOXTYPE'))
     define('DGDSCROLLBOXTYPE', 'dgd_scrollbox');        // DO NOT TOUCH!
 
 if(!defined('DGDSCROLLBOX_VERSION'))
-    define('DGDSCROLLBOX_VERSION', '2.1.3');
+    define('DGDSCROLLBOX_VERSION', '2.2.0');
 
 require_once(plugin_dir_path(__FILE__).'dgd-scrollbox-helper.class.php');
 
