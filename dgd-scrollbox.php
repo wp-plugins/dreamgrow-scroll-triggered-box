@@ -73,8 +73,10 @@ class DgdScrollbox {
         if(version_compare($wp_version, '3.1', '>=')) {
             // WP=3.1.0 or newer
             $post=get_queried_object();
-            $this->post_id = $post->ID;
-            $this->post_title = $post->post_title;
+            if (is_object($post) && isset($post->ID)) {
+                $this->post_id = $post->ID;
+                $this->post_title = $post->post_title;
+            }
         } else {
             global $post;
             $this->post_id = $post->ID;
@@ -334,6 +336,13 @@ class DgdScrollbox {
 
 	    wp_enqueue_style( 'dgd-scrollbox-plugin-core', plugins_url( 'css/style.css', __FILE__ ), array(), DGDSCROLLBOX_VERSION );  
         wp_enqueue_script( 'dgd-scrollbox-plugin', plugins_url( 'js/script.js', __FILE__ ), array('jquery'), DGDSCROLLBOX_VERSION, false );
+
+        if (!isset($this->post_id)) {
+            // get_queried_object() does not work for first page if WP<4.1
+            global $post;
+            $this->post_id = $post->ID;
+            $this->post_title = $post->post_title;
+        }
 
         $image='';
         $thumbnail=false;
