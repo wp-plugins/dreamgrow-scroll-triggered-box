@@ -69,9 +69,17 @@ class DgdScrollbox {
     }
 
     public function get_original_post_id() {
-        $post=get_queried_object();
-        $this->post_id = $post->ID;
-        $this->post_title = $post->post_title;
+        global $wp_version;
+        if(version_compare($wp_version, '3.1', '>=')) {
+            // WP=3.1.0 or newer
+            $post=get_queried_object();
+            $this->post_id = $post->ID;
+            $this->post_title = $post->post_title;
+        } else {
+            global $post;
+            $this->post_id = $post->ID;
+            $this->post_title = $post->post_title;
+        }
     }
 
     public function scrollbox_widgets_init() {

@@ -183,7 +183,7 @@ $DGD.showDebug = function (e) {
 };
 
 $DGD.replacePreviewButton = function () {
-    if (pagenow === 'dgd_scrollbox') {
+    if (pagenow === 'dgd_scrollbox' && typeof wp === 'object') {
         jQuery('#preview-action a#post-preview').remove();
         jQuery('#preview-action').append('<a href="#" class="preview button" id="scrollbox-preview">Preview Scrollbox</a>');
         jQuery('#preview-action a#scrollbox-preview').click(function (event) {$DGD.showPreview(event); });
