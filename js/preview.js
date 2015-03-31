@@ -169,6 +169,7 @@ $DGD.showPreview = function (e) {
     if (!$DGD.iframe) {
         $DGD.initIframe();
     }
+    window.scrollTo(0, 0); // scroll to top
     $DGD.closePreview();
     $DGD.serializeObject(jQuery('form#post'), $DGD.previewObj);
     $DGD.getHtmlAndShow();
