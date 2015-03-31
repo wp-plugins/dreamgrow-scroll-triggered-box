@@ -1093,9 +1093,16 @@ Class DgdScrollboxAdmin {
         }
         
         if(version_compare($old_version, '2.1', '<')) {
-            // do something at plugin upgrade
+            // upgrading to 2.1, fill "thankyou" value with default
+            $pop_ups = get_pages( array('post_type'=>DGDSCROLLBOXTYPE, 'post_status' => 'publish'));
+            foreach($pop_ups as $pop_up) {
+                $meta=get_post_meta($pop_up->ID, 'dgd_stb', true);
+                if(!isset($meta['thankyou'])) {
+                    $meta['thankyou']=DgdScrollboxHelper::$dgd_stb_meta_default['thankyou'];
+                }
+                update_post_meta( $pop_up->ID, 'dgd_stb', $meta);
+            }
         }
-
         update_option('stb_version', DGDSCROLLBOX_VERSION);
     }
 
