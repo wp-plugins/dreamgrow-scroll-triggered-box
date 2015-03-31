@@ -46,3 +46,7 @@ div.dgd_tab_container .hide { display: none; }
 .dgd_preview_mode {
     overflow: hidden;
 }
+
+.dgd_donate_button {
+    cursor: pointer; cursor: hand;
+}

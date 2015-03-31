@@ -31,8 +31,8 @@ class DgdScrollbox {
         add_shortcode('close-button', array($this, 'close_button') );
         add_action('wp_ajax_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
         add_action('wp_ajax_nopriv_dgd_stb_form_process', array($this, 'dgd_stb_form_process'));
-        add_action('wp_ajax_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
-        add_action('wp_ajax_nopriv_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
+        // add_action('wp_ajax_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
+        // add_action('wp_ajax_nopriv_dgd_stb_get_html', array($this, 'dgd_stb_get_html'), 1001);
         add_action('wp_footer',  array($this, 'do_footer'), 100);
         add_action('widgets_init', array($this, 'scrollbox_widgets_init'), 15);
         if(is_admin()) {
@@ -142,6 +142,7 @@ class DgdScrollbox {
         return '';
     }
 
+    /*
     public function dgd_stb_get_html() {
         $nonce = $_POST['stbNonce'];        
         if (!wp_verify_nonce($nonce, 'dgd_stb_nonce')) {
@@ -149,12 +150,7 @@ class DgdScrollbox {
         }
         $html=stripslashes($_POST['html']);
         $widget_enabled=$_POST['widget_enabled'];
-        /*
-        $file_wp_load=ABSPATH.'wp-load.php';
-        if (file_exists($file_wp_load)){
-        	require_once($file_wp_load);
-        } 
-        */
+
         $output=do_shortcode($html);
         if($widget_enabled) {
             $output.=$this->get_widget_content();
@@ -162,7 +158,7 @@ class DgdScrollbox {
         $output.=do_shortcode('[contact-form-7 id="19" title="Contact form 1"]');
         die(json_encode(array('html'=>$output, 'status'=>'200')));
     }
-
+    */
 
     private function get_html() {
         $output='';
@@ -170,9 +166,9 @@ class DgdScrollbox {
 
         foreach($this->html as $box) {
             $output.='<div class="dgd_stb_box '.$box['theme'].'" id="'.$box['id'].'">';
-            if($box['show_close_button']) $output.='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
+            if(isset($box['show_close_button'])) $output.='<a class="dgd_stb_box_close dgd_stb_box_x" href="javascript:void(0);"> </a>';
             $output.=do_shortcode($box['html']);
-            if($box['widget_enabled']) $output.=$widget_content;
+            if($box['widget_enabled'] == '1') $output.=$widget_content;
             $output.='</div>'."\n";
             $output.="\n";
         }
@@ -182,7 +178,7 @@ class DgdScrollbox {
     private function get_scrollboxes() {
         $active_pop_ups=$this->get_matching_popups();
         $js=array();
-        $widget_enabled=false;
+        $widget_enabled = '0';
         if(count($active_pop_ups)>0) {
             foreach($active_pop_ups as $pop_up) {
                 $meta=get_post_meta( $pop_up->ID, 'dgd_stb', true );
@@ -195,13 +191,15 @@ class DgdScrollbox {
                 }
                 
                 if(isset($meta['widget_enabled'])) {
-                    $widget_enabled=true;
+                    $widget_enabled = '1';
+                } else {
+                    $widget_enabled = '0';
                 }
 
-                $meta['id']=DGDSCROLLBOXTYPE.'-'.$pop_up->ID;
-                $meta['mode']='stb';
-                $meta['voff']=0;
-                $meta['hoff']=0;
+                $meta['id'] = DGDSCROLLBOXTYPE.'-'.$pop_up->ID;
+                $meta['mode'] = 'stb';
+                $meta['voff'] = 0;
+                $meta['hoff'] = 0;
 
                 // post_content does not add <p> tags, must use wpautop function for that
                 $html=wpautop($pop_up->post_content);
@@ -256,13 +254,13 @@ class DgdScrollbox {
                         'cookieLifetime' => -1,     // Tab will be always available
                         'receiver_email' => $meta['receiver_email'],
                         'thankyou' => $meta['thankyou'],
-                        'widget_enabled' => 0,
+                        'widget_enabled' => '0',
                     );
                     $this->html[]=array(
                         'id'=>$meta['tabid'],
                         'show_close_buttone'=>false,
                         'theme'=>$meta['theme'],
-                        'widget_enabled'=>false,
+                        'widget_enabled'=>'0',
                         'html'=>$meta['tabhtml'],
                     );
                     $js[]=$tabmeta;
@@ -299,14 +297,17 @@ class DgdScrollbox {
                 continue;
             }
 
-            if (isset($show_on['admin_only']) && !current_user_can('manage_options')) {
+            // Exclusion list, has higher priority than inclusion list
+            if (
+                (isset($show_on['admin_only']) && !current_user_can('manage_options')) ||
+                (!isset($show_on['frontpage']) && is_front_page()) ||   // is on front page but front page is not chosed
+                (!isset($show_on['postspage']) && ($this->post_id == get_option('page_for_posts'))) ||
+                ($popupcookie>-1 && $clientcookie>-1 && $popupcookie>=$clientcookie && !isset($meta['tab'])) // client already has same or shorter cookie than server, skip
+               ) {
                 continue;
-            } else if($popupcookie>-1 && $clientcookie>-1 && $popupcookie>=$clientcookie && !isset($meta['tab'])) {
-                // client already has same or shorter cookie than server, skip
-                // $popupcookie==-1: show always
-                continue;
-            }
+               } 
 
+            // Inclusion list
             if (
                 ( 
                  (isset($show_on['post_types']) && in_array(get_post_type($this->post_id), array_keys($show_on['post_types']))) ||

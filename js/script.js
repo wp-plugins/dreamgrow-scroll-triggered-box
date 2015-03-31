@@ -31,6 +31,7 @@ function DgdCreateSocialButtons(box) {
     this.container = false;
 
     this.addFbButton = function () {
+        this.ul.append('<li class="fb ' + box.social.facebook + '"><div class="fb-like" data-send="false" data-share="false" data-action="like" data-layout="' + box.social.facebook + '" data-width="200" data-show-faces="false"></div></li>');
         if (typeof FB === 'object') {
             FB.init({ status: true, cookie: true, xfbml: true });
         } else {
@@ -38,7 +39,6 @@ function DgdCreateSocialButtons(box) {
                 FB.init({ status: true, cookie: true, xfbml: true });
             });
         }
-        this.ul.append('<li class="fb ' + box.social.facebook + '"><div class="fb-like" data-send="false" data-share="false" data-action="like" data-layout="' + box.social.facebook + '" data-width="200" data-show-faces="false"></div></li>');
     };
 
     this.addTwitterButton = function () {
