@@ -111,7 +111,7 @@ $DGD.generatePreviewPage = function (data) {
         new_html = document.implementation.createHTMLDocument('Preview');
 
     old_html.documentElement.innerHTML = data;
-    $DGD.iframe.style.height = $DGD.screenheight + 'px';
+    $DGD.iframe.style.height = ($DGD.screenheight - 32) + 'px';
 
     jQuery(old_html).find('head link[rel="stylesheet"], head style, head script').each(function () {
         if (typeof this === 'object' && this.outerHTML.length > 0) {
