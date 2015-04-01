@@ -85,7 +85,7 @@ Class DgdScrollboxHelper {
         'categories' => array(),
         'tags' => array(),
         'post_types' => array ('page'=>1, 'post'=>1),
-        'admin_only' => '0',
+        'admin_only' => null,
     );
 
 

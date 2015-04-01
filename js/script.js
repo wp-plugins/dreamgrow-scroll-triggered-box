@@ -664,6 +664,11 @@ $DGD.scrollboxInit = function () {
         jQuery('.dgd_stb_box_close_button').click($DGD.closeBox);
         // fallback for old layout
         jQuery('#closebox').click($DGD.closeBox);
+
+        // Bind close action to MailChimp "success" response field change
+        jQuery('.dgd_stb_box #mce-success-response').bind('DOMSubtreeModified', function() {
+            $DGD.closeAfterSubmit(jQuery('#mce-success-response').closest('.dgd_stb_box').attr('id'));
+        });
     }
 };
 

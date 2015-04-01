@@ -3,7 +3,7 @@
 Plugin Name: Scroll Triggered Box
 Plugin URI: http://www.dreamgrow.com/dreamgrow-scroll-triggered-box/
 Description: Scroll Triggered Box
-Version: 2.2.0
+Version: 2.2.1
 Author: Dreamgrow Digital
 Author URI: http://www.dreamgrow.com
 License: GPL2
@@ -354,13 +354,13 @@ class DgdScrollbox {
         $scrollboxes_array=$this->get_scrollboxes();
 
         $data = array(
-            'ajaxurl' => admin_url('admin-ajax.php'),
+            'ajaxurl' => parse_url(admin_url('admin-ajax.php'), PHP_URL_PATH),
             'nonce' => wp_create_nonce('dgd_stb_nonce'),
             'debug' => (current_user_can('manage_options') ? '1' : ''),
             'permalink' => get_permalink($this->post_id),
             'title' => $this->post_title,
             'thumbnail' => $thumbnail,
-            'scripthost' => plugins_url('/',  __FILE__), 
+            'scripthost' => parse_url(plugins_url('/',  __FILE__), PHP_URL_PATH), 
         );
 
         if(version_compare($wp_version, '3.3', '>=')) {
