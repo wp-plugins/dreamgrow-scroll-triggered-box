@@ -445,6 +445,9 @@ $DGD.showBox = function (box, forcedOpen) {
         return;
     }
     if (box.tabid) {
+        if (_gaq) {
+            _gaq.push(['_trackEvent', 'pop up', 'shown', window.location.href]);
+        }
         $DGD.closeBox($DGD.getBoxById(box.tabid));
     }
     box.hidden = false;
@@ -481,6 +484,9 @@ $DGD.closeBox = function () {
         $DGD.hideBox(box);
         $DGD.setCookie(box.id, box.cookieLifetime);
         if (box.tabid) {
+            if (_gaq) {
+                gaq.push(['_trackEvent', 'pop up', 'closed', window.location.href]);
+            }
             $DGD.showBox($DGD.getBoxById(box.tabid), true);
         }
         if (box.parentid) {
